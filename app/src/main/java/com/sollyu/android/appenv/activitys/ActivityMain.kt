@@ -1,5 +1,7 @@
-package com.sollyu.android.appenv
+package com.sollyu.android.appenv.activitys
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -8,10 +10,18 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.sollyu.android.appenv.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_activity_main.*
 
-class ActivityMain : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedListener {
+
+    companion object {
+        fun launch(activity: Activity) {
+            activity.startActivity(Intent(activity, ActivityMain::class.java))
+            activity.finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,27 +68,12 @@ class ActivityMain : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
+            R.id.nav_refresh -> {
                 // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
             }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
-        return true
+        return false
     }
 }

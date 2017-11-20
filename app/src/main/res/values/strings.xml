@@ -5,4 +5,15 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="tip">Tip</string>
+    <string name="splash_xposed_not_work_title">Finish</string>
+    <string name="splash_xposed_not_work_content">The Xposed is not work.\nPlease check Xposed status.</string>
+    <string name="refresh">Refresh</string>
+    <string name="settings">Settings</string>
+    <string name="cloud">Cloud</string>
+    <string name="other">Other</string>
+    <string name="donate">Donate</string>
+    <string name="score">Score</string>
+    <string name="about">About</string>
 </resources>
