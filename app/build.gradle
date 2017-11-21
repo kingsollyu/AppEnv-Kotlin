@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.github.kingsollyu:NotProguard:1.0.0'
 
     // https://github.com/kingsollyu/OptionItem
-    implementation 'com.github.kingsollyu:OptionItem:1.2.0'
+    implementation 'com.github.kingsollyu:OptionItem:1.2.1'
 
     // https://github.com/kingsollyu/LibSuperUser
     implementation 'com.github.kingsollyu:LibSuperUser:1.0.2'
