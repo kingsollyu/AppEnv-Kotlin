@@ -2,6 +2,8 @@ package com.sollyu.android.appenv.activitys
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -15,9 +17,15 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.util.TypedValue
 import android.view.*
+import android.widget.Filter
+import android.widget.Filterable
+import com.elvishew.xlog.XLog
 import com.sollyu.android.appenv.R
+import com.sollyu.android.appenv.R.id.drawer_layout
+import com.sollyu.android.appenv.R.id.swipeRefreshLayout
 import com.sollyu.android.appenv.commons.Application
 import com.sollyu.android.appenv.events.EventSample
 import com.sollyu.android.libsuperuser.Shell
@@ -100,24 +108,30 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.activity_main, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
-        }
+        val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                recyclerViewAdapter.filter.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                recyclerViewAdapter.filter.filter(newText)
+                return true
+            }
+        })
+        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_refresh -> {
-                // Handle the camera action
+                EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
+            }
+            R.id.nav_settings -> {
+                ActivitySettings.launch(activity)
             }
         }
 
@@ -135,10 +149,13 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         when (eventSample.eventTYPE) {
             EventSample.TYPE.MAIN_REFRESH -> {
                 swipeRefreshLayout.isRefreshing = false
-                val installPackage = Application.Instance.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
-                recyclerViewAdapter.displayAppList.clear()
-                recyclerViewAdapter.displayAppList.addAll(installPackage)
-                recyclerViewAdapter.notifyDataSetChanged()
+                if (recyclerViewAdapter.installAppList.size == 0) {
+                    val installPackage = Application.Instance.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+
+                    recyclerViewAdapter.installAppList.clear()
+                    recyclerViewAdapter.installAppList.addAll(installPackage)
+                }
+                recyclerViewAdapter.filter.filter(null)
             }
         }
     }
@@ -168,9 +185,10 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewHolder>() {
+    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewHolder>(), Filterable {
 
         val displayAppList = LinkedList<ApplicationInfo>()
+        val installAppList = LinkedList<ApplicationInfo>()
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerViewHolder {
             val view = LayoutInflater.from(activity).inflate(R.layout.item_listview, parent, false)
@@ -182,17 +200,50 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
 
 
         override fun onBindViewHolder(holder: RecyclerViewHolder?, position: Int) {
-
             val applicationInfo = displayAppList[position]
-            holder?.tvTitleName?.setLeftText(applicationInfo.loadLabel(packageManager))
+            val appLabel = applicationInfo.loadLabel(packageManager)
+            val appPackageName = applicationInfo.packageName
 
-            // holder?.tvTitleName?.leftCheckBox?.visibility = View.VISIBLE
-            // holder?.tvTitleName?.isChecked = true
+            if (appLabel == appPackageName)
+                holder?.tvTitleName?.setRightText(appPackageName)
+
+            if (appLabel != appPackageName){
+                holder?.tvTitleName?.setLeftText(appLabel)
+                holder?.tvTitleName?.setRightText(appPackageName)
+            }
 
         }
 
         override fun getItemCount(): Int {
             return displayAppList.size
         }
+
+        override fun getFilter(): Filter {
+            return object : Filter() {
+                override fun performFiltering(constraint: CharSequence?): FilterResults {
+                    XLog.d(constraint)
+                    val filterResults = FilterResults()
+                    val displayAppListTmp = LinkedList<ApplicationInfo>()
+
+                    if (constraint != null && constraint.isNotEmpty()) {
+                        displayAppListTmp.addAll(installAppList.filter { it.packageName.toLowerCase().contains(constraint.toString().toLowerCase()) || it.loadLabel(packageManager).toString().toLowerCase().contains(constraint.toString().toLowerCase()) })
+                    } else {
+                        displayAppListTmp.addAll(installAppList)
+                    }
+
+                    filterResults.values = displayAppListTmp
+                    filterResults.count  = displayAppListTmp.size
+                    return filterResults
+                }
+
+                override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                    displayAppList.clear()
+                    displayAppList.addAll(results?.values as LinkedList<ApplicationInfo>)
+                    notifyDataSetChanged()
+                }
+
+            }
+        }
+
     }
 }

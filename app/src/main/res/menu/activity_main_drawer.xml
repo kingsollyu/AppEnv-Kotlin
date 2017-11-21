@@ -7,11 +7,11 @@
             android:icon="@drawable/ic_refresh"
             android:title="@string/refresh"/>
         <item
-            android:id="@+id/action_settings"
+            android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings"/>
         <item
-            android:id="@+id/action_cloud"
+            android:id="@+id/nav_cloud"
             android:icon="@drawable/ic_wb_cloudy"
             android:title="@string/cloud"/>
     </group>
@@ -27,7 +27,7 @@
                 android:icon="@drawable/ic_thumb_up"
                 android:title="@string/score"/>
             <item
-                android:id="@+id/action_about"
+                android:id="@+id/nav_about"
                 android:icon="@drawable/ic_info"
                 android:title="@string/about"/>
         </menu>

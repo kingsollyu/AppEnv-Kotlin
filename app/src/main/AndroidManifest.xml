@@ -3,13 +3,13 @@
     package="com.sollyu.android.appenv">
 
     <application
+        android:name=".commons.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".commons.Application">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activitys.ActivitySplash"
             android:label="@string/app_name"
@@ -20,8 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activitys.ActivityMain" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".activitys.ActivityMain"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".activitys.ActivitySettings"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".activitys.ActivityDetail"></activity>
     </application>
 
 </manifest>
