@@ -5,14 +5,20 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatDelegate
 import android.view.View
+import android.widget.Toast
 import com.sollyu.android.appenv.R
+import com.sollyu.android.appenv.commons.Settings
+import com.sollyu.android.appenv.events.EventSample
 import de.psdev.licensesdialog.LicensesDialog
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
 import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
+import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.include_toolbar.*
+import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
 
@@ -38,6 +44,16 @@ class ActivitySettings : ActivityBase() {
 
     }
 
+    override fun onInitData() {
+        super.onInitData()
+        oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
+    }
+
+    @Event(R.id.oivAuthor)
+    private fun onBtnClickAuthor(view: View) {
+        delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
+
     @Event(R.id.oivBlog)
     private fun onBtnClickBlog(view: View) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sollyu.com")))
@@ -45,12 +61,23 @@ class ActivitySettings : ActivityBase() {
 
     @Event(R.id.oivEMail)
     private fun onBtnClickEMail(view: View) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("mailto:king.sollyu@gmail.com")))
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.putExtra(Intent.EXTRA_EMAIL, "king.sollyu@gmail.com")
+        intent.putExtra(Intent.EXTRA_SUBJECT, "AppEnv")
+
+        startActivity(Intent.createChooser(intent, "Send Email"))
     }
 
     @Event(R.id.oivGithub)
     private fun onBtnClickGithub(view: View) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kingsollyu/AppEnv")))
+    }
+
+    @Event(R.id.oiwShowSystemApp)
+    private fun onBtnClickShowSystemApp(view: View) {
+        Settings.Instance.isShowSystemApp = oiwShowSystemApp.isChecked
+        EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_LIST_CLEAR))
+        EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
     }
 
     @Event(R.id.oivLicence)
@@ -64,9 +91,7 @@ class ActivitySettings : ActivityBase() {
         notices.addNotice(Notice("xLog", "https://github.com/elvishew/xLog", "Copyright 2016 Elvis Hew", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("fastjson", "https://github.com/alibaba/fastjson", "Copyright 1999-2016 Alibaba Group Holding Ltd.", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("FloatingActionButton", "https://github.com/Clans/FloatingActionButton", "Copyright 2015 Dmytro Tarianyk", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("BottomSheetBuilder", "https://github.com/rubensousa/BottomSheetBuilder", "Copyright 2016 Rúben Sousa", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("EventBus", "https://github.com/greenrobot/EventBus", "Copyright (C) 2012-2017 Markus Junginger, greenrobot (http://greenrobot.org)", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("hutool", "https://github.com/looly/hutool", "Apache License", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("LicensesDialog", "https://github.com/PSDev/LicensesDialog", "Copyright 2013-2017 Philip Schiffer", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("material-dialogs", "https://github.com/afollestad/material-dialogs", "Copyright (c) 2014-2016 Aidan Michael Follestad", MITLicense()))
 

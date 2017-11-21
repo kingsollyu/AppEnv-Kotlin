@@ -27,6 +27,7 @@ import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.R.id.drawer_layout
 import com.sollyu.android.appenv.R.id.swipeRefreshLayout
 import com.sollyu.android.appenv.commons.Application
+import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample
 import com.sollyu.android.libsuperuser.Shell
 import com.sollyu.android.option.item.OptionItemView
@@ -103,8 +104,9 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         EventBus.getDefault().unregister(this)
     }
 
-
-
+    /**
+     *
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.activity_main, menu)
@@ -147,10 +149,21 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onRefresh(eventSample: EventSample) {
         when (eventSample.eventTYPE) {
+
+            /* 清空列表 */
+            EventSample.TYPE.MAIN_LIST_CLEAR -> {
+                recyclerViewAdapter.installAppList.clear()
+            }
+
+            /* 刷新列表 */
             EventSample.TYPE.MAIN_REFRESH -> {
                 swipeRefreshLayout.isRefreshing = false
                 if (recyclerViewAdapter.installAppList.size == 0) {
-                    val installPackage = Application.Instance.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+                    val isSystemApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) }
+                    val isSystemUpdateApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) }
+                    val isUserApp = fun(applicationInfo: ApplicationInfo): Boolean { return (!isSystemApp(applicationInfo) && !isSystemUpdateApp(applicationInfo)) }
+
+                    val installPackage = Application.Instance.packageManager.getInstalledApplications(PackageManager.GET_META_DATA).filter { Settings.Instance.isShowSystemApp || isUserApp(it) }
 
                     recyclerViewAdapter.installAppList.clear()
                     recyclerViewAdapter.installAppList.addAll(installPackage)
@@ -176,12 +189,18 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         @ViewInject(R.id.titleName)
         var tvTitleName: OptionItemView? = null
 
+        var appInfo: ApplicationInfo? = null
+
         init {
             x.view().inject(this, itemView)
             itemView?.setOnClickListener(this)
         }
 
+        /**
+         * 列表点击事件
+         */
         override fun onClick(v: View?) {
+            ActivityDetail.launch(activity, appInfo)
         }
     }
 
@@ -198,11 +217,12 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
             return RecyclerViewHolder(view)
         }
 
-
         override fun onBindViewHolder(holder: RecyclerViewHolder?, position: Int) {
             val applicationInfo = displayAppList[position]
             val appLabel = applicationInfo.loadLabel(packageManager)
             val appPackageName = applicationInfo.packageName
+
+            holder?.appInfo = applicationInfo
 
             if (appLabel == appPackageName)
                 holder?.tvTitleName?.setRightText(appPackageName)
@@ -211,7 +231,6 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
                 holder?.tvTitleName?.setLeftText(appLabel)
                 holder?.tvTitleName?.setRightText(appPackageName)
             }
-
         }
 
         override fun getItemCount(): Int {
@@ -221,7 +240,6 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         override fun getFilter(): Filter {
             return object : Filter() {
                 override fun performFiltering(constraint: CharSequence?): FilterResults {
-                    XLog.d(constraint)
                     val filterResults = FilterResults()
                     val displayAppListTmp = LinkedList<ApplicationInfo>()
 
@@ -241,9 +259,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
                     displayAppList.addAll(results?.values as LinkedList<ApplicationInfo>)
                     notifyDataSetChanged()
                 }
-
             }
         }
-
     }
 }

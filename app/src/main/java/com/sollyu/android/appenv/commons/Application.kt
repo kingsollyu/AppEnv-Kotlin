@@ -1,6 +1,7 @@
 package com.sollyu.android.appenv.commons
 
 import android.annotation.SuppressLint
+import android.support.v7.app.AppCompatDelegate
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
@@ -39,6 +40,9 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
 
         // 添加崩溃捕获
         Thread.setDefaultUncaughtExceptionHandler(this)
+
+        // 设置主题默认值
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {

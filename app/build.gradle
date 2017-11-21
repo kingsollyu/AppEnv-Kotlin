@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // https://github.com/apache/commons-io
-    implementation 'commons-io:commons-io:2.5'
+    implementation 'commons-io:commons-io:2.6'
 
     // xUtils3简介 - https://github.com/wyouflf/xUtils3
     implementation 'org.xutils:xutils:3.5.0'
@@ -70,18 +70,11 @@ dependencies {
     // https://github.com/PSDev/LicensesDialog
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.3'
 
-    // https://github.com/rubensousa/BottomSheetBuilder
-    implementation 'com.github.rubensousa:bottomsheetbuilder:1.6.0'
-
     // https://github.com/greenrobot/EventBus
     implementation 'org.greenrobot:eventbus:3.0.0'
 
     // https://github.com/afollestad/material-dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
-
-    // https://github.com/looly/hutool
-    implementation 'com.xiaoleilu:hutool-all:3.2.0'
-
 
 }
 

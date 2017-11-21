@@ -7,6 +7,6 @@ package com.sollyu.android.appenv.events
  */
 class EventSample(val eventTYPE: TYPE) {
     enum class TYPE {
-        MAIN_REFRESH
+        MAIN_REFRESH, MAIN_LIST_CLEAR
     }
 }

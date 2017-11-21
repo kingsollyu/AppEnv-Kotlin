@@ -26,7 +26,10 @@
         <activity
             android:name=".activitys.ActivitySettings"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activitys.ActivityDetail"></activity>
+        <activity
+            android:name=".activitys.ActivityDetail"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
     </application>
 
 </manifest>
