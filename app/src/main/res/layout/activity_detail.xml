@@ -75,7 +75,7 @@
                 android:id="@+id/oieSimLine1Number"
                 style="@style/OptionItem"
                 android:layout_marginTop="20dp"
-                app:leftText="手机号" />
+                app:leftText="Phone Number" />
 
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
 

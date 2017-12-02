@@ -4,20 +4,19 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import org.apache.commons.io.FileUtils
 import java.io.File
-import java.nio.charset.Charset
 
 /**
  * 作者：sollyu
  * 时间：2017/11/21
  * 说明：
  */
-class Settings {
+class SettingsXposed {
     companion object {
-        val Instance = Settings()
+        val Instance = SettingsXposed()
     }
 
-    private val defaultConfigFile: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.setting.json") }
-    private var jsonObject: JSONObject = JSONObject()
+    private val defaultConfigFile: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json") }
+    private var jsonObject = JSONObject()
 
     init {
         reload()
@@ -51,10 +50,12 @@ class Settings {
         save()
     }
 
-    /**
-     * 是否显示系统程序
-     */
-    var isShowSystemApp: Boolean
-        get() = jsonObject.getBooleanValue("isShowSystemApp")
-        set(value) = jsonObject.put("isShowSystemApp", value).let { save() }
+    fun get(packageName: String): JSONObject? {
+        return jsonObject.getJSONObject(packageName)
+    }
+
+    fun set(packageName: String, jsonObject: JSONObject) {
+        this.jsonObject.put(packageName, jsonObject)
+        this.save()
+    }
 }

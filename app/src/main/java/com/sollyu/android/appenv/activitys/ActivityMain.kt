@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -28,6 +29,7 @@ import com.sollyu.android.appenv.R.id.drawer_layout
 import com.sollyu.android.appenv.R.id.swipeRefreshLayout
 import com.sollyu.android.appenv.commons.Application
 import com.sollyu.android.appenv.commons.Settings
+import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.events.EventSample
 import com.sollyu.android.libsuperuser.Shell
 import com.sollyu.android.option.item.OptionItemView
@@ -135,6 +137,16 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_settings -> {
                 ActivitySettings.launch(activity)
             }
+            R.id.nav_donate -> {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://mobilecodec.alipay.com/client_download.htm?qrcode=apynckrfcfi5atfy45")))
+            }
+            R.id.nav_score -> {
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))
+                } catch (e: Exception) {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)))
+                }
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -158,16 +170,28 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
             /* 刷新列表 */
             EventSample.TYPE.MAIN_REFRESH -> {
                 swipeRefreshLayout.isRefreshing = false
-                if (recyclerViewAdapter.installAppList.size == 0) {
-                    val isSystemApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) }
-                    val isSystemUpdateApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) }
-                    val isUserApp = fun(applicationInfo: ApplicationInfo): Boolean { return (!isSystemApp(applicationInfo) && !isSystemUpdateApp(applicationInfo)) }
+                val isSystemApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) }
+                val isSystemUpdateApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) }
+                val isUserApp = fun(applicationInfo: ApplicationInfo): Boolean { return (!isSystemApp(applicationInfo) && !isSystemUpdateApp(applicationInfo)) }
 
-                    val installPackage = Application.Instance.packageManager.getInstalledApplications(PackageManager.GET_META_DATA).filter { Settings.Instance.isShowSystemApp || isUserApp(it) }
+                val installPackage = Application.Instance.packageManager.getInstalledApplications(PackageManager.GET_META_DATA).filter { Settings.Instance.isShowSystemApp || isUserApp(it) }
+                Collections.sort(installPackage, ApplicationInfo.DisplayNameComparator(packageManager))
 
-                    recyclerViewAdapter.installAppList.clear()
-                    recyclerViewAdapter.installAppList.addAll(installPackage)
+                val unConfigAppInfoList =  LinkedList<ApplicationInfo>()
+                val configAppInfoList =  LinkedList<ApplicationInfo>()
+
+                installPackage.forEach {
+                    val configJsonObject = SettingsXposed.Instance.get(it.packageName)
+                    if (configJsonObject != null && configJsonObject.isNotEmpty()) {
+                        configAppInfoList.add(it)
+                    } else {
+                        unConfigAppInfoList.add(it)
+                    }
                 }
+
+                recyclerViewAdapter.installAppList.clear()
+                recyclerViewAdapter.installAppList.addAll(configAppInfoList)
+                recyclerViewAdapter.installAppList.addAll(unConfigAppInfoList)
                 recyclerViewAdapter.filter.filter(null)
             }
         }
@@ -224,7 +248,13 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
 
             holder?.appInfo = applicationInfo
 
-            if (appLabel == appPackageName)
+            val configJsonObject = SettingsXposed.Instance.get(applicationInfo.packageName)
+            if (configJsonObject != null && configJsonObject.isNotEmpty()) {
+                holder?.tvTitleName?.rightTextView?.setTextColor(Color.parseColor("#009900"))
+                holder?.tvTitleName?.leftTextView?.setTextColor(Color.parseColor("#009900"))
+            }
+
+            if (appLabel == appPackageName){}
                 holder?.tvTitleName?.setRightText(appPackageName)
 
             if (appLabel != appPackageName){
