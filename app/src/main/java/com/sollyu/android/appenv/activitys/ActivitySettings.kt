@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
+import com.afollestad.materialdialogs.MaterialDialog
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample
@@ -95,4 +96,9 @@ class ActivitySettings : ActivityBase() {
         LicensesDialog.Builder(activity).setNotices(notices).build().showAppCompat()
     }
 
+    @Event(R.id.oivUpdateSoftVersion)
+    private fun onBtnClickUpdateSoftVersion(view: View) {
+        val d = MaterialDialog.Builder(activity).title(R.string.tip).content("check update...").progress(true, 0).show()
+
+    }
 }

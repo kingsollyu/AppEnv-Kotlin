@@ -55,6 +55,9 @@ dependencies {
     // FastJson https://github.com/alibaba/fastjson
     implementation 'com.alibaba:fastjson:1.1.56.android'
 
+    // https://github.com/square/okhttp
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
+
     // https://github.com/kingsollyu/NotProguard
     implementation 'com.github.kingsollyu:NotProguard:1.0.0'
 
