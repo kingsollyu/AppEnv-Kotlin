@@ -3,11 +3,8 @@ package com.sollyu.android.appenv.activitys
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
-import android.widget.Toast
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample

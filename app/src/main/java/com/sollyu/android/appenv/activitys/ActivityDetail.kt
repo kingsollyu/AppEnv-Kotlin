@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
@@ -121,6 +122,7 @@ class ActivityDetail : ActivityBase() {
         XLog.json(jsonObject.toJSONString())
         SettingsXposed.Instance.set(appInfo.packageName, jsonObject)
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
+        Snackbar.make(view, R.string.detail_finish_snackbar, Snackbar.LENGTH_LONG).setAction(R.string.finish) { activity.finish() }.show()
     }
 
 
