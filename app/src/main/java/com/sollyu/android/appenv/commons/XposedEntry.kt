@@ -22,11 +22,14 @@ import java.io.File
  */
 @NotProguard
 class XposedEntry : IXposedHookLoadPackage {
-    
+
+    val TAG = "Xposed"
+
     /**
      * 当应用启动时
      */
     override fun handleLoadPackage(loadPackageParam: XC_LoadPackage.LoadPackageParam) {
+
         val ignoreApplication = arrayListOf("android", "de.robv.android.xposed.installer")
         if (ignoreApplication.contains(loadPackageParam.packageName)) {
             return
@@ -69,7 +72,7 @@ class XposedEntry : IXposedHookLoadPackage {
                 if (xposedPackageJson.has("android.os.Build.VERSION.RELEASE")) {
                     XposedHelpers.setStaticObjectField(Build.VERSION::class.java, "RELEASE", xposedPackageJson.getString("android.os.Build.VERSION.RELEASE"))
                 }
-                XposedBridge.hookAllMethods(XposedHelpers.findClass("android.os.SystemProperties", loadPackageParam.classLoader), "native_get", object : XC_MethodHook() {
+                XposedBridge.hookAllMethods(XposedHelpers.findClass("android.os.SystemProperties", loadPackageParam.classLoader), "get", object : XC_MethodHook() {
                     override fun afterHookedMethod(methodHookParam: MethodHookParam) {
                         if (buildValueHashMap.containsKey(methodHookParam.args[0].toString())) {
                             methodHookParam.result = buildValueHashMap[methodHookParam.args[0].toString()]
@@ -119,6 +122,8 @@ class XposedEntry : IXposedHookLoadPackage {
                     XposedBridge.hookAllMethods(WifiInfo::class.java, "getMacAddress", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getMacAddress")))
                 }
             }
+        }else{
+            Log.d(TAG, String.format("[%20s]%s", "no config file", loadPackageParam.packageName))
         }
     }
 
