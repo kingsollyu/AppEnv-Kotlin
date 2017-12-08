@@ -5,13 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
-import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
-import com.elvishew.xlog.XLog
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
+import com.sollyu.android.appenv.bean.PhoneModel
+import com.sollyu.android.appenv.commons.Application
+import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample
 import com.squareup.okhttp.Callback
@@ -25,10 +25,14 @@ import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.include_toolbar.*
+import org.apache.commons.io.FileUtils
 import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
+import org.yaml.snakeyaml.Yaml
+import java.io.File
 import java.io.IOException
+import java.util.*
 
 @Suppress("unused")
 class ActivitySettings : ActivityBase() {
@@ -49,12 +53,12 @@ class ActivitySettings : ActivityBase() {
         supportActionBar?.setTitle(R.string.settings)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
     }
 
     override fun onInitData() {
         super.onInitData()
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
+        oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
     }
 
     @Event(R.id.oivAuthor)
@@ -101,6 +105,7 @@ class ActivitySettings : ActivityBase() {
         notices.addNotice(Notice("FloatingActionButton", "https://github.com/Clans/FloatingActionButton", "Copyright 2015 Dmytro Tarianyk", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("EventBus", "https://github.com/greenrobot/EventBus", "Copyright (C) 2012-2017 Markus Junginger, greenrobot (http://greenrobot.org)", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("LicensesDialog", "https://github.com/PSDev/LicensesDialog", "Copyright 2013-2017 Philip Schiffer", ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("snake-yaml", "https://github.com/bmoliveira/snake-yaml", "", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("material-dialogs", "https://github.com/afollestad/material-dialogs", "Copyright (c) 2014-2016 Aidan Michael Follestad", MITLicense()))
 
         LicensesDialog.Builder(activity).setNotices(notices).build().showAppCompat()
@@ -122,10 +127,29 @@ class ActivitySettings : ActivityBase() {
                     if (contentJson.getIntValue("last-version-code") > BuildConfig.VERSION_CODE) {
                         MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_has_update, contentJson.getString("last-version-name"), contentJson.getString("last-version-message")).positiveText(R.string.settings_has_update_positive).negativeText(android.R.string.cancel).onPositive { _, _ -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(contentJson.getString("last-version-url")))) }.show()
                     } else {
-                        MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_no_update).show()
+                        MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_no_update).positiveText(android.R.string.ok).show()
                     }
                 }
             }
         })
+    }
+
+    @Event(R.id.oivUpdatePhoneList)
+    private fun onBtnClickUpdatePhoneList(view: View) {
+
+//        val xiaomi = LinkedList<PhoneModel>()
+//        xiaomi.add(PhoneModel("Xiaomi", "mi 3", "小米3"))
+//        xiaomi.add(PhoneModel("Xiaomi", "mi 2", "小米2"))
+//        xiaomi.add(PhoneModel("Xiaomi", "mi 1", "小米1"))
+//
+//        Phones.Instance.versionCode = 1
+//        Phones.Instance.versionName = "1.0.0"
+//        Phones.Instance.phoneManufacturer.put("xiaomi", xiaomi)
+//
+//        FileUtils.writeStringToFile(File(Application.Instance.getExternalFilesDir(null), "appenv.phone.yml"), Yaml().dump(Phones.Instance), "UTF-8")
+
+        Phones.Instance = Yaml().loadAs(FileUtils.readFileToString(File(Application.Instance.getExternalFilesDir(null), "appenv.phone.yml"), "UTF-8"), Phones::class.java)
+        MaterialDialog.Builder(activity).content(Phones.Instance.phoneManufacturer["xiaomi"]?.get(0)?.manufacturer ?: "" ).show()
+
     }
 }

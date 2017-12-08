@@ -79,6 +79,9 @@ dependencies {
     // https://github.com/afollestad/material-dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
 
+    // https://github.com/bmoliveira/snake-yaml
+    implementation 'com.github.bmoliveira:snake-yaml:v1.18-android'
+
 }
 
 repositories {
