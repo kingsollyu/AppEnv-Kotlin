@@ -5,10 +5,19 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
+import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
+import com.elvishew.xlog.XLog
+import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample
+import com.squareup.okhttp.Callback
+import com.squareup.okhttp.OkHttpClient
+import com.squareup.okhttp.Request
+import com.squareup.okhttp.Response
 import de.psdev.licensesdialog.LicensesDialog
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
@@ -19,6 +28,7 @@ import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
+import java.io.IOException
 
 @Suppress("unused")
 class ActivitySettings : ActivityBase() {
@@ -98,7 +108,24 @@ class ActivitySettings : ActivityBase() {
 
     @Event(R.id.oivUpdateSoftVersion)
     private fun onBtnClickUpdateSoftVersion(view: View) {
-        val d = MaterialDialog.Builder(activity).title(R.string.tip).content("check update...").progress(true, 0).show()
+        val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_update_progress).progress(true, 0).cancelable(false).show()
+        OkHttpClient().newCall(Request.Builder().url(activity.getString(R.string.online_url_soft)).build()).enqueue(object : Callback{
+            override fun onFailure(request: Request, e: IOException) {
+                materialDialog.dismiss()
+                activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.error).content(e.message?:"null").show() }
+            }
 
+            override fun onResponse(response: Response) {
+                materialDialog.dismiss()
+                val contentJson = JSON.parseObject(response.body().string())
+                activity.runOnUiThread {
+                    if (contentJson.getIntValue("last-version-code") > BuildConfig.VERSION_CODE) {
+                        MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_has_update, contentJson.getString("last-version-name"), contentJson.getString("last-version-message")).positiveText(R.string.settings_has_update_positive).negativeText(android.R.string.cancel).onPositive { _, _ -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(contentJson.getString("last-version-url")))) }.show()
+                    } else {
+                        MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_no_update).show()
+                    }
+                }
+            }
+        })
     }
 }

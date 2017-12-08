@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AppEnv</string>
-    <string name="xposed_desc">这个可以伪装手机软件显示的手机型号</string>
+    <string name="xposed_desc">i\'m english is bad. so sorry.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -20,4 +20,17 @@
     <string name="search">Search</string>
     <string name="detail_finish_snackbar">Save Success</string>
     <string name="finish">Finish</string>
+    <string name="error">Error</string>
+    <string name="online_url_soft">https://rawgit.com/kingsollyu/AppEnv-Kotlin/develop/online/app.env.soft.json</string>
+    <string name="settings_no_update">The current version is the latest version</string>
+    <string name="settings_has_update">Last Version Name: %1$s\nLast Version Message: \n%2$s</string>
+    <string name="settings_has_update_positive">OPEN URL</string>
+    <string name="settings_update_progress">Check update…</string>
+    <string name="settings_blog">Blog</string>
+    <string name="settings_author">Author</string>
+    <string name="settings_email">E-Mail</string>
+    <string name="settings_github">Github</string>
+    <string name="settings_update_soft">Update Soft Version</string>
+    <string name="settings_update_phone">Update Phone List</string>
+    <string name="settings_show_system_app">Show System App</string>
 </resources>

@@ -38,14 +38,14 @@
                 android:id="@+id/oiwShowSystemApp"
                 style="@style/OptionItem"
                 android:layout_marginTop="20dp"
-                app:leftText="Show System App" />
+                app:leftText="@string/settings_show_system_app" />
 
 
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivUpdatePhoneList"
                 style="@style/OptionItem"
                 android:layout_marginTop="20dp"
-                app:leftText="Update Phone List"
+                app:leftText="@string/settings_update_phone"
                 app:rightText="3" />
 
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
@@ -53,7 +53,7 @@
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivUpdateSoftVersion"
                 style="@style/OptionItem"
-                app:leftText="Update Soft Version"
+                app:leftText="@string/settings_update_soft"
                 app:rightText="3.0.1" />
 
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
@@ -62,7 +62,7 @@
                 android:id="@+id/oivAuthor"
                 style="@style/OptionItem"
                 android:layout_marginTop="20dp"
-                app:leftText="Author"
+                app:leftText="@string/settings_author"
                 app:rightText="Sollyu" />
 
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
@@ -70,7 +70,7 @@
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivBlog"
                 style="@style/OptionItem"
-                app:leftText="Blog"
+                app:leftText="@string/settings_blog"
                 app:rightText="www.sollyu.com" />
 
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
@@ -78,7 +78,7 @@
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivEMail"
                 style="@style/OptionItem"
-                app:leftText="E-Mail"
+                app:leftText="@string/settings_email"
                 app:rightText="king.sollyu@gmail.com" />
 
 
@@ -87,7 +87,7 @@
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivGithub"
                 style="@style/OptionItem"
-                app:leftText="Github"
+                app:leftText="@string/settings_github"
                 app:rightText="github.com/kingsollyu/AppEnv" />
 
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />

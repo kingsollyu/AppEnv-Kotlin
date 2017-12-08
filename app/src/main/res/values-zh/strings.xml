@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">应用变量</string>
+    <string name="online_url_soft">https://gitee.com/sollyu/AppEnv-Kotlin/raw/develop/online/app.env.soft.json</string>
+    <string name="error">错误</string>
+    <string name="finish">完成</string>
+    <string name="detail_finish_snackbar">保存成功</string>
+    <string name="search">搜索</string>
+    <string name="about">关于</string>
+    <string name="score">评分</string>
+    <string name="donate">捐赠</string>
+    <string name="other">其他</string>
+    <string name="cloud">云端</string>
+    <string name="settings">设置</string>
+    <string name="refresh">刷新</string>
+    <string name="splash_xposed_not_work_content">Xposed貌似并没有工作\n请检查您的Xposed的状态</string>
+    <string name="splash_xposed_not_work_title">退出</string>
+    <string name="tip">提示</string>
+    <string name="action_settings">设置</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="xposed_desc">这个可以伪装手机软件显示的手机型号</string>
+    <string name="settings_no_update">当前是最新版本</string>
+    <string name="settings_has_update">最新版本：%1$s\n更新内容：\n%2$s</string>
+    <string name="settings_has_update_positive">下载</string>
+    <string name="settings_update_progress">检查更新……</string>
+    <string name="settings_blog">博客</string>
+    <string name="settings_author">作者</string>
+    <string name="settings_email">邮箱</string>
+    <string name="settings_github">源码</string>
+    <string name="settings_update_soft">更新软件版本</string>
+    <string name="settings_update_phone">更新机型版本</string>
+    <string name="settings_show_system_app">显示系统应用</string>
+</resources>
