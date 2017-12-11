@@ -79,9 +79,8 @@ dependencies {
     // https://github.com/afollestad/material-dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
 
-    // https://github.com/bmoliveira/snake-yaml
-    implementation 'com.github.bmoliveira:snake-yaml:v1.18-android'
-
+    // https://github.com/rubensousa/BottomSheetBuilder
+    implementation 'com.github.rubensousa:bottomsheetbuilder:1.6.0'
 }
 
 repositories {

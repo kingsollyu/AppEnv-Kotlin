@@ -3,17 +3,14 @@ package com.sollyu.android.appenv.activitys
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.Snackbar
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.PopupMenu
 import com.alibaba.fastjson.JSONObject
 import com.elvishew.xlog.XLog
+import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
 import com.sollyu.android.appenv.R
+import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.events.EventSample
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -96,27 +93,31 @@ class ActivityDetail : ActivityBase() {
 
     }
 
+    override fun onInitDone() {
+        super.onInitDone()
+        Phones.Reload()
+    }
 
     @Event(R.id.btnFinish)
     private fun onBtnClickFinish(view: View) {
         val jsonObject = JSONObject()
         jsonObject.put("android.os.Build.ro.product.manufacturer", oieBuildManufacturer.rightEditText.toString(), true)
-        jsonObject.put("android.os.Build.ro.product.model", oieBuildModel.rightEditText.toString(), true)
-        jsonObject.put("android.os.Build.ro.serialno", oieBuildSerial.rightEditText.toString(), true)
-        jsonObject.put("android.os.Build.VERSION.RELEASE", oieBuildVersionName.rightEditText.toString(), true)
+        jsonObject.put("android.os.Build.ro.product.model"       , oieBuildModel.rightEditText.toString()       , true)
+        jsonObject.put("android.os.Build.ro.serialno"            , oieBuildSerial.rightEditText.toString()      , true)
+        jsonObject.put("android.os.Build.VERSION.RELEASE"        , oieBuildVersionName.rightEditText.toString() , true)
 
         jsonObject.put("android.os.SystemProperties.android_id", oieAndroidId.rightEditText.toString(), true)
 
-        jsonObject.put("android.telephony.TelephonyManager.getLine1Number", oieSimLine1Number.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getDeviceId", oieSimGetDeviceId.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSubscriberId", oieSimSubscriberId.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimOperator", oieSimOperator.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getLine1Number"    , oieSimLine1Number.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getDeviceId"       , oieSimGetDeviceId.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getSubscriberId"   , oieSimSubscriberId.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimOperator"    , oieSimOperator.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", oieSimOperatorName.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", oieSimSerialNumber.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimState", oieSimStatus.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimState"       , oieSimStatus.rightEditText.toString(), true)
 
-        jsonObject.put("android.net.wifi.WifiInfo.getSSID", oieWifiName.rightEditText.toString(), true)
-        jsonObject.put("android.net.wifi.WifiInfo.getBSSID", oieWifiBssid.rightEditText.toString(), true)
+        jsonObject.put("android.net.wifi.WifiInfo.getSSID"      , oieWifiName.rightEditText.toString()      , true)
+        jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()     , true)
         jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString(), true)
 
         XLog.json(jsonObject.toJSONString())
@@ -125,17 +126,19 @@ class ActivityDetail : ActivityBase() {
         Snackbar.make(view, R.string.detail_finish_snackbar, Snackbar.LENGTH_LONG).setAction(R.string.finish) { activity.finish() }.show()
     }
 
-
     @Event(R.id.oieBuildManufacturer)
     private fun onItemClickBuildManufacturer(view: View) {
-        val bottomSheetDialog = BottomSheetDialog(activity)
-        val itemBottomSheetView = LayoutInflater.from(activity).inflate(R.layout.item_bottom_sheet, null)
-        val listView = itemBottomSheetView.findViewById<ListView>(R.id.lvBottomSheet)
-        val arrayAdapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, arrayListOf("Xiaomi", "dasdf"))
-        listView.adapter = arrayAdapter
 
-        bottomSheetDialog.setContentView(itemBottomSheetView)
-        bottomSheetDialog.show()
+        val menuPop = PopupMenu(activity, view)
+
+        Phones.Instance.phoneList.keys.forEach { menuPop.menu.add(it) }
+
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(menuPop.menu)
+                .createDialog()
+                .show()
     }
 
     private fun JSONObject.put(key: String, value: String, boolean: Boolean) {

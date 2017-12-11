@@ -10,7 +10,6 @@ import com.alibaba.fastjson.JSON
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.bean.PhoneModel
-import com.sollyu.android.appenv.commons.Application
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample
@@ -25,14 +24,10 @@ import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.include_toolbar.*
-import org.apache.commons.io.FileUtils
 import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
-import org.yaml.snakeyaml.Yaml
-import java.io.File
 import java.io.IOException
-import java.util.*
 
 @Suppress("unused")
 class ActivitySettings : ActivityBase() {
@@ -74,8 +69,8 @@ class ActivitySettings : ActivityBase() {
     @Event(R.id.oivEMail)
     private fun onBtnClickEMail(view: View) {
         val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL, "king.sollyu@gmail.com")
-        intent.putExtra(Intent.EXTRA_SUBJECT, "AppEnv")
+        intent.putExtra(Intent.EXTRA_EMAIL  , "king.sollyu@gmail.com")
+        intent.putExtra(Intent.EXTRA_SUBJECT, "AppEnv"               )
 
         startActivity(Intent.createChooser(intent, "Send Email"))
     }
@@ -95,18 +90,19 @@ class ActivitySettings : ActivityBase() {
     @Event(R.id.oivLicence)
     private fun onBtnClickLicence(view: View) {
         val notices = Notices()
-        notices.addNotice(Notice("NotProguard", "https://github.com/kingsollyu/NotProguard", "Copyright 2017 Sollyu", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("OptionItem", "https://github.com/kingsollyu/OptionItem", "Copyright 2017 Sollyu", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("LibSuperUser", "https://github.com/kingsollyu/LibSuperUser", "Copyright 2017 Sollyu", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("Apache Commons IO", "https://github.com/apache/commons-io", "Apache License", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("xUtils3", "https://github.com/wyouflf/xUtils3", "Copyright 2014-2015 wyouflf", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("xLog", "https://github.com/elvishew/xLog", "Copyright 2016 Elvis Hew", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("fastjson", "https://github.com/alibaba/fastjson", "Copyright 1999-2016 Alibaba Group Holding Ltd.", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("FloatingActionButton", "https://github.com/Clans/FloatingActionButton", "Copyright 2015 Dmytro Tarianyk", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("EventBus", "https://github.com/greenrobot/EventBus", "Copyright (C) 2012-2017 Markus Junginger, greenrobot (http://greenrobot.org)", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("LicensesDialog", "https://github.com/PSDev/LicensesDialog", "Copyright 2013-2017 Philip Schiffer", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("snake-yaml", "https://github.com/bmoliveira/snake-yaml", "", ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("material-dialogs", "https://github.com/afollestad/material-dialogs", "Copyright (c) 2014-2016 Aidan Michael Follestad", MITLicense()))
+        notices.addNotice(Notice("NotProguard"         , "https://github.com/kingsollyu/NotProguard"       , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("OptionItem"          , "https://github.com/kingsollyu/OptionItem"        , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("LibSuperUser"        , "https://github.com/kingsollyu/LibSuperUser"      , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("Apache Commons IO"   , "https://github.com/apache/commons-io"            , "Apache License"                                                             , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("BottomSheetBuilder"  , "https://github.com/rubensousa/BottomSheetBuilder", "Copyright 2016 Rúben Sousa"                                                 , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("xUtils3"             , "https://github.com/wyouflf/xUtils3"              , "Copyright 2014-2015 wyouflf"                                                , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("xLog"                , "https://github.com/elvishew/xLog"                , "Copyright 2016 Elvis Hew"                                                   , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("fastjson"            , "https://github.com/alibaba/fastjson"             , "Copyright 1999-2016 Alibaba Group Holding Ltd."                             , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("FloatingActionButton", "https://github.com/Clans/FloatingActionButton"   , "Copyright 2015 Dmytro Tarianyk"                                             , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("EventBus"            , "https://github.com/greenrobot/EventBus"          , "Copyright (C) 2012-2017 Markus Junginger greenrobot (http://greenrobot.org)", ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("LicensesDialog"      , "https://github.com/PSDev/LicensesDialog"         , "Copyright 2013-2017 Philip Schiffer"                                        , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("snake-yaml"          , "https://github.com/bmoliveira/snake-yaml"        , ""                                                                           , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("material-dialogs"    , "https://github.com/afollestad/material-dialogs"  , "Copyright (c) 2014-2016 Aidan Michael Follestad"                            , MITLicense())             )
 
         LicensesDialog.Builder(activity).setNotices(notices).build().showAppCompat()
     }
@@ -137,19 +133,19 @@ class ActivitySettings : ActivityBase() {
     @Event(R.id.oivUpdatePhoneList)
     private fun onBtnClickUpdatePhoneList(view: View) {
 
-//        val xiaomi = LinkedList<PhoneModel>()
-//        xiaomi.add(PhoneModel("Xiaomi", "mi 3", "小米3"))
-//        xiaomi.add(PhoneModel("Xiaomi", "mi 2", "小米2"))
-//        xiaomi.add(PhoneModel("Xiaomi", "mi 1", "小米1"))
-//
-//        Phones.Instance.versionCode = 1
-//        Phones.Instance.versionName = "1.0.0"
-//        Phones.Instance.phoneManufacturer.put("xiaomi", xiaomi)
-//
-//        FileUtils.writeStringToFile(File(Application.Instance.getExternalFilesDir(null), "appenv.phone.yml"), Yaml().dump(Phones.Instance), "UTF-8")
+        val xiaomi = ArrayList<PhoneModel>()
+        xiaomi.add(PhoneModel("Xiaomi", "mi 3", "小米3"))
+        xiaomi.add(PhoneModel("Xiaomi", "mi 2", "小米2"))
+        xiaomi.add(PhoneModel("Xiaomi", "mi 1", "小米1"))
 
-        Phones.Instance = Yaml().loadAs(FileUtils.readFileToString(File(Application.Instance.getExternalFilesDir(null), "appenv.phone.yml"), "UTF-8"), Phones::class.java)
-        MaterialDialog.Builder(activity).content(Phones.Instance.phoneManufacturer["xiaomi"]?.get(0)?.manufacturer ?: "" ).show()
+        Phones.Instance.versionCode = 1
+        Phones.Instance.versionName = "1.0.0"
+        Phones.Instance.phoneList.put("xiaomi", xiaomi)
+
+        Phones.Instance.save()
+
+//        Phones.Instance = Yaml().loadAs(FileUtils.readFileToString(File(Application.Instance.getExternalFilesDir(null), "appenv.phone.yml"), "UTF-8"), Phones::class.java)
+//        MaterialDialog.Builder(activity).content(Phones.Instance.phoneManufacturer["xiaomi"]?.get(0)?.manufacturer ?: "" ).show()
 
     }
 }
