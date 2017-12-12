@@ -58,4 +58,5 @@
     <string name="detail_solution_load_title">加载方案</string>
     <string name="detail_solution_delete_title">删除方案</string>
     <string name="detail_solution_delete_success">删除方案成功: %1$s</string>
+    <string name="online_url_phone" />
 </resources>

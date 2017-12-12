@@ -60,4 +60,5 @@
     <string name="detail_solution_load_title">Load Solution</string>
     <string name="detail_solution_delete_title">Delete Solution</string>
     <string name="detail_solution_delete_success">Delete Solution Success: %1$s</string>
+    <string name="online_url_phone" />
 </resources>

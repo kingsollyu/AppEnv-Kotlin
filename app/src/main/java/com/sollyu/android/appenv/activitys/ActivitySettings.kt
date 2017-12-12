@@ -32,6 +32,7 @@ import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.include_toolbar.*
+import org.apache.commons.io.FileUtils
 import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
@@ -129,7 +130,13 @@ class ActivitySettings : ActivityBase() {
                 val contentJson = JSON.parseObject(response.body().string())
                 activity.runOnUiThread {
                     if (contentJson.getIntValue("last-version-code") > BuildConfig.VERSION_CODE) {
-                        MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_has_update, contentJson.getString("last-version-name"), contentJson.getString("last-version-message")).positiveText(R.string.settings_has_update_positive).negativeText(android.R.string.cancel).onPositive { _, _ -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(contentJson.getString("last-version-url")))) }.show()
+                        MaterialDialog.Builder(activity)
+                                .title(R.string.tip)
+                                .content(R.string.settings_has_update, contentJson.getString("last-version-name"), contentJson.getString("last-version-message"))
+                                .positiveText(R.string.settings_has_update_positive)
+                                .negativeText(android.R.string.cancel)
+                                .onPositive { _, _ -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(contentJson.getString("last-version-url")))) }
+                                .show()
                     } else {
                         MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_no_update).positiveText(android.R.string.ok).show()
                     }
@@ -152,8 +159,30 @@ class ActivitySettings : ActivityBase() {
 
         Phones.Instance.save()
 
-//        Phones.Instance = Yaml().loadAs(FileUtils.readFileToString(File(Application.Instance.getExternalFilesDir(null), "appenv.phone.yml"), "UTF-8"), Phones::class.java)
-//        MaterialDialog.Builder(activity).content(Phones.Instance.phoneManufacturer["xiaomi"]?.get(0)?.manufacturer ?: "" ).show()
+        val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_update_progress).progress(true, 0).cancelable(false).show()
+        OkHttpClient().newCall(Request.Builder().url(activity.getString(R.string.online_url_phone)).build()).enqueue(object :Callback{
+            override fun onFailure(request: Request, e: IOException) {
+                materialDialog.dismiss()
+                activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.error).content(e.message?:"null").show() }
+            }
 
+            override fun onResponse(response: Response) {
+                materialDialog.dismiss()
+                val contentJson = JSON.parseObject(response.body().string())
+                activity.runOnUiThread {
+                    if (contentJson.getIntValue("VersionCode") > Phones.Instance.versionCode) {
+                        MaterialDialog.Builder(activity)
+                                .title(R.string.tip)
+                                .content(R.string.settings_has_update, contentJson.getString("VersionName"), contentJson.getString("VersionCont"))
+                                .positiveText(R.string.settings_has_update_positive)
+                                .negativeText(android.R.string.cancel)
+                                .onPositive { _, _ -> FileUtils.writeStringToFile(Phones.Instance.phoneFile, JSON.toJSONString(contentJson, true), "UTF-8").let { Phones.Reload() } }
+                                .show()
+                    } else {
+                        MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_no_update).positiveText(android.R.string.ok).show()
+                    }
+                }
+            }
+        })
     }
 }
