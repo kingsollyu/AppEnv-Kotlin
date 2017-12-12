@@ -11,28 +11,30 @@ package com.sollyu.android.appenv.activitys
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.os.Build
 import android.support.design.widget.Snackbar
 import android.telephony.TelephonyManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import com.afollestad.materialdialogs.MaterialDialog
 import com.alibaba.fastjson.JSONObject
 import com.elvishew.xlog.XLog
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
 import com.sollyu.android.appenv.R
-import com.sollyu.android.appenv.R.id.*
 import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Random
 import com.sollyu.android.appenv.commons.SettingsXposed
+import com.sollyu.android.appenv.commons.Solution
 import com.sollyu.android.appenv.events.EventSample
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_activity_detail.*
-import kotlinx.android.synthetic.main.content_activity_detail.view.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
+import java.util.*
 
 @Suppress("unused")
 class ActivityDetail : ActivityBase() {
@@ -81,6 +83,14 @@ class ActivityDetail : ActivityBase() {
         super.onInitDone()
         Phones.Reload()
 
+        val isSystemApp       = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) }
+        val isSystemUpdateApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) }
+        val isUserApp         = fun(applicationInfo: ApplicationInfo): Boolean { return (!isSystemApp(applicationInfo) && !isSystemUpdateApp(applicationInfo)) }
+
+        if (isSystemApp(appInfo)) {
+            Snackbar.make(fab, "⚠️您现在正在修改系统程序⚠️\n这可能会使您的手机无法正常开机。", Snackbar.LENGTH_INDEFINITE).show()
+        }
+
         when (appInfo.packageName) {
             "com.tencent.mobileqq" -> {
                 Snackbar.make(fab, "\uD83D\uDCF1手机QQ无法设置成iPhone在线，请谅解！", Snackbar.LENGTH_INDEFINITE).show();
@@ -109,33 +119,28 @@ class ActivityDetail : ActivityBase() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.activity_detail, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuDeleteConfig -> { this.onItemClickDeleteConfig()  }
+            R.id.menuSolutionSave -> { this.onItemClickSolutionSave()  }
+            R.id.menuSolutionLoad -> { this.onItemClickSolutionLoad()  }
+            R.id.menuSolutionDele -> { this.onItemClickSolutionDelete()}
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     /**
      *
      */
     @Event(R.id.menu_save_config)
     private fun onBtnClickFinish(view: View) {
-        val jsonObject = JSONObject()
-        jsonObject.put("android.os.Build.ro.product.manufacturer", oieBuildManufacturer.rightEditText.toString(), true)
-        jsonObject.put("android.os.Build.ro.product.model"       , oieBuildModel.rightEditText.toString()       , true)
-        jsonObject.put("android.os.Build.ro.serialno"            , oieBuildSerial.rightEditText.toString()      , true)
-        jsonObject.put("android.os.Build.VERSION.RELEASE"        , oieBuildVersionName.rightEditText.toString() , true)
-
-        jsonObject.put("android.os.SystemProperties.android_id", oieAndroidId.rightEditText.toString(), true)
-
-        jsonObject.put("android.telephony.TelephonyManager.getLine1Number"    , oieSimLine1Number.rightEditText.toString() , true)
-        jsonObject.put("android.telephony.TelephonyManager.getDeviceId"       , oieSimGetDeviceId.rightEditText.toString() , true)
-        jsonObject.put("android.telephony.TelephonyManager.getSubscriberId"   , oieSimSubscriberId.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimOperator"    , oieSimOperator.rightEditText.toString()    , true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", oieSimOperatorName.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", oieSimSerialNumber.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimState"       , oieSimStatus.rightEditText.toString()      , true)
-
-        jsonObject.put("android.net.wifi.WifiInfo.getSSID"      , oieWifiName.rightEditText.toString()      , true)
-        jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()     , true)
-        jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString(), true)
-
-        XLog.json(jsonObject.toJSONString())
-        SettingsXposed.Instance.set(appInfo.packageName, jsonObject)
+        SettingsXposed.Instance.set(appInfo.packageName, uiToJsonObject())
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
         Snackbar.make(view, R.string.detail_finish_snackbar, Snackbar.LENGTH_LONG).setAction(R.string.finish) { activity.finish() }.show()
     }
@@ -180,6 +185,32 @@ class ActivityDetail : ActivityBase() {
         if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getMacAddress") == true)
             oieWifiMacAddress.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getMacAddress")
 
+    }
+
+    fun uiToJsonObject(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put("android.os.Build.ro.product.manufacturer", oieBuildManufacturer.rightEditText.toString(), true)
+        jsonObject.put("android.os.Build.ro.product.model"       , oieBuildModel.rightEditText.toString()       , true)
+        jsonObject.put("android.os.Build.ro.serialno"            , oieBuildSerial.rightEditText.toString()      , true)
+        jsonObject.put("android.os.Build.VERSION.RELEASE"        , oieBuildVersionName.rightEditText.toString() , true)
+
+        jsonObject.put("android.os.SystemProperties.android_id", oieAndroidId.rightEditText.toString(), true)
+
+        jsonObject.put("android.telephony.TelephonyManager.getLine1Number"    , oieSimLine1Number.rightEditText.toString() , true)
+        jsonObject.put("android.telephony.TelephonyManager.getDeviceId"       , oieSimGetDeviceId.rightEditText.toString() , true)
+        jsonObject.put("android.telephony.TelephonyManager.getSubscriberId"   , oieSimSubscriberId.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimOperator"    , oieSimOperator.rightEditText.toString()    , true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", oieSimOperatorName.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", oieSimSerialNumber.rightEditText.toString(), true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimState"       , oieSimStatus.rightEditText.toString()      , true)
+
+        jsonObject.put("android.net.wifi.WifiInfo.getSSID"      , oieWifiName.rightEditText.toString()      , true)
+        jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()     , true)
+        jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString(), true)
+
+        XLog.json(jsonObject.toJSONString())
+
+        return jsonObject
     }
 
     /**
@@ -365,6 +396,50 @@ class ActivityDetail : ActivityBase() {
     @Event(R.id.menu_random_all)
     private fun onItemClickRandomAll(view: View) {
         this.jsonObjectToUi(Random.New().randomAll())
+    }
+
+    /**
+     *
+     */
+    private fun onItemClickDeleteConfig() {
+        SettingsXposed.Instance.remove(appInfo.packageName)
+        EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
+        activity.finish()
+    }
+
+    /**
+     *
+     */
+    private fun onItemClickSolutionSave() {
+        MaterialDialog.Builder(activity)
+                .title(R.string.detail_solution_save_title)
+                .input(R.string.detail_solution_save_hint, R.string.empty, false) { dialog, input ->
+                    Solution.Instance.set(input.toString(), uiToJsonObject())
+                    Snackbar.make(fab, activity.getString(R.string.detail_solution_save_success, input), Snackbar.LENGTH_LONG).show()
+                }
+                .show()
+    }
+
+    private fun onItemClickSolutionLoad() {
+        MaterialDialog.Builder(activity)
+                .title(R.string.detail_solution_load_title)
+                .items(Solution.Instance.jsonObject.keys)
+                .itemsCallback { _, _, _, text -> jsonObjectToUi(Solution.Instance.get(text.toString())) }
+                .show()
+    }
+
+    private fun onItemClickSolutionDelete() {
+        MaterialDialog.Builder(activity)
+                .title(R.string.detail_solution_delete_title)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .items(Solution.Instance.jsonObject.keys)
+                .itemsCallbackMultiChoice(null) { _, _, text ->
+                    text.forEach { Solution.Instance.remove(it.toString()) }
+                    Snackbar.make(fab, activity.getString(R.string.detail_solution_delete_success, Arrays.toString(text)), Snackbar.LENGTH_LONG).show()
+                    return@itemsCallbackMultiChoice true
+                }
+                .show()
     }
 
     private fun JSONObject.put(key: String, value: String, boolean: Boolean) {

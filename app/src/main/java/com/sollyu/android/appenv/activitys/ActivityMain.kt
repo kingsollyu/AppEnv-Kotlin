@@ -260,6 +260,9 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
             if (configJsonObject != null && configJsonObject.isNotEmpty()) {
                 holder?.tvTitleName?.rightTextView?.setTextColor(Color.parseColor("#009900"))
                 holder?.tvTitleName?.leftTextView?.setTextColor(Color.parseColor("#009900"))
+            }else {
+                holder?.tvTitleName?.rightTextView?.setTextColor(Color.parseColor("#CCCCCC"))
+                holder?.tvTitleName?.leftTextView ?.setTextColor(Color.parseColor("#CCCCCC"))
             }
 
             if (appLabel == appPackageName){}

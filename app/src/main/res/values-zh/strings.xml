@@ -45,4 +45,17 @@
     <string name="force_stop_app">强制停止</string>
     <string name="save_config">保存配置</string>
     <string name="random">随机</string>
+    <string name="delete_config">删除配置</string>
+    <string name="remote_random">远程随机</string>
+    <string name="solution">方案</string>
+    <string name="save_solution">保存方案</string>
+    <string name="load_solution">加载方案</string>
+    <string name="delete_solution">删除方案</string>
+    <string name="detail_solution_save_success">方案 %1$s 保存成功</string>
+    <string name="detail_solution_save_title">保存方案</string>
+    <string name="detail_solution_save_hint">输入方案的名称</string>
+    <string name="empty" />
+    <string name="detail_solution_load_title">加载方案</string>
+    <string name="detail_solution_delete_title">删除方案</string>
+    <string name="detail_solution_delete_success">删除方案成功: %1$s</string>
 </resources>

@@ -15,16 +15,17 @@ import java.io.File
 
 /**
  * 作者：sollyu
- * 时间：2017/11/21
+ * 时间：2017/12/12
  * 说明：
  */
-class SettingsXposed {
+class Solution {
     companion object {
-        val Instance = SettingsXposed()
+        val Instance = Solution()
     }
 
-    private val defaultConfigFile: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json") }
-    private var jsonObject = JSONObject()
+    private val defaultConfigFile: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.solution.json") }
+
+    var jsonObject = JSONObject()
 
     init {
         reload()
@@ -66,4 +67,7 @@ class SettingsXposed {
         this.jsonObject.put(packageName, jsonObject)
         this.save()
     }
+
+
+
 }

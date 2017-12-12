@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activitys.ActivityDetail">
+    <group>
+        <item android:title="@string/delete_config" android:id="@+id/menuDeleteConfig"  />
+        <item android:title="@string/remote_random" android:id="@+id/menuRemoteRandom"  />
+    </group>
+    <item android:title="@string/solution" android:icon="@drawable/ic_menu">
+        <menu>
+            <item android:title="@string/save_solution"   android:id="@+id/menuSolutionSave" />
+            <item android:title="@string/load_solution"   android:id="@+id/menuSolutionLoad" />
+            <item android:title="@string/delete_solution" android:id="@+id/menuSolutionDele" />
+        </menu>
+    </item>
+</menu>
