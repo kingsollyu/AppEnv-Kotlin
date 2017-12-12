@@ -9,7 +9,8 @@
 package com.sollyu.android.appenv.commons
 
 import android.os.Build
-import com.sollyu.android.appenv.R.string.random
+import android.telephony.TelephonyManager
+import com.alibaba.fastjson.JSONObject
 import com.sollyu.android.appenv.commons.libs.IMEIGen
 import com.sollyu.android.appenv.commons.libs.RandomMac
 import org.apache.commons.lang3.RandomUtils
@@ -71,7 +72,8 @@ class Random {
         }
     }
 
-    private val simType = SIM_TYPE.values()[RandomUtils.nextInt(0, SIM_TYPE.values().size - 1)]
+    private val simType = SIM_TYPE.values()[RandomUtils.nextInt(0, SIM_TYPE.values().size)]
+    private val androidVersion = ANDROID_VERSION.values()[RandomUtils.nextInt(0, ANDROID_VERSION.values().size)]
 
     init {
 
@@ -82,6 +84,10 @@ class Random {
      */
     fun buildSerial(): String {
         return RandomStringGenerator.Builder().withinRange('0'.toInt(), 'Z'.toInt()).filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build().generate(RandomUtils.nextInt(6, 8))
+    }
+
+    fun buildVersion(): String {
+        return androidVersion.versionName
     }
 
     /**
@@ -101,7 +107,7 @@ class Random {
         val isUserArea = RandomUtils.nextInt(0, 100) < 30
         if (isUserArea) line1Number += "+86"
 
-        return line1Number + telFirst[RandomUtils.nextInt(0, telFirst.size - 1)] + RandomStringGenerator.Builder().withinRange('0'.toInt(), '9'.toInt()).filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build().generate(8)
+        return line1Number + telFirst[RandomUtils.nextInt(0, telFirst.size)] + RandomStringGenerator.Builder().withinRange('0'.toInt(), '9'.toInt()).filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build().generate(8)
     }
 
     /**
@@ -122,8 +128,16 @@ class Random {
     /**
      *
      */
-    fun simOperator():String {
-        return "46000"
+    fun simOperator(simType: SIM_TYPE):String {
+        return simType.simCode
+    }
+
+    fun simOperatorName(simType: SIM_TYPE): String {
+        return simType.label
+    }
+
+    fun simSimState(simType: SIM_TYPE): String {
+        return TelephonyManager.SIM_STATE_READY.toString()
     }
 
     fun simSerialNumber(simType: SIM_TYPE): String {
@@ -139,4 +153,32 @@ class Random {
         return RandomMac.getMacAddrWithFormat(":")
     }
 
+    fun randomAll(): JSONObject {
+        val buildManufacturerList   = Phones.Instance.phoneList.keys.toList()
+        val buildManufacturerRandom = buildManufacturerList[RandomUtils.nextInt(0, buildManufacturerList.size)]
+        val buildModelList          = Phones.Instance.phoneList[buildManufacturerRandom]!!
+        val buildPhoneRandom        = buildModelList[RandomUtils.nextInt(0, buildModelList.size)]
+        val randomJsonObject        = JSONObject()
+
+        randomJsonObject.put("android.os.Build.ro.product.manufacturer", buildPhoneRandom.manufacturer)
+        randomJsonObject.put("android.os.Build.ro.product.model", buildPhoneRandom.model)
+        randomJsonObject.put("android.os.Build.ro.serialno", this.buildSerial())
+        randomJsonObject.put("android.os.Build.VERSION.RELEASE", this.buildVersion())
+
+        randomJsonObject.put("android.os.SystemProperties.android_id", this.androidId())
+
+        randomJsonObject.put("android.telephony.TelephonyManager.getLine1Number", this.simLine1Number())
+        randomJsonObject.put("android.telephony.TelephonyManager.getDeviceId", this.simGetDeviceId())
+        randomJsonObject.put("android.telephony.TelephonyManager.getSubscriberId", this.simSubscriberId(simType))
+        randomJsonObject.put("android.telephony.TelephonyManager.getSimOperator", this.simOperator(simType))
+        randomJsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", this.simOperatorName(simType))
+        randomJsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", this.simSerialNumber(simType))
+        randomJsonObject.put("android.telephony.TelephonyManager.getSimState", this.simSimState(simType))
+
+        randomJsonObject.put("android.net.wifi.WifiInfo.getSSID", this.wifiName())
+        randomJsonObject.put("android.net.wifi.WifiInfo.getBSSID", this.wifiMacAddress())
+        randomJsonObject.put("android.net.wifi.WifiInfo.getMacAddress", this.wifiMacAddress())
+
+        return randomJsonObject
+    }
 }

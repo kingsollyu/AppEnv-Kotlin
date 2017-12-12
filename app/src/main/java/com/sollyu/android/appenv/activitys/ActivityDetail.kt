@@ -74,46 +74,7 @@ class ActivityDetail : ActivityBase() {
     override fun onInitData() {
         super.onInitData()
 
-        val jsonObject = SettingsXposed.Instance.get(appInfo.packageName)
-
-        //
-        if (jsonObject?.containsKey("android.os.Build.ro.product.manufacturer") == true)
-            oieBuildManufacturer.rightEditText = jsonObject.getString("android.os.Build.ro.product.manufacturer")
-        if (jsonObject?.containsKey("android.os.Build.ro.product.model") == true)
-            oieBuildModel.rightEditText = jsonObject.getString("android.os.Build.ro.product.model")
-        if (jsonObject?.containsKey("android.os.Build.ro.serialno") == true)
-            oieBuildSerial.rightEditText = jsonObject.getString("android.os.Build.ro.serialno")
-        if (jsonObject?.containsKey("android.os.Build.VERSION.RELEASE") == true)
-            oieBuildVersionName.rightEditText = jsonObject.getString("android.os.Build.VERSION.RELEASE")
-
-        //
-        if (jsonObject?.containsKey("android.os.SystemProperties.android_id") == true)
-            oieAndroidId.rightEditText = jsonObject.getString("android.os.SystemProperties.android_id")
-
-        //
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getLine1Number") == true)
-            oieSimLine1Number.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getLine1Number")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getDeviceId") == true)
-            oieSimGetDeviceId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getDeviceId")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSubscriberId") == true)
-            oieSimSubscriberId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSubscriberId")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperator") == true)
-            oieSimOperator.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperator")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperatorName") == true)
-            oieSimOperatorName.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperatorName")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimSerialNumber") == true)
-            oieSimSerialNumber.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimSerialNumber")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimState") == true)
-            oieSimStatus.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimState")
-
-        //
-        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getSSID") == true)
-            oieWifiName.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getSSID")
-        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getBSSID") == true)
-            oieWifiBssid.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getBSSID")
-        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getMacAddress") == true)
-            oieWifiMacAddress.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getMacAddress")
-
+        this.jsonObjectToUi(SettingsXposed.Instance.get(appInfo.packageName))
     }
 
     override fun onInitDone() {
@@ -177,6 +138,48 @@ class ActivityDetail : ActivityBase() {
         SettingsXposed.Instance.set(appInfo.packageName, jsonObject)
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
         Snackbar.make(view, R.string.detail_finish_snackbar, Snackbar.LENGTH_LONG).setAction(R.string.finish) { activity.finish() }.show()
+    }
+
+    private fun jsonObjectToUi(jsonObject: JSONObject?) {
+
+        //
+        if (jsonObject?.containsKey("android.os.Build.ro.product.manufacturer") == true)
+            oieBuildManufacturer.rightEditText = jsonObject.getString("android.os.Build.ro.product.manufacturer")
+        if (jsonObject?.containsKey("android.os.Build.ro.product.model") == true)
+            oieBuildModel.rightEditText = jsonObject.getString("android.os.Build.ro.product.model")
+        if (jsonObject?.containsKey("android.os.Build.ro.serialno") == true)
+            oieBuildSerial.rightEditText = jsonObject.getString("android.os.Build.ro.serialno")
+        if (jsonObject?.containsKey("android.os.Build.VERSION.RELEASE") == true)
+            oieBuildVersionName.rightEditText = jsonObject.getString("android.os.Build.VERSION.RELEASE")
+
+        //
+        if (jsonObject?.containsKey("android.os.SystemProperties.android_id") == true)
+            oieAndroidId.rightEditText = jsonObject.getString("android.os.SystemProperties.android_id")
+
+        //
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getLine1Number") == true)
+            oieSimLine1Number.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getLine1Number")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getDeviceId") == true)
+            oieSimGetDeviceId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getDeviceId")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSubscriberId") == true)
+            oieSimSubscriberId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSubscriberId")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperator") == true)
+            oieSimOperator.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperator")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperatorName") == true)
+            oieSimOperatorName.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperatorName")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimSerialNumber") == true)
+            oieSimSerialNumber.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimSerialNumber")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimState") == true)
+            oieSimStatus.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimState")
+
+        //
+        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getSSID") == true)
+            oieWifiName.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getSSID")
+        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getBSSID") == true)
+            oieWifiBssid.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getBSSID")
+        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getMacAddress") == true)
+            oieWifiMacAddress.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getMacAddress")
+
     }
 
     /**
@@ -359,6 +362,10 @@ class ActivityDetail : ActivityBase() {
                 .show()
     }
 
+    @Event(R.id.menu_random_all)
+    private fun onItemClickRandomAll(view: View) {
+        this.jsonObjectToUi(Random.New().randomAll())
+    }
 
     private fun JSONObject.put(key: String, value: String, boolean: Boolean) {
         if (value.isEmpty() && boolean)
