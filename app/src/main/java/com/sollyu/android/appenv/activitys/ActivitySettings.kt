@@ -65,7 +65,7 @@ class ActivitySettings : ActivityBase() {
     }
 
     @Event(R.id.oivAuthor)
-    private fun onBtnClickAuthor(view: View) {
+    private fun onBtnClickAuthor(@Suppress("UNUSED_PARAMETER") view: View) {
         delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 

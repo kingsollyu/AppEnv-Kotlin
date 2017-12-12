@@ -46,4 +46,18 @@
     <string name="wipe_data">Wipe Data</string>
     <string name="force_stop_app">Stop App</string>
     <string name="save_config">Save Config</string>
+    <string name="random">Random</string>
+    <string name="delete_config">Delete Config</string>
+    <string name="remote_random">Remote Random</string>
+    <string name="solution">Solution</string>
+    <string name="save_solution">Save Solution</string>
+    <string name="load_solution">Load Solution</string>
+    <string name="delete_solution">Delete Solution</string>
+    <string name="detail_solution_save_success">Solution $1%s Save Success</string>
+    <string name="detail_solution_save_title">Save Solution</string>
+    <string name="detail_solution_save_hint">Input solution name</string>
+    <string name="empty" />
+    <string name="detail_solution_load_title">Load Solution</string>
+    <string name="detail_solution_delete_title">Delete Solution</string>
+    <string name="detail_solution_delete_success">Delete Solution Success: %1$s</string>
 </resources>
