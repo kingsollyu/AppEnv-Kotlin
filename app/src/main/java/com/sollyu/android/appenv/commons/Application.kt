@@ -25,11 +25,12 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
             private set
     }
 
+    init {
+        Instance = this
+    }
 
     override fun onCreate() {
         super.onCreate()
-
-        Instance = this
 
         // 初始化日志
         val logConfiguration = LogConfiguration.Builder().tag("Xposed").logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.WARN).build()
@@ -42,7 +43,7 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this)
 
         // 设置主题默认值
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {
