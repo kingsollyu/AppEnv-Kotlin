@@ -22,6 +22,7 @@ import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.events.EventSample
+import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_activity_detail.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
@@ -108,25 +109,25 @@ class ActivityDetail : ActivityBase() {
 
         when (appInfo.packageName) {
             "com.tencent.mobileqq" -> {
-                Snackbar.make(btnFinish, "\uD83D\uDCF1手机QQ无法设置成iPhone在线，请谅解！", Snackbar.LENGTH_INDEFINITE).show();
+                Snackbar.make(fab, "\uD83D\uDCF1手机QQ无法设置成iPhone在线，请谅解！", Snackbar.LENGTH_INDEFINITE).show();
             }
             "com.sankuai.meituan" -> {
-                Snackbar.make(btnFinish, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
             }
             "me.ele" -> {
-                Snackbar.make(btnFinish, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.tencent.mm" -> {
-                Snackbar.make(btnFinish, "⚠️使用本软件用来微信养号，更容易被封！", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⚠️使用本软件用来微信养号，更容易被封！", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.qzone" -> {
-                Snackbar.make(btnFinish, "⚠如果您将机型乱写，QQ空间会把您的机型变成小写", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⚠如果您将机型乱写，QQ空间会把您的机型变成小写", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.sina.weibo" -> {
-                Snackbar.make(btnFinish, "⚠微博显示的继续有点少，有时候修改无效可能是微博没有收录这个机型", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⚠微博显示的继续有点少，有时候修改无效可能是微博没有收录这个机型", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.tencent.tmgp.sgame" -> {
-                Snackbar.make(btnFinish, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，希众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
+                Snackbar.make(fab, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，希众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
                     oieBuildManufacturer.rightEditText = "Xiaomi"
                     oieBuildModel.rightEditText = "MIX"
                 }.show()
@@ -134,7 +135,7 @@ class ActivityDetail : ActivityBase() {
         }
     }
 
-    @Event(R.id.btnFinish)
+    @Event(R.id.menu_save_config)
     private fun onBtnClickFinish(view: View) {
         val jsonObject = JSONObject()
         jsonObject.put("android.os.Build.ro.product.manufacturer", oieBuildManufacturer.rightEditText.toString(), true)
@@ -200,6 +201,7 @@ class ActivityDetail : ActivityBase() {
                 .createDialog()
                 .show()
     }
+
 
     private fun JSONObject.put(key: String, value: String, boolean: Boolean) {
         if (value.isEmpty() && boolean)

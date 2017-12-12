@@ -20,7 +20,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="128dp">
 
         <!--Build系列-->
         <com.sollyu.android.option.item.OptionItemEdit
@@ -128,13 +129,5 @@
             style="@style/OptionItem"
             app:leftText="Wifi Mac Address" />
 
-        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnFinish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="完成" />
     </LinearLayout>
 </ScrollView>
