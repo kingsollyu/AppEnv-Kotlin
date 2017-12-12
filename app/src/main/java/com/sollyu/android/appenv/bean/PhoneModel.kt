@@ -1,5 +1,6 @@
 package com.sollyu.android.appenv.bean
 
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.annotation.JSONField
 
 /**
@@ -25,4 +26,9 @@ class PhoneModel {
 
     @JSONField(name = "phoneName")
     var name: String? = null
+
+    @JSONField(serialize = false)
+    override fun toString(): String {
+        return JSON.toJSONString(this)
+    }
 }

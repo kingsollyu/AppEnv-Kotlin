@@ -19,9 +19,7 @@ class Phones {
 
         fun Reload() {
             if (Instance.phoneFile.exists()) {
-                val jsonObject = JSON.parseObject(FileUtils.readFileToString(Instance.phoneFile, "UTF-8"))
-                XLog.d(jsonObject)
-                Instance = JSON.toJavaObject(jsonObject, Phones::class.java)
+                Instance = JSON.toJavaObject(JSON.parseObject(FileUtils.readFileToString(Instance.phoneFile, "UTF-8")), Phones::class.java)
             }
         }
     }
