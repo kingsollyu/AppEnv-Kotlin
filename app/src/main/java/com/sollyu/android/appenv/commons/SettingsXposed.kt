@@ -23,8 +23,8 @@ class SettingsXposed {
         val Instance = SettingsXposed()
     }
 
-    private val defaultConfigFile: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json") }
-    private var jsonObject = JSONObject()
+    val file: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json") }
+    var jsonObject = JSONObject()
 
     init {
         reload()
@@ -36,8 +36,8 @@ class SettingsXposed {
     @Synchronized
     fun reload() {
         var jsonObjectTmp = JSONObject()
-        if (defaultConfigFile.exists()) {
-            jsonObjectTmp = JSON.parseObject(FileUtils.readFileToString(defaultConfigFile, "UTF-8"))
+        if (file.exists()) {
+            jsonObjectTmp = JSON.parseObject(FileUtils.readFileToString(file, "UTF-8"))
         }
         jsonObject = jsonObjectTmp
     }
@@ -47,7 +47,7 @@ class SettingsXposed {
      */
     @Synchronized
     fun save() {
-        FileUtils.write(defaultConfigFile, JSON.toJSONString(jsonObject, true), "UTF-8")
+        FileUtils.write(file, JSON.toJSONString(jsonObject, true), "UTF-8")
     }
 
     /**

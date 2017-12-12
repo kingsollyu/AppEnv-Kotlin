@@ -12,7 +12,6 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import org.apache.commons.io.FileUtils
 import java.io.File
-import java.nio.charset.Charset
 
 /**
  * 作者：sollyu
@@ -24,8 +23,8 @@ class Settings {
         val Instance = Settings()
     }
 
-    private val defaultConfigFile: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.setting.json") }
-    private var jsonObject: JSONObject = JSONObject()
+    val file: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.setting.json") }
+    var jsonObject: JSONObject = JSONObject()
 
     init {
         reload()
@@ -37,8 +36,8 @@ class Settings {
     @Synchronized
     fun reload() {
         var jsonObjectTmp = JSONObject()
-        if (defaultConfigFile.exists()) {
-            jsonObjectTmp = JSON.parseObject(FileUtils.readFileToString(defaultConfigFile, "UTF-8"))
+        if (file.exists()) {
+            jsonObjectTmp = JSON.parseObject(FileUtils.readFileToString(file, "UTF-8"))
         }
         jsonObject = jsonObjectTmp
     }
@@ -48,7 +47,7 @@ class Settings {
      */
     @Synchronized
     fun save() {
-        FileUtils.write(defaultConfigFile, JSON.toJSONString(jsonObject, true), "UTF-8")
+        FileUtils.write(file, JSON.toJSONString(jsonObject, true), "UTF-8")
     }
 
     /**

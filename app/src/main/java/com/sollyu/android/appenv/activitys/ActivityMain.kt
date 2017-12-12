@@ -151,6 +151,9 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_cloud -> {
                 Snackbar.make(fab, "后台维护中……", Snackbar.LENGTH_LONG).show()
             }
+            R.id.nav_about -> {
+                ActivityAbout.launch(activity)
+            }
             R.id.nav_score -> {
                 try {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)))

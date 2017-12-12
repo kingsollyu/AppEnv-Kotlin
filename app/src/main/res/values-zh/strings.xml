@@ -77,5 +77,48 @@
     <string name="settings_issues">问题?建议？</string>
     <string name="detail_run_app">请从桌面启动程序</string>
     <string name="detail_run_app_back">桌面</string>
+    <string name="about_text">
+        <Data>
+            <![CDATA[
+                    "<h2>应用变量</h2>"
+                    "作者: king.sollyu<br>"
+                    "联系: QQ: 191067617<br>"
+                    "说明: 动态修改软件信息<br>"
+                    "依赖: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a><br>"
+                    "更新: 历史版本<a href="https://github.com/kingsollyu/AppEnv-Kotlin/releases">点击这里</a><br>"
+                    "视频: 软件教程<a href="http://www.bilibili.com/video/av6928436/">点击这里</a><br>"
+                    "微信: 公众号: 应用变量<br>"
+                    "备注: 本人承接类似软件定制开发(非诚勿扰)<br><br>"
 
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2017 Version %1$s<br><br>"
+
+                    "<h2>版本维护</h2>"
+                    "如果您是定做用户请尝试联系作者<br>"
+                    "如果非定做用户请前往交流群: <a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">73426544</a><br>"
+                    "因本人时间不是太充裕<br>"
+                    "非定做用户请在<a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">QQ群</a>或<a href="https://github.com/kingsollyu/AppEnv-Kotlin/issues">论坛</a>讨论, 添加作者<u>一律拒绝</u><br><br>"
+
+                    "<h2>特别说明</h2>"
+                    "请不要使用本软件做任何违法事情， 包括刷单之类操作，如您使用本软件出现任何违法法律，一切后果由您自行承担和作者无关。<br>"
+                    "<br>"
+
+                    "<h2>文件说明</h2>"
+                    "软件设置：%2$s<br>"
+                    "机型数据：%3$s<br>"
+                    "框架数据：%4$s<br>"
+                    "<br>"
+
+                    "<h2>本版更新</h2>"
+                    "+ 使用Kotlin语言复写<br>"
+                    "~ 增加版本号 (ง •̀_•́)ง <br>"
+                    "<br>"
+
+                    "<br>"
+                    "<br>"
+                    "<br>"
+                    "<br>"
+            ]]>
+        </Data>
+    </string>
+    <string name="title_activity_about">关于</string>
 </resources>
