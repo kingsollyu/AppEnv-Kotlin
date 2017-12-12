@@ -9,8 +9,10 @@
 package com.sollyu.android.appenv.activitys
 
 import android.app.Activity
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.telephony.TelephonyManager
 import android.view.Menu
@@ -35,6 +37,11 @@ import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
 import java.util.*
+import android.support.v4.content.ContextCompat.startActivity
+import android.os.Build
+import android.provider.Settings
+import com.sollyu.android.appenv.R.id.fab
+
 
 @Suppress("unused")
 class ActivityDetail : ActivityBase() {
@@ -396,6 +403,27 @@ class ActivityDetail : ActivityBase() {
     @Event(R.id.menu_random_all)
     private fun onItemClickRandomAll(view: View) {
         this.jsonObjectToUi(Random.New().randomAll())
+    }
+
+    @Event(R.id.menu_run_app)
+    private fun onItemClickRunApp(view: View) {
+        Snackbar.make(view, R.string.detail_run_app, Snackbar.LENGTH_LONG)
+                .setAction(R.string.detail_run_app_back) {
+                    val home = Intent(Intent.ACTION_MAIN)
+                    home.addCategory(Intent.CATEGORY_HOME)
+                    startActivity(home)
+                }
+                .show()
+    }
+
+    @Event(R.id.menu_force_stop, R.id.menu_clear_app)
+    private fun onItemClickShowApp(view: View) {
+        val intent = Intent()
+
+        intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        intent.data = Uri.parse("package:" + appInfo.packageName)
+
+        activity.startActivity(intent)
     }
 
     /**

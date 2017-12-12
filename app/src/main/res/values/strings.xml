@@ -30,6 +30,7 @@
     <string name="finish">Finish</string>
     <string name="error">Error</string>
     <string name="online_url_soft">https://rawgit.com/kingsollyu/AppEnv-Kotlin/develop/online/app.env.soft.json</string>
+    <string name="online_url_phone">https://rawgit.com/kingsollyu/AppEnv-Kotlin/develop/online/app.env.phone.json</string>
     <string name="settings_no_update">The current version is the latest version</string>
     <string name="settings_has_update">Last Version Name: %1$s\nLast Version Message: \n%2$s</string>
     <string name="settings_has_update_positive">OPEN URL</string>
@@ -60,5 +61,22 @@
     <string name="detail_solution_load_title">Load Solution</string>
     <string name="detail_solution_delete_title">Delete Solution</string>
     <string name="detail_solution_delete_success">Delete Solution Success: %1$s</string>
-    <string name="online_url_phone" />
+    <string name="settings_update_phone_success">Phone database update success.</string>
+    <string name="detail_build_manufacturer">Build Manufacturer</string>
+    <string name="detail_build_model">Build Model</string>
+    <string name="detail_build_serial">Build Serial</string>
+    <string name="detail_build_version_name">Build Version Name</string>
+    <string name="detail_sim_phone_number">Phone Number</string>
+    <string name="detail_sim_device_id">Imei</string>
+    <string name="detail_sim_subscriber_id">Sim Subscriber Id</string>
+    <string name="detail_sim_operator">Sim Operator</string>
+    <string name="detail_sim_operator_name">Sim Operator Name</string>
+    <string name="detail_sim_serial_number">Sim Serial Number</string>
+    <string name="detail_sim__status">Sim Status</string>
+    <string name="detail_wifi_name">Wifi Name</string>
+    <string name="detail_wifi_bssid">Wifi BSSID</string>
+    <string name="detail_wifi_mac_address">Wifi Mac Address</string>
+    <string name="settings_issues">Issues</string>
+    <string name="detail_run_app">Pls form desktop run app</string>
+    <string name="detail_run_app_back">HOME</string>
 </resources>

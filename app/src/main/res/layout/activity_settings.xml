@@ -80,7 +80,15 @@
                 android:id="@+id/oivGithub"
                 style="@style/OptionItem"
                 app:leftText="@string/settings_github"
-                app:rightText="github.com/kingsollyu/AppEnv" />
+                app:rightText="github.com/kingsollyu/AppEnv-Kotlin" />
+
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivIssues"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_issues"
+                app:rightText="" />
 
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
 

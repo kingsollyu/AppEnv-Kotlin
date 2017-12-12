@@ -11,6 +11,7 @@ package com.sollyu.android.appenv.activitys
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
@@ -78,15 +79,19 @@ class ActivitySettings : ActivityBase() {
     @Event(R.id.oivEMail)
     private fun onBtnClickEMail(view: View) {
         val intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL  , "king.sollyu@gmail.com")
-        intent.putExtra(Intent.EXTRA_SUBJECT, "AppEnv"               )
-
+        intent.putExtra(Intent.EXTRA_EMAIL  , "king.sollyu@gmail.com"        )
+        intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name))
         startActivity(Intent.createChooser(intent, "Send Email"))
     }
 
     @Event(R.id.oivGithub)
     private fun onBtnClickGithub(view: View) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kingsollyu/AppEnv")))
+    }
+
+    @Event(R.id.oivIssues)
+    private fun onBtnClickIssues(view: View) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kingsollyu/AppEnv-Kotlin/issues")))
     }
 
     @Event(R.id.oiwShowSystemApp)
@@ -147,18 +152,6 @@ class ActivitySettings : ActivityBase() {
 
     @Event(R.id.oivUpdatePhoneList)
     private fun onBtnClickUpdatePhoneList(view: View) {
-
-        val xiaomi = ArrayList<PhoneModel>()
-        xiaomi.add(PhoneModel("Xiaomi", "mi 3", "小米3"))
-        xiaomi.add(PhoneModel("Xiaomi", "mi 2", "小米2"))
-        xiaomi.add(PhoneModel("Xiaomi", "mi 1", "小米1"))
-
-        Phones.Instance.versionCode = 1
-        Phones.Instance.versionName = "1.0.0"
-        Phones.Instance.phoneList.put("xiaomi", xiaomi)
-
-        Phones.Instance.save()
-
         val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_update_progress).progress(true, 0).cancelable(false).show()
         OkHttpClient().newCall(Request.Builder().url(activity.getString(R.string.online_url_phone)).build()).enqueue(object :Callback{
             override fun onFailure(request: Request, e: IOException) {
@@ -176,7 +169,11 @@ class ActivitySettings : ActivityBase() {
                                 .content(R.string.settings_has_update, contentJson.getString("VersionName"), contentJson.getString("VersionCont"))
                                 .positiveText(R.string.settings_has_update_positive)
                                 .negativeText(android.R.string.cancel)
-                                .onPositive { _, _ -> FileUtils.writeStringToFile(Phones.Instance.phoneFile, JSON.toJSONString(contentJson, true), "UTF-8").let { Phones.Reload() } }
+                                .onPositive { _, _ ->
+                                    FileUtils.writeStringToFile(Phones.Instance.phoneFile, JSON.toJSONString(contentJson, true), "UTF-8")
+                                    Snackbar.make(oivLicence, R.string.settings_update_phone_success, Snackbar.LENGTH_LONG).show()
+                                    Phones.Reload()
+                                }
                                 .show()
                     } else {
                         MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_no_update).positiveText(android.R.string.ok).show()

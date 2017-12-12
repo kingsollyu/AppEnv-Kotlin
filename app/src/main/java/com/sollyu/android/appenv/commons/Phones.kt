@@ -25,6 +25,7 @@ class Phones {
     companion object {
         var Instance = Phones()
 
+        @Synchronized
         fun Reload() {
             if (Instance.phoneFile.exists()) {
                 Instance = JSON.toJavaObject(JSON.parseObject(FileUtils.readFileToString(Instance.phoneFile, "UTF-8")), Phones::class.java)
@@ -48,5 +49,10 @@ class Phones {
     fun save() {
         if (!Instance.phoneFile.parentFile.exists() && !Instance.phoneFile.parentFile.mkdirs()) return
         FileUtils.writeStringToFile(Instance.phoneFile, JSON.toJSONString(Instance, true), "UTF-8")
+    }
+
+    @JSONField(serialize = false)
+    override fun toString(): String {
+        return JSON.toJSONString(this)
     }
 }

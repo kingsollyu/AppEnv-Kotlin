@@ -10,6 +10,7 @@
 <resources>
     <string name="app_name">应用变量</string>
     <string name="online_url_soft">https://gitee.com/sollyu/AppEnv-Kotlin/raw/develop/online/app.env.soft.json</string>
+    <string name="online_url_phone">https://gitee.com/sollyu/AppEnv-Kotlin/raw/develop/online/app.env.phone.json</string>
     <string name="error">错误</string>
     <string name="finish">完成</string>
     <string name="detail_finish_snackbar">保存成功</string>
@@ -58,5 +59,23 @@
     <string name="detail_solution_load_title">加载方案</string>
     <string name="detail_solution_delete_title">删除方案</string>
     <string name="detail_solution_delete_success">删除方案成功: %1$s</string>
-    <string name="online_url_phone" />
+    <string name="settings_update_phone_success">更新机型数据库成功</string>
+    <string name="detail_build_manufacturer">手机厂商</string>
+    <string name="detail_build_serial">手机序号</string>
+    <string name="detail_build_version_name">手机版本</string>
+    <string name="detail_sim_phone_number">手机号</string>
+    <string name="detail_sim_device_id">IMEI</string>
+    <string name="detail_sim_subscriber_id">IMSI</string>
+    <string name="detail_sim_operator">SIM代码</string>
+    <string name="detail_sim_operator_name">SIM名称</string>
+    <string name="detail_sim_serial_number">SIM序列号</string>
+    <string name="detail_sim__status">SIM状态</string>
+    <string name="detail_build_model">手机型号</string>
+    <string name="detail_wifi_name">无线网名称</string>
+    <string name="detail_wifi_bssid">无线网BSSID</string>
+    <string name="detail_wifi_mac_address">无线网Mac地址</string>
+    <string name="settings_issues">问题?建议？</string>
+    <string name="detail_run_app">请从桌面启动程序</string>
+    <string name="detail_run_app_back">桌面</string>
+
 </resources>
