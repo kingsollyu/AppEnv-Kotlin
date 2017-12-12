@@ -11,13 +11,16 @@ package com.sollyu.android.appenv.activitys
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.os.Build
 import android.support.design.widget.Snackbar
+import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.PopupMenu
 import com.alibaba.fastjson.JSONObject
 import com.elvishew.xlog.XLog
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
 import com.sollyu.android.appenv.R
+import com.sollyu.android.appenv.R.id.*
 import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Random
@@ -25,6 +28,7 @@ import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.events.EventSample
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_activity_detail.*
+import kotlinx.android.synthetic.main.content_activity_detail.view.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
@@ -42,6 +46,14 @@ class ActivityDetail : ActivityBase() {
         }
     }
 
+    /**
+     * 随机对象
+     */
+    val random = Random.New()
+
+    /**
+     * 上个界面传送过来的应用信息
+     */
     val appInfo: ApplicationInfo by lazy {
         val packageName = activity.intent.getStringExtra("packageName")
         return@lazy activity.packageManager.getApplicationInfo(packageName, 0)
@@ -136,6 +148,9 @@ class ActivityDetail : ActivityBase() {
         }
     }
 
+    /**
+     *
+     */
     @Event(R.id.menu_save_config)
     private fun onBtnClickFinish(view: View) {
         val jsonObject = JSONObject()
@@ -164,6 +179,9 @@ class ActivityDetail : ActivityBase() {
         Snackbar.make(view, R.string.detail_finish_snackbar, Snackbar.LENGTH_LONG).setAction(R.string.finish) { activity.finish() }.show()
     }
 
+    /**
+     *
+     */
     @Event(R.id.oieBuildManufacturer)
     private fun onItemClickBuildManufacturer(view: View) {
 
@@ -180,6 +198,9 @@ class ActivityDetail : ActivityBase() {
                 .show()
     }
 
+    /**
+     *
+     */
     @Event(R.id.oieBuildModel)
     private fun onItemClickBuild(view: View) {
         val menuPop = PopupMenu(activity, view)
@@ -203,18 +224,141 @@ class ActivityDetail : ActivityBase() {
                 .show()
     }
 
+    /**
+     *
+     */
     @Event(R.id.oieBuildSerial)
-    private fun onItemClickSerial(view: View) {
+    private fun onItemClickBuildSerial(view: View) {
         val menuPop = PopupMenu(activity, view)
         menuPop.menu.add(R.string.random)
         BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
                 .setMode(BottomSheetBuilder.MODE_LIST)
                 .expandOnStart(true)
                 .setMenu(menuPop.menu)
-                .setItemClickListener { oieBuildSerial.setRightEditHint(Random().buildSerial()) }
+                .setItemClickListener { oieBuildSerial.rightEditText = random.buildSerial() }
                 .createDialog()
                 .show()
     }
+
+    /**
+     *
+     */
+    @Event(R.id.oieBuildVersionName)
+    private fun onItemClickBuildVersionName(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        Random.ANDROID_VERSION.values().forEach { popupMenu.menu.add(it.versionName) }
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { item -> oieBuildVersionName.rightEditText = Random.ANDROID_VERSION.get(item.title.toString()).versionName }
+                .createDialog()
+                .show()
+    }
+
+    /**
+     *
+     */
+    @Event(R.id.oieAndroidId)
+    private fun onItemClickAndroidId(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        popupMenu.menu.add(R.string.random)
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieAndroidId.rightEditText = random.androidId() }
+                .createDialog()
+                .show()
+    }
+
+    /**
+     *
+     */
+    @Event(R.id.oieSimLine1Number)
+    private fun onItemClickSimLine1Number(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        popupMenu.menu.add(R.string.random)
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieSimLine1Number.rightEditText = random.simLine1Number() }
+                .createDialog()
+                .show()
+    }
+
+    @Event(R.id.oieSimGetDeviceId)
+    private fun onItemClickSimGetDeviceId(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        popupMenu.menu.add(R.string.random)
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieSimGetDeviceId.rightEditText = random.simGetDeviceId() }
+                .createDialog()
+                .show()
+    }
+
+    @Event(R.id.oieSimOperator, R.id.oieSimOperatorName, R.id.oieSimSubscriberId, R.id.oieSimSerialNumber)
+    private fun onItemClickSimOperator(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        Random.SIM_TYPE.values().forEach { popupMenu.menu.add(it.label) }
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { item ->
+                    oieSimSerialNumber.rightEditText = random.simSerialNumber(Random.SIM_TYPE.get(item.title.toString()))
+                    oieSimSubscriberId.rightEditText = random.simSubscriberId(Random.SIM_TYPE.get(item.title.toString()))
+                    oieSimOperator    .rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCode
+                    oieSimOperatorName.rightEditText = Random.SIM_TYPE.get(item.title.toString()).label
+                    oieSimStatus      .rightEditText = TelephonyManager.SIM_STATE_READY.toString()
+                }
+                .createDialog()
+                .show()
+    }
+
+    @Event(R.id.oieWifiName)
+    private fun onItemClickWifiName(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        popupMenu.menu.add(R.string.random)
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieWifiName.rightEditText = random.wifiName() }
+                .createDialog()
+                .show()
+    }
+
+    @Event(R.id.oieWifiMacAddress)
+    private fun onItemClickWifiMacAddress(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        popupMenu.menu.add(R.string.random)
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieWifiMacAddress.rightEditText = random.wifiMacAddress() }
+                .createDialog()
+                .show()
+    }
+
+    @Event(R.id.oieWifiBssid)
+    private fun onItemClickWifiBssid(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        popupMenu.menu.add(R.string.random)
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieWifiBssid.rightEditText = random.wifiMacAddress() }
+                .createDialog()
+                .show()
+    }
+
 
     private fun JSONObject.put(key: String, value: String, boolean: Boolean) {
         if (value.isEmpty() && boolean)
