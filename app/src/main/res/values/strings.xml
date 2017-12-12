@@ -33,4 +33,9 @@
     <string name="settings_update_soft">Update Soft Version</string>
     <string name="settings_update_phone">Update Phone List</string>
     <string name="settings_show_system_app">Show System App</string>
+    <string name="random_all">Random All</string>
+    <string name="run_app">Run App</string>
+    <string name="wipe_data">Wipe Data</string>
+    <string name="force_stop_app">Stop App</string>
+    <string name="save_config">Save Config</string>
 </resources>
