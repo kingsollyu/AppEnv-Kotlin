@@ -411,8 +411,12 @@ class ActivityDetail : ActivityBase() {
     @Event(R.id.menu_run_app)
     private fun onItemClickRunApp(view: View) {
         if (Settings.Instance.isUseRoot) {
-            val d = eu.chainfire.libsuperuser.Shell.SU.run("monkey -p " + appInfo.packageName.toLowerCase() + " -c android.intent.category.LAUNCHER 1")
-            Snackbar.make(fab, Arrays.toString(d.toTypedArray()), Snackbar.LENGTH_LONG).show()
+            val launchIntent = packageManager.getLaunchIntentForPackage(appInfo.packageName)
+            if (launchIntent != null) {
+                startActivity(launchIntent)//null pointer check in case package name was not found
+            } else {
+
+            }
         } else {
             Snackbar.make(view, R.string.detail_run_app, Snackbar.LENGTH_LONG)
                     .setAction(R.string.detail_run_app_back) {
@@ -426,8 +430,8 @@ class ActivityDetail : ActivityBase() {
     @Event(R.id.menu_force_stop)
     private fun onItemClickShowApp(view: View) {
         if (Settings.Instance.isUseRoot) {
-            val d = eu.chainfire.libsuperuser.Shell.SU.run("am force-stop " + appInfo.packageName.toLowerCase())
-            Snackbar.make(fab, Arrays.toString(d.toTypedArray()), Snackbar.LENGTH_LONG).show()
+            eu.chainfire.libsuperuser.Shell.SU.run("am force-stop " + appInfo.packageName.toLowerCase())
+            Snackbar.make(fab, "强制停止执行顺利执行，但具体结果取决于root是否完成", Snackbar.LENGTH_LONG).show()
         }else{
             val intent = Intent()
             intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -441,8 +445,8 @@ class ActivityDetail : ActivityBase() {
         if (Settings.Instance.isUseRoot) {
             if (wipeDataConfirm) {
                 wipeDataConfirm = false
-                val d = eu.chainfire.libsuperuser.Shell.SU.run("pm clear " + appInfo.packageName.toLowerCase())
-                Snackbar.make(fab, Arrays.toString(d.toTypedArray()), Snackbar.LENGTH_LONG).show()
+                eu.chainfire.libsuperuser.Shell.SU.run("pm clear " + appInfo.packageName.toLowerCase())
+                Snackbar.make(fab, "清空数据执行顺利执行，但具体结果取决于root是否完成", Snackbar.LENGTH_LONG).show()
             } else {
                 wipeDataConfirm = true
                 Timer().schedule(object : TimerTask() {

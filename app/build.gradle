@@ -76,8 +76,6 @@ dependencies {
     implementation 'com.github.kingsollyu:NotProguard:1.0.0'
     // https://github.com/kingsollyu/OptionItem
     implementation 'com.github.kingsollyu:OptionItem:1.2.2'
-    // https://github.com/kingsollyu/LibSuperUser
-    implementation 'com.github.kingsollyu:LibSuperUser:1.0.2'
     // https://github.com/Clans/FloatingActionButton
     implementation 'com.github.clans:fab:1.6.4'
     // https://github.com/PSDev/LicensesDialog
