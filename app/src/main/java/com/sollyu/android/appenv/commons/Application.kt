@@ -22,6 +22,8 @@ import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.not.proguard.NotProguard
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import org.apache.commons.text.CharacterPredicates
 import org.apache.commons.text.RandomStringGenerator
 
@@ -60,6 +62,12 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
 
         // 友盟统计
         UMConfigure.init(Instance, "558a1cb667e58e7649000228", BuildConfig.FLAVOR, MobclickAgent.EScenarioType.E_UM_NORMAL.toValue(), "")
+
+        // 初始化机型
+        if (!Phones.Instance.phoneFile.exists()) {
+            FileUtils.writeStringToFile(Phones.Instance.phoneFile, IOUtils.toString(Instance.assets.open("app.env.phone.json"), "UTF-8"), "UTF-8")
+        }
+        Phones.Reload()
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {
