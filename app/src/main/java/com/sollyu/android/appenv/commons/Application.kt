@@ -67,6 +67,7 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
         if (!Phones.Instance.phoneFile.exists()) {
             FileUtils.writeStringToFile(Phones.Instance.phoneFile, IOUtils.toString(Instance.assets.open("app.env.phone.json"), "UTF-8"), "UTF-8")
         }
+        Phones.Reload()
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {

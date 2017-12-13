@@ -124,4 +124,5 @@
     <string name="main_nav_header_desc">如需定制，可以联系作者</string>
     <string name="settings_show_desktop_icon">显示桌面图标</string>
     <string name="settings_show_desktop_icon_tip">您可以从XPOSED的模块设置中打开应用</string>
+    <string name="settings_thinks">特别鸣谢</string>
 </resources>
