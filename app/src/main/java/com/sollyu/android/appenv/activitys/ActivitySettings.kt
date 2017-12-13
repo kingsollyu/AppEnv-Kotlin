@@ -34,6 +34,7 @@ import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
 import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
+import eu.chainfire.libsuperuser.Shell
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.apache.commons.io.FileUtils
@@ -134,7 +135,12 @@ class ActivitySettings : ActivityBase() {
                     .positiveText(android.R.string.ok)
                     .negativeText(android.R.string.cancel)
                     .onPositive { _, _ ->
-                        Settings.Instance.isUseRoot = true
+                        if (Shell.SU.available()) {
+                            Settings.Instance.isUseRoot = true
+                        } else {
+                            Settings.Instance.isUseRoot = false
+                            Toast.makeText(activity, R.string.settings_use_root_available_fail, Toast.LENGTH_LONG).show()
+                        }
                         oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
                     }
                     .onNegative { _, _ ->

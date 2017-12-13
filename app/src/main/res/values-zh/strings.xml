@@ -128,4 +128,6 @@
     <string name="main_xposed_fail">⚠Xposed状态错误⚠\n任何配置都将无效</string>
     <string name="settings_use_root">使用Root权限</string>
     <string name="settings_use_root_content" >直接使用root命令可以更快的强制停止、清除数据功能，但是因众多手机root方式不同，导致root不完整，如果root不完整那么您使用此功能可能会出现错误\n\n您确定要使用root命令吗？</string>
+    <string name="detail_clear_success">清除数据成功</string>
+    <string name="settings_use_root_available_fail">请求Root权限失败</string>
 </resources>
