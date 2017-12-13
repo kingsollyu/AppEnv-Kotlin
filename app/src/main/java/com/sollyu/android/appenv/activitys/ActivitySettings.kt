@@ -9,7 +9,9 @@
 package com.sollyu.android.appenv.activitys
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatDelegate
@@ -64,7 +66,9 @@ class ActivitySettings : ActivityBase() {
     override fun onInitData() {
         super.onInitData()
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
+        oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
+        oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
     }
 
     @Event(R.id.oivAuthor)
@@ -103,6 +107,17 @@ class ActivitySettings : ActivityBase() {
         Settings.Instance.isShowSystemApp = oiwShowSystemApp.isChecked
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_LIST_CLEAR))
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
+    }
+
+    @Event(R.id.oiwShowDesktopIcon)
+    private fun onBtnClickShowDesktopIcon(@Suppress("UNUSED_PARAMETER") view: View) {
+        Settings.Instance.isShowDesktopIcon = oiwShowDesktopIcon.isChecked
+        if (oiwShowDesktopIcon.isChecked) {
+            packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+        }else{
+            packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+            Toast.makeText(activity, R.string.settings_show_desktop_icon_tip, Toast.LENGTH_LONG).show()
+        }
     }
 
     @Event(R.id.oivLicence)
@@ -175,8 +190,9 @@ class ActivitySettings : ActivityBase() {
                                 .negativeText(android.R.string.cancel)
                                 .onPositive { _, _ ->
                                     FileUtils.writeStringToFile(Phones.Instance.phoneFile, JSON.toJSONString(contentJson, true), "UTF-8")
-                                    Snackbar.make(oivLicence, R.string.settings_update_phone_success, Snackbar.LENGTH_LONG).show()
                                     Phones.Reload()
+                                    oivUpdatePhoneList.setRightText(Phones.Instance.versionCode)
+                                    Snackbar.make(oivLicence, R.string.settings_update_phone_success, Snackbar.LENGTH_LONG).show()
                                 }
                                 .show()
                     } else {

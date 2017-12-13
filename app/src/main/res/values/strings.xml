@@ -108,4 +108,6 @@
         </Data>
     </string>
     <string name="main_nav_header_desc">i\'m english so bad. :(</string>
+    <string name="settings_show_desktop_icon">Show Desktop Icon</string>
+    <string name="settings_show_desktop_icon_tip">You can open app in Xposed model.</string>
 </resources>

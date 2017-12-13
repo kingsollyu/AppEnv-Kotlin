@@ -64,4 +64,11 @@ class Settings {
     var isShowSystemApp: Boolean
         get() = jsonObject.getBooleanValue("isShowSystemApp")
         set(value) = jsonObject.put("isShowSystemApp", value).let { save() }
+
+    /**
+     * 是否显示桌面图标
+     */
+    var isShowDesktopIcon: Boolean
+        get() = jsonObject.getBoolean("isShowDesktopIcon") ?: true
+        set(value) = jsonObject.put("isShowDesktopIcon", value).let { save() }
 }
