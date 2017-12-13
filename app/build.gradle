@@ -19,11 +19,11 @@ android {
     flavorDimensions "default"
 
     defaultConfig {
-        applicationId "com.sollyu.android.appenv"
+        applicationId "com.sollyu.xposed.hook.model"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 582
-        versionName "3.2.0" + getGitVersion()
+        versionName "3.2.1" + getGitVersion()
     }
     buildTypes {
         release {
@@ -34,7 +34,12 @@ android {
     productFlavors {
         official {
             dimension "default"
-            applicationId "com.sollyu.xposed.hook.model"
+        }
+        github {
+            dimension "default"
+        }
+        coolapk {
+            dimension "default"
         }
     }
     android.applicationVariants.all { variant ->
