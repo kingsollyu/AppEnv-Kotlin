@@ -173,6 +173,15 @@ class ActivitySettings : ActivityBase() {
         })
     }
 
+    @Event(R.id.oivThinks)
+    private fun onBtnClickThinks(view: View) {
+        MaterialDialog.Builder(activity)
+                .title(R.string.settings_thinks).
+                items(arrayListOf("jfa2008@gmail.com"))
+                .positiveText(android.R.string.ok)
+                .show()
+    }
+
     @Event(R.id.oivUpdatePhoneList)
     private fun onBtnClickUpdatePhoneList(@Suppress("UNUSED_PARAMETER") view: View) {
         val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_update_progress).progress(true, 0).cancelable(false).show()
@@ -195,7 +204,7 @@ class ActivitySettings : ActivityBase() {
                                 .onPositive { _, _ ->
                                     FileUtils.writeStringToFile(Phones.Instance.phoneFile, JSON.toJSONString(contentJson, true), "UTF-8")
                                     Phones.Reload()
-                                    oivUpdatePhoneList.setRightText(Phones.Instance.versionCode)
+                                    oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
                                     Snackbar.make(oivLicence, R.string.settings_update_phone_success, Snackbar.LENGTH_LONG).show()
                                 }
                                 .show()

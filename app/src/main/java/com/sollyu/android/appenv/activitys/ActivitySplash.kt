@@ -26,15 +26,14 @@ class ActivitySplash : ActivityBase(), Runnable {
     override fun run() {
 
         /* Xposed 没有成功的状态 */
-        if (!BuildConfig.DEBUG && !Application.Instance.isXposedWork()) {
+        if (!Application.Instance.isXposedWork()) {
             MaterialDialog
                     .Builder(activity)
                     .title(R.string.splash_xposed_not_work_title)
                     .content(R.string.splash_xposed_not_work_content)
                     .positiveText(android.R.string.ok)
-                    .onPositive { _, _ -> activity.finish() }
+                    .onPositive { _, _ -> ActivityMain.launch(activity) }
                     .show()
-
             return
         }
 

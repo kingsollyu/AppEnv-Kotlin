@@ -31,17 +31,6 @@ class Random {
         fun New(): Random {
             return Random()
         }
-
-        /**
-         * @param min 最小
-         * @param max 最大
-         * @return 随机数
-         * @author sollyu
-         */
-        fun Int(min: Int, max:Int): Int {
-            return java.util.Random().nextInt(max + 1 - min) + min
-        }
-
     }
 
     enum class ANDROID_VERSION(val versionName: String, val versionCode: Int) {
