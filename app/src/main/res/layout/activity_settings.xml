@@ -32,6 +32,12 @@
                 android:layout_marginTop="20dp"
                 app:leftText="@string/settings_show_system_app" />
 
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemSwitch
+                android:id="@+id/oiwShowDesktopIcon"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_show_desktop_icon" />
 
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivUpdatePhoneList"
