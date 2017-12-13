@@ -121,4 +121,5 @@
         </Data>
     </string>
     <string name="title_activity_about">关于</string>
+    <string name="main_nav_header_desc">如需定制，可以联系作者</string>
 </resources>

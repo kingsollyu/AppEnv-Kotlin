@@ -54,7 +54,7 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this)
 
         // 设置主题默认值
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {

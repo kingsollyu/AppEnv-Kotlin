@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
   ~
@@ -34,7 +35,7 @@
     <style name="OptionItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">42dp</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:background">@color/gray0</item>
     </style>
     <style name="OptionItemLine">
         <item name="android:layout_width">match_parent</item>
@@ -59,24 +60,23 @@
 
     <!--关于样式-->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay"  parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay"  parent="ThemeOverlay.AppCompat.Dark" />
 
 
     <!--Toolbar的样式配置 begin-->
+    <!-- toolbar菜单样式 -->
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="actionMenuTextAppearance">@style/ToolbarMenuTextSize</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="android:itemBackground">@color/gray0</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
     <!-- toolbar菜单文字尺寸 -->
     <style name="ToolbarMenuTextSize" parent="@style/TextAppearance.AppCompat.Menu">
         <item name="android:textSize">14sp</item>
-    </style>
-    <!-- toolbar菜单样式 -->
-    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="actionMenuTextColor">@android:color/white</item>
-        <item name="actionMenuTextAppearance">@style/ToolbarMenuTextSize</item>
-        <!--<item name="android:colorBackground"></item>也可以设置背景色以及menu中的其他属性-->
-        <item name="colorControlNormal">@android:color/white</item>
-        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
-        <item name="android:itemBackground">@color/colorPrimary</item>
-        <item name="android:layout_marginRight">10dp</item>
-        <item name="android:textColor">@android:color/white</item>
     </style>
     <!--设置菜单popup出现位置在toolbar的下方-->
     <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">

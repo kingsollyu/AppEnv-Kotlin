@@ -48,8 +48,8 @@
                 app:leftText="@string/settings_update_soft"
                 app:rightText="3.0.1" />
 
-            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
 
+            <!--Author-->
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivAuthor"
                 style="@style/OptionItem"
@@ -73,7 +73,6 @@
                 app:leftText="@string/settings_email"
                 app:rightText="king.sollyu@gmail.com" />
 
-
             <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
 
             <com.sollyu.android.option.item.OptionItemView
@@ -90,8 +89,7 @@
                 app:leftText="@string/settings_issues"
                 app:rightText="" />
 
-            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
-
+            <!--Licence-->
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivLicence"
                 style="@style/OptionItem"
