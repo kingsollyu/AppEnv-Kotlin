@@ -195,7 +195,7 @@ class ActivitySettings : ActivityBase() {
                                 .onPositive { _, _ ->
                                     FileUtils.writeStringToFile(Phones.Instance.phoneFile, JSON.toJSONString(contentJson, true), "UTF-8")
                                     Phones.Reload()
-                                    oivUpdatePhoneList.setRightText(Phones.Instance.versionCode)
+                                    oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
                                     Snackbar.make(oivLicence, R.string.settings_update_phone_success, Snackbar.LENGTH_LONG).show()
                                 }
                                 .show()

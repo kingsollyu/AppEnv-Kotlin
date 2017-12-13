@@ -32,9 +32,7 @@ class ActivitySplash : ActivityBase(), Runnable {
                     .title(R.string.splash_xposed_not_work_title)
                     .content(R.string.splash_xposed_not_work_content)
                     .positiveText(android.R.string.ok)
-                    .onPositive { _, _ -> activity.finish() }
                     .show()
-
             return
         }
 

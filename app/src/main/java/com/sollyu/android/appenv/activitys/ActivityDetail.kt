@@ -9,7 +9,6 @@
 package com.sollyu.android.appenv.activitys
 
 import android.app.Activity
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.net.Uri
@@ -37,10 +36,6 @@ import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
 import java.util.*
-import android.support.v4.content.ContextCompat.startActivity
-import android.os.Build
-import android.provider.Settings
-import com.sollyu.android.appenv.R.id.fab
 
 
 @Suppress("unused")
@@ -142,6 +137,7 @@ class ActivityDetail : ActivityBase() {
             R.id.menuSolutionSave -> { this.onItemClickSolutionSave()  }
             R.id.menuSolutionLoad -> { this.onItemClickSolutionLoad()  }
             R.id.menuSolutionDele -> { this.onItemClickSolutionDelete()}
+            R.id.menuRemoteRandom -> { this.onItemClickRemoteRandom()  }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -198,7 +194,7 @@ class ActivityDetail : ActivityBase() {
 
     }
 
-    fun uiToJsonObject(): JSONObject {
+    private fun uiToJsonObject(): JSONObject {
         val jsonObject = JSONObject()
         jsonObject.put("android.os.Build.ro.product.manufacturer", oieBuildManufacturer.rightEditText.toString(), true)
         jsonObject.put("android.os.Build.ro.product.model"       , oieBuildModel.rightEditText.toString()       , true)
@@ -472,6 +468,10 @@ class ActivityDetail : ActivityBase() {
                     return@itemsCallbackMultiChoice true
                 }
                 .show()
+    }
+
+    private fun onItemClickRemoteRandom() {
+        Snackbar.make(fab, "后台维护中……", Snackbar.LENGTH_LONG).show()
     }
 
     private fun JSONObject.put(key: String, value: String, boolean: Boolean) {
