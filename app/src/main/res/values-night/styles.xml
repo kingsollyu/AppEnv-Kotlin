@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <!-- SpeedyBrandTheme Style which shows the single drawable Image.
+     (I designed that image contains App Logo & Company Brand Name and size of 720px x 1280px ) -->
+    <style name="SpeedyBrandTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/splash_layer</item>
+    </style>
+
+    <!--主界面侧边-->
+    <style name="AppTheme_NavHeader" parent="ThemeOverlay.AppCompat.Dark">
+    </style>
+
+    <!--主界面Xposed被配置的样式-->
+    <style name="AppTheme_XposedEnable_Left">
+        <item name="android:textColor">@color/green3</item>
+    </style>
+    <style name="AppTheme_XposedEnable_Right">
+        <item name="android:textColor">@color/green0</item>
+    </style>
+    <style name="AppTheme_XposedDisable_Left">
+        <item name="android:textColor">@color/black0</item>
+    </style>
+    <style name="AppTheme_XposedDisable_Right">
+        <item name="android:textColor">@color/gray1</item>
+    </style>
+
+    <!--选项条目样式-->
+    <style name="OptionItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:background">@color/gray0</item>
+    </style>
+    <style name="OptionItem.Line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:background">@color/gray8</item>
+    </style>
+
+    <!--SheetDialog样式-->
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
+    </style>
+    <style name="AppTheme.BottomSheetDialog.Custom" parent="AppTheme.BottomSheetDialog">
+        <item name="bottomSheetBuilderItemTextColor">@color/colorPrimaryDark</item>
+        <item name="bottomSheetBuilderBackgroundColor">@android:color/white</item>
+        <item name="bottomSheetBuilderTitleTextColor">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="behavior_hideable">true</item>
+        <item name="behavior_skipCollapsed">true</item>
+    </style>
+
+    <!--关于样式-->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay"  parent="ThemeOverlay.AppCompat.Dark" />
+
+
+    <!--Toolbar的样式配置 begin-->
+    <!-- toolbar菜单样式 -->
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="actionMenuTextAppearance">@style/ToolbarMenuTextSize</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="android:itemBackground">@color/gray0</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <!-- toolbar菜单文字尺寸 -->
+    <style name="ToolbarMenuTextSize" parent="@style/TextAppearance.AppCompat.Menu">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!--设置菜单popup出现位置在toolbar的下方-->
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>  <!--设置不覆盖锚点-->
+    </style>
+    <!-- toolbar弹出菜单样式 -->
+    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">#212121</item>
+    </style>
+    <!-- toolbar主标题样式 -->
+    <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+    <!--toolbar副标题样式-->
+    <style name="ToolbarSubTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+    <!--Toolbar的样式配置 end-->
+</resources>

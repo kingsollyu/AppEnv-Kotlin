@@ -1,0 +1,37 @@
+/*
+ * Copyright © 2017 Sollyu <https://www.sollyu.com/>
+ *
+ * Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+ *
+ * This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+ */
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.1.51'
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }    // 优先使用阿里云镜像
+        maven { url 'https://dl.google.com/dl/android/maven2/' }                // 更改Google地址
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }    // 优先使用阿里云镜像
+        maven { url 'https://dl.google.com/dl/android/maven2/' }                // 更改Google地址
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

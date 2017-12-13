@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sollyu.android.appenv">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".commons.Application"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity-alias
+            android:name=".activitys.ActivitySplashAlias"
+            android:label="@string/app_name"
+            android:targetActivity=".activitys.ActivitySplash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity
+            android:name=".activitys.ActivitySplash"
+            android:label="@string/app_name"
+            android:theme="@style/SpeedyBrandTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activitys.ActivityMain"/>
+        <activity
+            android:name=".activitys.ActivitySettings"/>
+        <activity
+            android:name=".activitys.ActivityDetail"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <activity
+            android:name=".activitys.ActivityAbout"/>
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/xposed_desc" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="2+" />
+    </application>
+
+</manifest>

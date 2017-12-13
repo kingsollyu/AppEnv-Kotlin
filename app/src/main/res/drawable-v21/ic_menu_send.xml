@@ -1,0 +1,17 @@
+<!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M2.01,21L23,12 2.01,3 2,10l15,2 -15,2z" />
+</vector>

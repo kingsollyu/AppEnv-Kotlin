@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_detail">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="128dp">
+
+        <!--Build系列-->
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieBuildManufacturer"
+            style="@style/OptionItem"
+            android:layout_marginTop="20dp"
+            app:leftText="@string/detail_build_manufacturer" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieBuildModel"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_build_model" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieBuildSerial"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_build_serial" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieBuildVersionName"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_build_version_name" />
+
+        <!--Android Id-->
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieAndroidId"
+            style="@style/OptionItem"
+            android:layout_marginTop="20dp"
+            app:leftText="Android Id" />
+
+
+        <!--Sim卡系列-->
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimLine1Number"
+            style="@style/OptionItem"
+            android:layout_marginTop="20dp"
+            app:leftText="@string/detail_sim_phone_number" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimGetDeviceId"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_sim_device_id" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimSubscriberId"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_sim_subscriber_id" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimOperator"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_sim_operator" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimOperatorName"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_sim_operator_name" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimSerialNumber"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_sim_serial_number" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimStatus"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_sim__status" />
+
+        <!--Wi-Fi系列-->
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieWifiName"
+            style="@style/OptionItem"
+            android:layout_marginTop="20dp"
+            app:leftText="@string/detail_wifi_name" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieWifiBssid"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_wifi_bssid" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieWifiMacAddress"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_wifi_mac_address" />
+
+    </LinearLayout>
+</ScrollView>

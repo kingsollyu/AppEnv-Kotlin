@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activitys.ActivitySettings">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/include_toolbar" />
+
+            <com.sollyu.android.option.item.OptionItemSwitch
+                android:id="@+id/oiwShowSystemApp"
+                style="@style/OptionItem"
+                android:layout_marginTop="20dp"
+                app:leftText="@string/settings_show_system_app" />
+
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemSwitch
+                android:id="@+id/oiwShowDesktopIcon"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_show_desktop_icon" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivUpdatePhoneList"
+                style="@style/OptionItem"
+                android:layout_marginTop="20dp"
+                app:leftText="@string/settings_update_phone"
+                app:rightText="3" />
+
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivUpdateSoftVersion"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_update_soft"
+                app:rightText="3.0.1" />
+
+
+            <!--Author-->
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivAuthor"
+                style="@style/OptionItem"
+                android:layout_marginTop="20dp"
+                app:leftText="@string/settings_author"
+                app:rightText="Sollyu" />
+
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivBlog"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_blog"
+                app:rightText="www.sollyu.com" />
+
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivEMail"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_email"
+                app:rightText="king.sollyu@gmail.com" />
+
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivGithub"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_github"
+                app:rightText="github.com/kingsollyu/AppEnv-Kotlin" />
+
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivIssues"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_issues"
+                app:rightText="" />
+
+            <!--Licence-->
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivLicence"
+                style="@style/OptionItem"
+                android:layout_marginTop="20dp"
+                app:leftText="Licence" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>
