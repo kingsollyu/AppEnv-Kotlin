@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Application
+import com.umeng.analytics.MobclickAgent
 
 
 /**
@@ -21,6 +22,7 @@ import com.sollyu.android.appenv.commons.Application
  * 说明：闪屏界面
  */
 class ActivitySplash : ActivityBase(), Runnable {
+
     override fun run() {
 
         /* Xposed 没有成功的状态 */
@@ -44,6 +46,10 @@ class ActivitySplash : ActivityBase(), Runnable {
         super.onInitDone()
 
         Handler().postAtTime(this, 1000)
+    }
+
+    override fun getMobclickAgentTag(): String {
+        return "Splash"
     }
 
 }

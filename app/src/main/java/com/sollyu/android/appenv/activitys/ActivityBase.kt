@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.umeng.analytics.MobclickAgent
 
 /**
  * 作者：sollyu
@@ -21,7 +22,7 @@ import android.view.MenuItem
  * 说明：基础的Activity类
  */
 @SuppressLint("Registered")
-open class ActivityBase : AppCompatActivity() {
+abstract class ActivityBase : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,8 @@ open class ActivityBase : AppCompatActivity() {
 
     open fun onInitDone() {}
 
+    abstract fun getMobclickAgentTag():String
+
     val activity: Activity
         get() = this
 
@@ -50,4 +53,15 @@ open class ActivityBase : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart(getMobclickAgentTag())
+        MobclickAgent.onResume(activity)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd(getMobclickAgentTag())
+        MobclickAgent.onPause(activity)
+    }
 }

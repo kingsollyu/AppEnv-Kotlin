@@ -71,6 +71,10 @@ class ActivitySettings : ActivityBase() {
         oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
     }
 
+    override fun getMobclickAgentTag(): String {
+        return "Settings"
+    }
+
     @Event(R.id.oivAuthor)
     private fun onBtnClickAuthor(@Suppress("UNUSED_PARAMETER") view: View) {
         delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)

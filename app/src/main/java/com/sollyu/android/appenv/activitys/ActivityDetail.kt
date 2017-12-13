@@ -126,6 +126,10 @@ class ActivityDetail : ActivityBase() {
         }
     }
 
+    override fun getMobclickAgentTag(): String {
+        return "Detail"
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.activity_detail, menu)

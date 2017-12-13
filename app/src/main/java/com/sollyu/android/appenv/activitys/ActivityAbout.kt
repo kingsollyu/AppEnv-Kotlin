@@ -55,4 +55,9 @@ class ActivityAbout : ActivityBase() {
         super.onInitListener()
         fab.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kingsollyu/AppEnv-Kotlin/issues"))) }
     }
+
+    override fun getMobclickAgentTag(): String {
+        return "About"
+    }
+
 }

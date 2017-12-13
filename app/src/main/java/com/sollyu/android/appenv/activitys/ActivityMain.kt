@@ -108,6 +108,10 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         EventBus.getDefault().unregister(this)
     }
 
+    override fun getMobclickAgentTag(): String {
+        return "Main"
+    }
+
     /**
      *
      */

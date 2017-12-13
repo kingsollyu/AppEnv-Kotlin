@@ -20,6 +20,8 @@ import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
 import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.not.proguard.NotProguard
+import com.umeng.analytics.MobclickAgent
+import com.umeng.commonsdk.UMConfigure
 import org.apache.commons.text.CharacterPredicates
 import org.apache.commons.text.RandomStringGenerator
 
@@ -55,6 +57,9 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
 
         // 设置主题默认值
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        // 友盟统计
+        UMConfigure.init(Instance, "558a1cb667e58e7649000228", BuildConfig.FLAVOR, MobclickAgent.EScenarioType.E_UM_NORMAL.toValue(), "")
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {
