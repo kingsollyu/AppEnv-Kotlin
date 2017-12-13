@@ -87,6 +87,9 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
     override fun onInitDone() {
         super.onInitDone()
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
+        if (!Application.Instance.isXposedWork()) {
+            Snackbar.make(fab, R.string.main_xposed_fail, Snackbar.LENGTH_INDEFINITE).show();
+        }
     }
 
     /**

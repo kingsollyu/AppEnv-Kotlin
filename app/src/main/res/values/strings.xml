@@ -111,4 +111,7 @@
     <string name="settings_show_desktop_icon">Show Desktop Icon</string>
     <string name="settings_show_desktop_icon_tip">You can open app in Xposed model.</string>
     <string name="settings_thinks">Thinks</string>
+    <string name="main_xposed_fail">Xposed status error.</string>
+    <string name="settings_use_root">Use Root</string>
+    <string name="settings_use_root_content" >no english. :(</string>
 </resources>

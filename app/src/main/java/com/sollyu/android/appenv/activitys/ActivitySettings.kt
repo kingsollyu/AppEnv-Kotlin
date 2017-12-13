@@ -67,6 +67,7 @@ class ActivitySettings : ActivityBase() {
         super.onInitData()
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
         oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
         oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
     }
@@ -121,6 +122,28 @@ class ActivitySettings : ActivityBase() {
         }else{
             packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
             Toast.makeText(activity, R.string.settings_show_desktop_icon_tip, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    @Event(R.id.oiwUseRoot)
+    private fun onBtnClickUseRoot(view: View) {
+        if (oiwUseRoot.isChecked) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_use_root)
+                    .content(R.string.settings_use_root_content)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        Settings.Instance.isUseRoot = true
+                        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isUseRoot = false
+                        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+                    }
+                    .show()
+        }else{
+            Settings.Instance.isUseRoot = false
         }
     }
 
