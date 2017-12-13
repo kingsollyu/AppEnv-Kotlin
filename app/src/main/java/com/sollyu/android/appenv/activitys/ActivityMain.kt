@@ -10,20 +10,17 @@ package com.sollyu.android.appenv.activitys
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
@@ -31,19 +28,16 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.Filter
 import android.widget.Filterable
-import com.elvishew.xlog.XLog
 import com.sollyu.android.appenv.R
-import com.sollyu.android.appenv.R.id.drawer_layout
-import com.sollyu.android.appenv.R.id.swipeRefreshLayout
 import com.sollyu.android.appenv.commons.Application
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.events.EventSample
-import com.sollyu.android.libsuperuser.Shell
 import com.sollyu.android.option.item.OptionItemView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_activity_main.*
 import kotlinx.android.synthetic.main.content_activity_main.*
+import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -176,6 +170,11 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
     fun onRefresh(eventSample: EventSample) {
         when (eventSample.eventTYPE) {
 
+            /* 切换成夜间主题 */
+            EventSample.TYPE.MAIN_THEME_NIGHT -> {
+                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+
             /* 清空列表 */
             EventSample.TYPE.MAIN_LIST_CLEAR -> {
                 recyclerViewAdapter.installAppList.clear()
@@ -264,11 +263,11 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
 
             val configJsonObject = SettingsXposed.Instance.get(applicationInfo.packageName)
             if (configJsonObject != null && configJsonObject.isNotEmpty()) {
-                holder?.tvTitleName?.rightTextView?.setTextColor(Color.parseColor("#009900"))
-                holder?.tvTitleName?.leftTextView?.setTextColor(Color.parseColor("#009900"))
+                holder?.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Left)
+                holder?.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Right)
             }else {
-                holder?.tvTitleName?.rightTextView?.setTextColor(Color.parseColor("#CCCCCC"))
-                holder?.tvTitleName?.leftTextView ?.setTextColor(Color.parseColor("#CCCCCC"))
+                holder?.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Left)
+                holder?.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Right)
             }
 
             if (appLabel == appPackageName){}

@@ -18,5 +18,5 @@
         app:leftText="" />
 
     <com.sollyu.android.option.item.OptionItemLine
-        style="@style/OptionItemLine" />
+        style="@style/OptionItem.Line" />
 </RelativeLayout>

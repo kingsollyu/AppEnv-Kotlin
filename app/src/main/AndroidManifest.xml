@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".activitys.ActivitySplash"
             android:label="@string/app_name"
@@ -32,19 +32,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activitys.ActivityMain"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activitys.ActivityMain"/>
         <activity
-            android:name=".activitys.ActivitySettings"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activitys.ActivitySettings"/>
         <activity
             android:name=".activitys.ActivityDetail"
-            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
-            android:name=".activitys.ActivityAbout"
-            android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".activitys.ActivityAbout"/>
 
         <meta-data
             android:name="xposedmodule"
