@@ -20,6 +20,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
@@ -169,6 +170,11 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
     fun onRefresh(eventSample: EventSample) {
         when (eventSample.eventTYPE) {
 
+            /* 切换成夜间主题 */
+            EventSample.TYPE.MAIN_THEME_NIGHT -> {
+                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+
             /* 清空列表 */
             EventSample.TYPE.MAIN_LIST_CLEAR -> {
                 recyclerViewAdapter.installAppList.clear()
@@ -257,11 +263,11 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
 
             val configJsonObject = SettingsXposed.Instance.get(applicationInfo.packageName)
             if (configJsonObject != null && configJsonObject.isNotEmpty()) {
-                holder?.tvTitleName?.rightTextView?.setTextColor(Color.parseColor("#009900"))
-                holder?.tvTitleName?.leftTextView?.setTextColor(Color.parseColor("#009900"))
+                holder?.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Left)
+                holder?.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Right)
             }else {
-                holder?.tvTitleName?.rightTextView?.setTextColor(Color.parseColor("#CCCCCC"))
-                holder?.tvTitleName?.leftTextView ?.setTextColor(Color.parseColor("#CCCCCC"))
+                holder?.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Left)
+                holder?.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Right)
             }
 
             if (appLabel == appPackageName){}

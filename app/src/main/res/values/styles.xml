@@ -36,7 +36,7 @@
         <item name="android:layout_height">42dp</item>
         <item name="android:background">@android:color/white</item>
     </style>
-    <style name="OptionItemLine">
+    <style name="OptionItem.Line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_marginLeft">15dp</item>

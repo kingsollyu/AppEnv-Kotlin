@@ -14,6 +14,7 @@ import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.alibaba.fastjson.JSON
 import com.sollyu.android.appenv.BuildConfig
@@ -69,15 +70,18 @@ class ActivitySettings : ActivityBase() {
     @Event(R.id.oivAuthor)
     private fun onBtnClickAuthor(@Suppress("UNUSED_PARAMETER") view: View) {
         delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_THEME_NIGHT))
+        Toast.makeText(activity, "夜间主题还在开发中……\n可能没有那么美观……\n下次启动将会还原", Toast.LENGTH_LONG).show()
     }
 
     @Event(R.id.oivBlog)
-    private fun onBtnClickBlog(view: View) {
+    private fun onBtnClickBlog(@Suppress("UNUSED_PARAMETER") view: View) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sollyu.com")))
     }
 
     @Event(R.id.oivEMail)
-    private fun onBtnClickEMail(view: View) {
+    private fun onBtnClickEMail(@Suppress("UNUSED_PARAMETER") view: View) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_EMAIL  , "king.sollyu@gmail.com"        )
         intent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.app_name))
@@ -85,24 +89,24 @@ class ActivitySettings : ActivityBase() {
     }
 
     @Event(R.id.oivGithub)
-    private fun onBtnClickGithub(view: View) {
+    private fun onBtnClickGithub(@Suppress("UNUSED_PARAMETER") view: View) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kingsollyu/AppEnv")))
     }
 
     @Event(R.id.oivIssues)
-    private fun onBtnClickIssues(view: View) {
+    private fun onBtnClickIssues(@Suppress("UNUSED_PARAMETER") view: View) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kingsollyu/AppEnv-Kotlin/issues")))
     }
 
     @Event(R.id.oiwShowSystemApp)
-    private fun onBtnClickShowSystemApp(view: View) {
+    private fun onBtnClickShowSystemApp(@Suppress("UNUSED_PARAMETER") view: View) {
         Settings.Instance.isShowSystemApp = oiwShowSystemApp.isChecked
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_LIST_CLEAR))
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
     }
 
     @Event(R.id.oivLicence)
-    private fun onBtnClickLicence(view: View) {
+    private fun onBtnClickLicence(@Suppress("UNUSED_PARAMETER") view: View) {
         val notices = Notices()
         notices.addNotice(Notice("NotProguard"         , "https://github.com/kingsollyu/NotProguard"       , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("OptionItem"          , "https://github.com/kingsollyu/OptionItem"        , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
@@ -122,7 +126,7 @@ class ActivitySettings : ActivityBase() {
     }
 
     @Event(R.id.oivUpdateSoftVersion)
-    private fun onBtnClickUpdateSoftVersion(view: View) {
+    private fun onBtnClickUpdateSoftVersion(@Suppress("UNUSED_PARAMETER") view: View) {
         val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_update_progress).progress(true, 0).cancelable(false).show()
         OkHttpClient().newCall(Request.Builder().url(activity.getString(R.string.online_url_soft)).build()).enqueue(object : Callback{
             override fun onFailure(request: Request, e: IOException) {
@@ -151,7 +155,7 @@ class ActivitySettings : ActivityBase() {
     }
 
     @Event(R.id.oivUpdatePhoneList)
-    private fun onBtnClickUpdatePhoneList(view: View) {
+    private fun onBtnClickUpdatePhoneList(@Suppress("UNUSED_PARAMETER") view: View) {
         val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_update_progress).progress(true, 0).cancelable(false).show()
         OkHttpClient().newCall(Request.Builder().url(activity.getString(R.string.online_url_phone)).build()).enqueue(object :Callback{
             override fun onFailure(request: Request, e: IOException) {

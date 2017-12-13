@@ -40,7 +40,7 @@
                 app:leftText="@string/settings_update_phone"
                 app:rightText="3" />
 
-            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
 
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivUpdateSoftVersion"
@@ -57,7 +57,7 @@
                 app:leftText="@string/settings_author"
                 app:rightText="Sollyu" />
 
-            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
 
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivBlog"
@@ -65,7 +65,7 @@
                 app:leftText="@string/settings_blog"
                 app:rightText="www.sollyu.com" />
 
-            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
 
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivEMail"
@@ -73,7 +73,7 @@
                 app:leftText="@string/settings_email"
                 app:rightText="king.sollyu@gmail.com" />
 
-            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
 
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivGithub"
@@ -81,7 +81,7 @@
                 app:leftText="@string/settings_github"
                 app:rightText="github.com/kingsollyu/AppEnv-Kotlin" />
 
-            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItemLine" />
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
 
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivIssues"
