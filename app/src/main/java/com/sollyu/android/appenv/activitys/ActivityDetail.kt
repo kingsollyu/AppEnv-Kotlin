@@ -24,10 +24,8 @@ import com.elvishew.xlog.XLog
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.bean.PhoneModel
-import com.sollyu.android.appenv.commons.Phones
+import com.sollyu.android.appenv.commons.*
 import com.sollyu.android.appenv.commons.Random
-import com.sollyu.android.appenv.commons.SettingsXposed
-import com.sollyu.android.appenv.commons.Solution
 import com.sollyu.android.appenv.events.EventSample
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_activity_detail.*
@@ -53,7 +51,12 @@ class ActivityDetail : ActivityBase() {
     /**
      * 随机对象
      */
-    val random = Random.New()
+    private val random = Random.New()
+
+    /**
+     * 上传点击清除数据的时间
+     */
+    private var wipeDataConfirm = false
 
     /**
      * 上个界面传送过来的应用信息
@@ -407,23 +410,60 @@ class ActivityDetail : ActivityBase() {
 
     @Event(R.id.menu_run_app)
     private fun onItemClickRunApp(view: View) {
-        Snackbar.make(view, R.string.detail_run_app, Snackbar.LENGTH_LONG)
-                .setAction(R.string.detail_run_app_back) {
-                    val home = Intent(Intent.ACTION_MAIN)
-                    home.addCategory(Intent.CATEGORY_HOME)
-                    startActivity(home)
-                }
-                .show()
+        if (Settings.Instance.isUseRoot) {
+            val launchIntent = packageManager.getLaunchIntentForPackage(appInfo.packageName)
+            if (launchIntent != null) {
+                startActivity(launchIntent)//null pointer check in case package name was not found
+            } else {
+
+            }
+        } else {
+            Snackbar.make(view, R.string.detail_run_app, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.detail_run_app_back) {
+                        val home = Intent(Intent.ACTION_MAIN)
+                        home.addCategory(Intent.CATEGORY_HOME)
+                        startActivity(home)
+                    }.show()
+        }
     }
 
-    @Event(R.id.menu_force_stop, R.id.menu_clear_app)
+    @Event(R.id.menu_force_stop)
     private fun onItemClickShowApp(view: View) {
-        val intent = Intent()
+        if (Settings.Instance.isUseRoot) {
+            eu.chainfire.libsuperuser.Shell.SU.run("am force-stop " + appInfo.packageName.toLowerCase())
+            Snackbar.make(fab, "强制停止执行顺利执行，但具体结果取决于root是否完成", Snackbar.LENGTH_LONG).show()
+        }else{
+            val intent = Intent()
+            intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            intent.data = Uri.parse("package:" + appInfo.packageName)
+            activity.startActivity(intent)
+        }
+    }
 
-        intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-        intent.data = Uri.parse("package:" + appInfo.packageName)
-
-        activity.startActivity(intent)
+    @Event(R.id.menu_clear_app)
+    private fun onItemClickClearApp(view: View) {
+        if (Settings.Instance.isUseRoot) {
+            if (wipeDataConfirm) {
+                wipeDataConfirm = false
+                eu.chainfire.libsuperuser.Shell.SU.run("pm clear " + appInfo.packageName.toLowerCase())
+                Snackbar.make(fab, "清空数据执行顺利执行，但具体结果取决于root是否完成", Snackbar.LENGTH_LONG).show()
+            } else {
+                wipeDataConfirm = true
+                Timer().schedule(object : TimerTask() {
+                    override fun run() {
+                        if (wipeDataConfirm) {
+                            Snackbar.make(fab, "清除数据为敏感操作，请在2秒内连续点击次。", Snackbar.LENGTH_LONG).show()
+                        }
+                        wipeDataConfirm = false
+                    }
+                }, 2000)
+            }
+        } else {
+            val intent = Intent()
+            intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            intent.data = Uri.parse("package:" + appInfo.packageName)
+            activity.startActivity(intent)
+        }
     }
 
     /**

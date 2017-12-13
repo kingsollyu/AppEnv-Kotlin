@@ -56,6 +56,13 @@
                 app:rightText="3.0.1" />
 
 
+            <com.sollyu.android.option.item.OptionItemSwitch
+                android:id="@+id/oiwUseRoot"
+                style="@style/OptionItem"
+                android:layout_marginTop="20dp"
+                app:leftText="@string/settings_use_root" />
+
+
             <!--Author-->
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivAuthor"

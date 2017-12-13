@@ -34,6 +34,7 @@ import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
 import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
+import eu.chainfire.libsuperuser.Shell
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.apache.commons.io.FileUtils
@@ -67,6 +68,7 @@ class ActivitySettings : ActivityBase() {
         super.onInitData()
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
         oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
         oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
     }
@@ -124,12 +126,38 @@ class ActivitySettings : ActivityBase() {
         }
     }
 
+    @Event(R.id.oiwUseRoot)
+    private fun onBtnClickUseRoot(view: View) {
+        if (oiwUseRoot.isChecked) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_use_root)
+                    .content(R.string.settings_use_root_content)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        if (Shell.SU.available()) {
+                            Settings.Instance.isUseRoot = true
+                        } else {
+                            Settings.Instance.isUseRoot = false
+                            Toast.makeText(activity, R.string.settings_use_root_available_fail, Toast.LENGTH_LONG).show()
+                        }
+                        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isUseRoot = false
+                        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+                    }
+                    .show()
+        }else{
+            Settings.Instance.isUseRoot = false
+        }
+    }
+
     @Event(R.id.oivLicence)
     private fun onBtnClickLicence(@Suppress("UNUSED_PARAMETER") view: View) {
         val notices = Notices()
         notices.addNotice(Notice("NotProguard"         , "https://github.com/kingsollyu/NotProguard"       , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("OptionItem"          , "https://github.com/kingsollyu/OptionItem"        , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("LibSuperUser"        , "https://github.com/kingsollyu/LibSuperUser"      , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("Apache Commons IO"   , "https://github.com/apache/commons-io"            , "Apache License"                                                             , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("BottomSheetBuilder"  , "https://github.com/rubensousa/BottomSheetBuilder", "Copyright 2016 Rúben Sousa"                                                 , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("xUtils3"             , "https://github.com/wyouflf/xUtils3"              , "Copyright 2014-2015 wyouflf"                                                , ApacheSoftwareLicense20()))
@@ -138,7 +166,7 @@ class ActivitySettings : ActivityBase() {
         notices.addNotice(Notice("FloatingActionButton", "https://github.com/Clans/FloatingActionButton"   , "Copyright 2015 Dmytro Tarianyk"                                             , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("EventBus"            , "https://github.com/greenrobot/EventBus"          , "Copyright (C) 2012-2017 Markus Junginger greenrobot (http://greenrobot.org)", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("LicensesDialog"      , "https://github.com/PSDev/LicensesDialog"         , "Copyright 2013-2017 Philip Schiffer"                                        , ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("snake-yaml"          , "https://github.com/bmoliveira/snake-yaml"        , ""                                                                           , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("libsuperuser"        , "https://github.com/Chainfire/libsuperuser"       , "Written by and copyright ©: Jorrit \"Chainfire\" Jongma Author of SuperSU"  , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("material-dialogs"    , "https://github.com/afollestad/material-dialogs"  , "Copyright (c) 2014-2016 Aidan Michael Follestad"                            , MITLicense())             )
 
         LicensesDialog.Builder(activity).setNotices(notices).build().showAppCompat()
