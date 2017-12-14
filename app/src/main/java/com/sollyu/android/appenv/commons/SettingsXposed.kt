@@ -22,14 +22,33 @@ import com.elvishew.xlog.XLog
  */
 class SettingsXposed {
     companion object {
-        val Instance = SettingsXposed()
+        var Instance = SettingsXposed()
+
+        @Synchronized
+        fun Reload() {
+            Instance = SettingsXposed()
+        }
+
+        @Synchronized
+        fun Save() {
+            if (Settings.Instance.isUseAppDataConfig) {
+                FileUtils.write(Instance.fileAppDataConfig, JSON.toJSONString(Instance.jsonObject, true), "UTF-8")
+                try { FileUtils.forceDelete(Instance.fileExtendConfig) } catch (e: Exception) { }
+            } else {
+                FileUtils.write(Instance.fileExtendConfig, JSON.toJSONString(Instance.jsonObject, true), "UTF-8")
+                try { FileUtils.forceDelete(Instance.fileAppDataConfig) } catch (e: Exception) { }
+            }
+        }
     }
+
+    private val fileAppDataConfig = File(Application.Instance.filesDir, "appenv.xposed.json")
+    private val fileExtendConfig  = File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json")
 
     val file: File by lazy {
         if (Settings.Instance.isUseAppDataConfig)
-            File(Application.Instance.filesDir, "appenv.xposed.json")
+            fileAppDataConfig
         else
-            File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json")
+            fileExtendConfig
     }
 
     var jsonObject = JSONObject()

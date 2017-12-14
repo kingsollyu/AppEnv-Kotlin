@@ -24,6 +24,7 @@ import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Settings
+import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.events.EventSample
 import com.squareup.okhttp.Callback
 import com.squareup.okhttp.OkHttpClient
@@ -184,14 +185,20 @@ class ActivitySettings : ActivityBase() {
                             Settings.Instance.isUseAppDataConfig = true
                         }
                         oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
+                        SettingsXposed.Save()
+                        SettingsXposed.Reload()
                     }
                     .onNegative { _, _ ->
                         Settings.Instance.isUseAppDataConfig = false
                         oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
+                        SettingsXposed.Save()
+                        SettingsXposed.Reload()
                     }
                     .show()
         }else{
             Settings.Instance.isUseAppDataConfig = false
+            SettingsXposed.Save()
+            SettingsXposed.Reload()
         }
     }
 
