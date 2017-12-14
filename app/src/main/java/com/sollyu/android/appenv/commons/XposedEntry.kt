@@ -8,9 +8,12 @@
 
 package com.sollyu.android.appenv.commons
 
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.wifi.WifiInfo
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.util.DisplayMetrics
 import android.util.Log
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.not.proguard.NotProguard
@@ -22,6 +25,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
 import org.apache.commons.io.FileUtils
 import org.json.JSONObject
 import java.io.File
+import java.util.*
 
 /**
  * 作者：sollyu
@@ -132,6 +136,10 @@ class XposedEntry : IXposedHookLoadPackage {
                 if (xposedPackageJson.has("android.net.wifi.WifiInfo.getMacAddress")) {
                     XposedBridge.hookAllMethods(WifiInfo::class.java, "getMacAddress", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getMacAddress")))
                 }
+
+                if (xposedPackageJson.has("android.content.res.language") || xposedPackageJson.has("android.content.res.display.dpi")) {
+                    XposedBridge.hookAllMethods(Resources::class.java, "updateConfiguration", UpdateConfiguration(loadPackageParam, xposedPackageJson))
+                }
             }
         }else{
             Log.d(TAG, String.format("[%20s]%s", "no config file", loadPackageParam.packageName))
@@ -144,6 +152,57 @@ class XposedEntry : IXposedHookLoadPackage {
     inner class MethodHookValue(private val value: Any) : XC_MethodHook() {
         override fun afterHookedMethod(methodHookParam: MethodHookParam) {
             methodHookParam.result = value
+        }
+    }
+
+    inner class UpdateConfiguration(private val loadPackageParam: XC_LoadPackage.LoadPackageParam, private val xposedPackageJson: JSONObject) : XC_MethodHook() {
+        override fun beforeHookedMethod(methodHookParam: MethodHookParam) {
+            var configuration: Configuration? = null
+            if (methodHookParam.args[0] != null) {
+                configuration = Configuration(methodHookParam.args[0] as Configuration?)
+            }
+            if (configuration == null)
+                return
+
+            // 拦截语言
+            if (xposedPackageJson.has("android.content.res.language")) {
+                val localeParts = xposedPackageJson.getString("android.content.res.language").split("_")
+                if (localeParts.size > 1) {
+                    val language = localeParts[0]
+                    val region   = if (localeParts.size >= 2) localeParts[1] else ""
+                    val variant  = if (localeParts.size >= 3) localeParts[2] else ""
+
+                    val locale = Locale(language, region, variant)
+                    Locale.setDefault(locale)
+                    configuration.locale = locale
+                    if (Build.VERSION.SDK_INT >= 17) {
+                        configuration.setLayoutDirection(locale)
+                    }
+                }
+            }
+
+            // 拦截DPI
+            if (xposedPackageJson.has("android.content.res.display.dpi")) {
+                val dpi = xposedPackageJson.getInt("android.content.res.display.dpi")
+                if (dpi > 0) {
+                    var displayMetrics: DisplayMetrics? = null
+                    if (methodHookParam.args[1] != null) {
+                        displayMetrics = DisplayMetrics()
+                        displayMetrics.setTo(methodHookParam.args[1] as DisplayMetrics?)
+                        methodHookParam.args[1] = displayMetrics;
+                    }else{
+                        displayMetrics = (methodHookParam.thisObject as Resources).displayMetrics
+                    }
+                    if (displayMetrics != null) {
+                        displayMetrics.density = dpi / 160f
+                        displayMetrics.densityDpi = dpi
+                        if(Build.VERSION.SDK_INT >= 17) {
+                            XposedHelpers.setIntField(configuration, "densityDpi", dpi)
+                        }
+                    }
+                }
+            }
+            methodHookParam.args[0] = configuration;
         }
     }
 

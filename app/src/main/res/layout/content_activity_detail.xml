@@ -136,5 +136,19 @@
             style="@style/OptionItem"
             app:leftText="@string/detail_wifi_mac_address" />
 
+        <!--其他系列-->
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieLanguage"
+            style="@style/OptionItem"
+            android:layout_marginTop="20dp"
+            app:leftText="@string/detail_language" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieDisplayDpi"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_display_dip" />
+
     </LinearLayout>
 </ScrollView>

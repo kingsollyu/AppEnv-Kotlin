@@ -210,6 +210,12 @@ class ActivityDetail : ActivityBase() {
         if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getMacAddress") == true)
             oieWifiMacAddress.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getMacAddress")
 
+        //
+        if (jsonObject?.containsKey("android.content.res.language") == true)
+            oieLanguage.rightEditText = jsonObject.getString("android.content.res.language")
+        if (jsonObject?.containsKey("android.content.res.display.dpi") == true)
+            oieDisplayDpi.rightEditText = jsonObject.getString("android.content.res.display.dpi")
+
     }
 
     private fun uiToJsonObject(): JSONObject {
@@ -234,6 +240,8 @@ class ActivityDetail : ActivityBase() {
         jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()     , true)
         jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString(), true)
 
+        jsonObject.put("android.content.res.language"   , oieLanguage.rightEditText.toString()  , true)
+        jsonObject.put("android.content.res.display.dpi", oieDisplayDpi.rightEditText.toString(), true)
         XLog.json(jsonObject.toJSONString())
 
         return jsonObject
@@ -433,6 +441,27 @@ class ActivityDetail : ActivityBase() {
                 .show()
     }
 
+    @Event(R.id.oieLanguage)
+    private fun onItemClickLanguage(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        Random.LANGUAGES.values().forEach { popupMenu.menu.add(it.label) }
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieLanguage.rightEditText = Random.LANGUAGES.get(it.title.toString()).code }
+                .createDialog()
+                .show()
+    }
+
+    @Event(R.id.oieDisplayDpi)
+    private fun onItemClickDisplayDpi(@Suppress("UNUSED_PARAMETER") view: View) {
+        Snackbar.make(fab, "考虑手机屏幕尺寸不同，DPI不提供随机功能，请手动输入数字", Snackbar.LENGTH_LONG).show();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Event(R.id.menu_random_all)
     private fun onItemClickRandomAll(view: View) {
         this.jsonObjectToUi(Random.New().randomAll())
