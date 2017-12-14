@@ -13,8 +13,8 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
 import android.widget.Toast
@@ -22,9 +22,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.alibaba.fastjson.JSON
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
-import com.sollyu.android.appenv.R.id.oivLicence
-import com.sollyu.android.appenv.R.id.oivUpdatePhoneList
-import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample
@@ -72,7 +69,7 @@ class ActivitySettings : ActivityBase() {
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
         oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
         oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
-        oiwSdConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isSdConfig)
+        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
         oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
     }
@@ -171,23 +168,30 @@ class ActivitySettings : ActivityBase() {
         }
     }
 
-    @Event(R.id.oiwSdConfig)
+    @Event(R.id.oiwAppDataConfig)
     private fun onBtnClickUseSdConfig(view: View) {
-        if (oiwSdConfig.isChecked) {
+        if (oiwAppDataConfig.isChecked) {
             MaterialDialog.Builder(activity)
-                    .title(R.string.settings_use_sd_config)
-                    .content(R.string.settings_use_sd_config_content)
+                    .title(R.string.settings_use_app_data_config)
+                    .content(R.string.settings_use_app_data_config_content)
                     .positiveText(android.R.string.ok)
                     .negativeText(android.R.string.cancel)
                     .onPositive { _, _ ->
-                        Settings.Instance.isSdConfig = true
-                        oiwSdConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isSdConfig)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            MaterialDialog.Builder(activity).title(R.string.tip).content("7.0+系统不支持使用「内置存储」").positiveText(android.R.string.ok).show()
+                            Settings.Instance.isUseAppDataConfig = false
+                        }else{
+                            Settings.Instance.isUseAppDataConfig = true
+                        }
+                        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
                     }
                     .onNegative { _, _ ->
-                        Settings.Instance.isUseRoot = false
-                        oiwSdConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isSdConfig)
+                        Settings.Instance.isUseAppDataConfig = false
+                        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
                     }
                     .show()
+        }else{
+            Settings.Instance.isUseAppDataConfig = false
         }
     }
 

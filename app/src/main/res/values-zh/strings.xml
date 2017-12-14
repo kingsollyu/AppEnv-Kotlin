@@ -133,6 +133,6 @@
     <string name="detail_sim_country_iso">SIM国家代码</string>
     <string name="detail_language">语言</string>
     <string name="detail_display_dip">DPI</string>
-    <string name="settings_use_sd_config">使用SD卡配置</string>
-    <string name="settings_use_sd_config_content">Use SD Card Config?</string>
+    <string name="settings_use_app_data_config">使用内置存储</string>
+    <string name="settings_use_app_data_config_content">【内置存储特性】\n支持「没有SD卡权限」应用拦截\n不支持「7.0+」以上系统\n\n【外置存储特性】\n不支持「没有SD卡权限」应用拦截\n方便直接修改配置文件\n兼容所有系统\n\n您确定使用内置存储吗？</string>
 </resources>

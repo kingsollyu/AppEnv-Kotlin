@@ -119,6 +119,6 @@
     <string name="detail_sim_country_iso">Sim Country Iso</string>
     <string name="detail_language">Language</string>
     <string name="detail_display_dip">DPI</string>
-    <string name="settings_use_sd_config">Use SD Card Config</string>
-    <string name="settings_use_sd_config_content">Use SD Card Config?</string>
+    <string name="settings_use_app_data_config">Use app data Config</string>
+    <string name="settings_use_app_data_config_content">Use app data Config?</string>
 </resources>

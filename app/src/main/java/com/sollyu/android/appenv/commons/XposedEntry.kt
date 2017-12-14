@@ -51,41 +51,36 @@ class XposedEntry : IXposedHookLoadPackage {
             return
         }
 
-        val xSharedPreferences = XSharedPreferences(BuildConfig.APPLICATION_ID, "appenv.xposed")
-        if (!xSharedPreferences.makeWorldReadable()) {
-            Log.d(TAG, String.format("[%20s]%s", "makeWorldReadable = false", loadPackageParam.packageName))
+        // 加载文件
+        var xposedSettingsFile: File?
+        do {
+            // 检查内置存储
+            xposedSettingsFile = File(Environment.getDataDirectory(), "data/" + BuildConfig.APPLICATION_ID + "/files/appenv.xposed.json")
+            if (xposedSettingsFile.exists() && xposedSettingsFile.canRead())
+                break
+
+            // 检查sd卡存储
+            xposedSettingsFile = File("/sdcard/Android/data/" + BuildConfig.APPLICATION_ID + "/files/appenv.xposed.json")
+            if (xposedSettingsFile.exists() && xposedSettingsFile.canRead())
+                break
+
+            xposedSettingsFile = null
+        } while (false)
+
+        if (xposedSettingsFile == null) {
+            Log.e(TAG, "${loadPackageParam.packageName} => not config file")
             return
-        }
-
-        /* 读取配置文件位置 */
-        val xposedSettingsConfigFilePath = xSharedPreferences.getString("configFile", null)
-        if (xposedSettingsConfigFilePath == null) {
-            Log.d(TAG, String.format("[%20s]%s", "xposedSettingsConfigFile == null", loadPackageParam.packageName))
-            return
-        }
-
-        /* 读取配置文件内容 */
-        var xposedSettingsJsonContent = ""
-        if (xposedSettingsConfigFilePath == xSharedPreferences.file.absolutePath) {
-            xposedSettingsJsonContent = xSharedPreferences.getString("xposedConfig", "{}")
-        } else {
-            val xposedSettingsConfigFile = File(xposedSettingsConfigFilePath)
-            if (!xposedSettingsConfigFile.exists()) {
-                Log.d(TAG, String.format("[%20s]%s", "xposedSettingsConfigFile.exists == false", loadPackageParam.packageName))
-                return
-            }
-
-            if (!xposedSettingsConfigFile.canRead()) {
-                Log.d(TAG, String.format("[%20s]%s", "xposedSettingsConfigFile.canRead == false", loadPackageParam.packageName))
-                return
-            }
-
-            xposedSettingsJsonContent = FileUtils.readFileToString(xposedSettingsConfigFile, "UTF-8")
         }
 
         /* 如果配置内容为空 */
+        val xposedSettingsJsonContent = try {
+            FileUtils.readFileToString(xposedSettingsFile, "UTF-8")
+        } catch (e: Exception) {
+            ""
+        }
+
         if (xposedSettingsJsonContent.isEmpty()) {
-            Log.d(TAG, String.format("[%20s]%s", "xposedSettingsJsonContent.isEmpty", loadPackageParam.packageName))
+            Log.d("Xposed", "${loadPackageParam.packageName} => xposedSettingsJsonContent.isEmpty")
             return
         }
 
@@ -97,18 +92,18 @@ class XposedEntry : IXposedHookLoadPackage {
             if (xposedPackageJson.has("android.os.Build.ro.product.manufacturer")) {
                 val jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.manufacturer")
                 XposedHelpers.setStaticObjectField(Build::class.java, "MANUFACTURER", jsonValue)
-                XposedHelpers.setStaticObjectField(Build::class.java, "PRODUCT", jsonValue)
-                XposedHelpers.setStaticObjectField(Build::class.java, "BRAND", jsonValue)
+                XposedHelpers.setStaticObjectField(Build::class.java, "PRODUCT"     , jsonValue)
+                XposedHelpers.setStaticObjectField(Build::class.java, "BRAND"       , jsonValue)
                 buildValueHashMap.put("ro.product.manufacturer", jsonValue)
-                buildValueHashMap.put("ro.product.brand", jsonValue)
-                buildValueHashMap.put("ro.product.name", jsonValue)
+                buildValueHashMap.put("ro.product.brand"       , jsonValue)
+                buildValueHashMap.put("ro.product.name"        , jsonValue)
             }
             if (xposedPackageJson.has("android.os.Build.ro.product.model")) {
                 val jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.model")
-                XposedHelpers.setStaticObjectField(Build::class.java, "MODEL", jsonValue)
+                XposedHelpers.setStaticObjectField(Build::class.java, "MODEL" , jsonValue)
                 XposedHelpers.setStaticObjectField(Build::class.java, "DEVICE", jsonValue)
                 buildValueHashMap.put("ro.product.device", jsonValue)
-                buildValueHashMap.put("ro.product.model", jsonValue)
+                buildValueHashMap.put("ro.product.model" , jsonValue)
             }
             if (xposedPackageJson.has("android.os.Build.ro.serialno")) {
                 XposedHelpers.setStaticObjectField(Build::class.java, "SERIAL", xposedPackageJson.getString("android.os.Build.ro.serialno"))
@@ -196,6 +191,7 @@ class XposedEntry : IXposedHookLoadPackage {
 
             // 拦截语言
             if (xposedPackageJson.has("android.content.res.language")) {
+                Log.d(TAG, loadPackageParam.packageName + ":language:" + xposedPackageJson.getString("android.content.res.language"))
                 val localeParts = xposedPackageJson.getString("android.content.res.language").split("_")
                 if (localeParts.size > 1) {
                     val language = localeParts[0]
@@ -215,6 +211,7 @@ class XposedEntry : IXposedHookLoadPackage {
             if (xposedPackageJson.has("android.content.res.display.dpi")) {
                 val dpi = xposedPackageJson.getInt("android.content.res.display.dpi")
                 if (dpi > 0) {
+                    Log.d(TAG, loadPackageParam.packageName + ":dpi-1:" + dpi)
                     var displayMetrics: DisplayMetrics? = null
                     if (methodHookParam.args[1] != null) {
                         displayMetrics = DisplayMetrics()

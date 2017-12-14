@@ -82,7 +82,7 @@ class Settings {
     /**
      * 是否使用SD卡配置
      */
-    var isSdConfig: Boolean
-        get() = jsonObject.getBoolean("isSdConfig") ?: false
-        set(value) = jsonObject.put("isSdConfig", value).let { save() }
+    var isUseAppDataConfig: Boolean
+        get() = jsonObject.getBoolean("isUseAppDataConfig") ?: false
+        set(value) = jsonObject.put("isUseAppDataConfig", value).let { save() }
 }
