@@ -90,6 +90,13 @@
         <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
 
         <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieSimCountryIso"
+            style="@style/OptionItem"
+            app:leftText="@string/detail_sim_country_iso" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
             android:id="@+id/oieSimOperatorName"
             style="@style/OptionItem"
             app:leftText="@string/detail_sim_operator_name" />

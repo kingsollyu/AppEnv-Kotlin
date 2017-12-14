@@ -49,17 +49,30 @@ class Random {
     }
 
     /**
-     *
+     * Sim卡类型
      */
-    enum class SIM_TYPE(val label: String, val simCode: String, val simIccid: String) {
-        CMCC("中国移动", "46000", "898600"),
-        CUCC("中国联通", "46001", "898601"),
-        CTCC("中国电信", "46003", "898603");
+    enum class SIM_TYPE(val label: String, val simCode: String, val simIccid: String, val simCountryIso: String) {
+        CMCC("中国移动", "46000", "898600", SIM_COUNTRY_ISO.CN.code),
+        CUCC("中国联通", "46001", "898601", SIM_COUNTRY_ISO.CN.code),
+        CTCC("中国电信", "46003", "898603", SIM_COUNTRY_ISO.CN.code);
 
         companion object {
             fun get(label: String): SIM_TYPE = SIM_TYPE.values().first { it.label == label }
         }
     }
+
+    /**
+     * sim卡国家
+     */
+    enum class SIM_COUNTRY_ISO(val label: String, val code: String) {
+        CN("中国", "cn"),
+        EN("美国", "en");
+
+        companion object {
+            fun get(label: String): SIM_COUNTRY_ISO = SIM_COUNTRY_ISO.values().first { it.label == label }
+        }
+    }
+
 
     private val simType = SIM_TYPE.values()[RandomUtils.nextInt(0, SIM_TYPE.values().size)]
     private val androidVersion = ANDROID_VERSION.values()[RandomUtils.nextInt(0, ANDROID_VERSION.values().size)]

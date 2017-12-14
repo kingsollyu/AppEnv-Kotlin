@@ -193,6 +193,8 @@ class ActivityDetail : ActivityBase() {
             oieSimSubscriberId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSubscriberId")
         if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperator") == true)
             oieSimOperator.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperator")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimCountryIso") == true)
+            oieSimCountryIso.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimCountryIso")
         if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperatorName") == true)
             oieSimOperatorName.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperatorName")
         if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimSerialNumber") == true)
@@ -223,6 +225,7 @@ class ActivityDetail : ActivityBase() {
         jsonObject.put("android.telephony.TelephonyManager.getDeviceId"       , oieSimGetDeviceId.rightEditText.toString() , true)
         jsonObject.put("android.telephony.TelephonyManager.getSubscriberId"   , oieSimSubscriberId.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimOperator"    , oieSimOperator.rightEditText.toString()    , true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimCountryIso"  , oieSimCountryIso.rightEditText.toString()  , true)
         jsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", oieSimOperatorName.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", oieSimSerialNumber.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimState"       , oieSimStatus.rightEditText.toString()      , true)
@@ -358,6 +361,19 @@ class ActivityDetail : ActivityBase() {
                 .show()
     }
 
+    @Event(R.id.oieSimCountryIso)
+    private fun onItemClickSimCountryIso(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        Random.SIM_COUNTRY_ISO.values().forEach { popupMenu.menu.add(it.label) }
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieSimCountryIso.rightEditText = Random.SIM_COUNTRY_ISO.get(it.title.toString()).code }
+                .createDialog()
+                .show()
+    }
+
     @Event(R.id.oieSimOperator, R.id.oieSimOperatorName, R.id.oieSimSubscriberId, R.id.oieSimSerialNumber)
     private fun onItemClickSimOperator(view: View) {
         val popupMenu = PopupMenu(activity, view)
@@ -370,6 +386,7 @@ class ActivityDetail : ActivityBase() {
                     oieSimSerialNumber.rightEditText = random.simSerialNumber(Random.SIM_TYPE.get(item.title.toString()))
                     oieSimSubscriberId.rightEditText = random.simSubscriberId(Random.SIM_TYPE.get(item.title.toString()))
                     oieSimOperator    .rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCode
+                    oieSimCountryIso  .rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCountryIso
                     oieSimOperatorName.rightEditText = Random.SIM_TYPE.get(item.title.toString()).label
                     oieSimStatus      .rightEditText = TelephonyManager.SIM_STATE_READY.toString()
                 }

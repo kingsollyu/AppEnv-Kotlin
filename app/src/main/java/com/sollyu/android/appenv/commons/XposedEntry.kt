@@ -110,6 +110,9 @@ class XposedEntry : IXposedHookLoadPackage {
                 if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimOperator")) {
                     XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimOperator", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimOperator")))
                 }
+                if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimCountryIso")) {
+                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimCountryIso", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimCountryIso")))
+                }
                 if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimOperatorName")) {
                     XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimOperatorName", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimOperatorName")))
                 }
