@@ -121,8 +121,22 @@ class ActivitySettings : ActivityBase() {
         if (oiwShowDesktopIcon.isChecked) {
             packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
         }else{
-            packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-            Toast.makeText(activity, R.string.settings_show_desktop_icon_tip, Toast.LENGTH_LONG).show()
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_show_desktop_icon)
+                    .content(R.string.settings_show_desktop_icon_tip)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        Settings.Instance.isShowDesktopIcon = false
+                        packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+                        oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isShowDesktopIcon = true
+                        packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+                        oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+                    }
+                    .show()
         }
     }
 

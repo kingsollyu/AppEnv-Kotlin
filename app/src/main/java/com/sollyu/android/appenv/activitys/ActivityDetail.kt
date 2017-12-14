@@ -101,22 +101,25 @@ class ActivityDetail : ActivityBase() {
                 Snackbar.make(fab, "\uD83D\uDCF1手机QQ无法设置成iPhone在线，请谅解！", Snackbar.LENGTH_INDEFINITE).show();
             }
             "com.sankuai.meituan" -> {
-                Snackbar.make(fab, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "\uD83C\uDE32请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
             }
             "me.ele" -> {
-                Snackbar.make(fab, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "\uD83C\uDE32请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
+            }
+            "com.coolapk.market" -> {
+                Snackbar.make(fab, "\uD83D\uDE0F酷安基友，雷好啊～～", Snackbar.LENGTH_LONG).show()
             }
             "com.tencent.mm" -> {
-                Snackbar.make(fab, "⚠️使用本软件用来微信养号，更容易被封！", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⛔警告⛔\n使用本软件用来微信养号，更容易被封！", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.qzone" -> {
-                Snackbar.make(fab, "⚠如果您将机型乱写，QQ空间会把您的机型变成小写", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⚠️如果您将机型乱写⚠️\nQQ空间会把您的机型变成小写", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.sina.weibo" -> {
-                Snackbar.make(fab, "⚠微博显示的继续有点少，有时候修改无效可能是微博没有收录这个机型", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⚠️微博显示的继续有点少⚠️\n有时候修改无效可能是微博没有收录这个机型", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.tencent.tmgp.sgame" -> {
-                Snackbar.make(fab, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，希众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
+                Snackbar.make(fab, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，望众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
                     oieBuildManufacturer.rightEditText = "Xiaomi"
                     oieBuildModel.rightEditText = "MIX"
                 }.show()
