@@ -8,10 +8,17 @@
 
 package com.sollyu.android.appenv.commons
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
+import com.sollyu.android.appenv.BuildConfig
 import org.apache.commons.io.FileUtils
 import java.io.File
+import android.content.Context.MODE_PRIVATE
+import android.os.Environment
+import com.elvishew.xlog.XLog
+
 
 /**
  * 作者：sollyu
@@ -23,7 +30,14 @@ class SettingsXposed {
         val Instance = SettingsXposed()
     }
 
-    val file: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json") }
+    val file: File by lazy {
+        if (Settings.Instance.isSdConfig)
+            File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json")
+        else
+            File(Environment.getDataDirectory(),"data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/appenv.xposed.xml")
+    }
+
+    val sharedPreferences: SharedPreferences by lazy { Application.Instance.getSharedPreferences("appenv.xposed", Context.MODE_PRIVATE) }
     var jsonObject = JSONObject()
 
     init {
@@ -36,10 +50,15 @@ class SettingsXposed {
     @Synchronized
     fun reload() {
         var jsonObjectTmp = JSONObject()
-        if (file.exists()) {
-            jsonObjectTmp = JSON.parseObject(FileUtils.readFileToString(file, "UTF-8"))
+        if (Settings.Instance.isSdConfig) {
+            if (file.exists()) {
+                jsonObjectTmp = JSON.parseObject(FileUtils.readFileToString(file, "UTF-8"))
+            }
+        } else {
+            jsonObjectTmp = JSON.parseObject(sharedPreferences.getString("xposedConfig", "{}"))
         }
         jsonObject = jsonObjectTmp
+
     }
 
     /**
@@ -47,7 +66,19 @@ class SettingsXposed {
      */
     @Synchronized
     fun save() {
-        FileUtils.write(file, JSON.toJSONString(jsonObject, true), "UTF-8")
+        sharedPreferences.edit().putString("configFile", file.absolutePath).apply()
+
+        if (Settings.Instance.isSdConfig) {
+            FileUtils.write(file, JSON.toJSONString(jsonObject, true), "UTF-8")
+        }else{
+            sharedPreferences.edit().putString("xposedConfig", jsonObject.toJSONString()).apply()
+        }
+    }
+
+    fun resetPermissions() {
+        XLog.d("resetPermissions")
+        file.setReadable(true, false)
+        file.setWritable(true, false)
     }
 
     /**

@@ -12,15 +12,13 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.wifi.WifiInfo
 import android.os.Build
+import android.os.Environment
 import android.telephony.TelephonyManager
 import android.util.DisplayMetrics
 import android.util.Log
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.not.proguard.NotProguard
-import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
-import de.robv.android.xposed.XposedHelpers
+import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import org.apache.commons.io.FileUtils
 import org.json.JSONObject
@@ -53,96 +51,128 @@ class XposedEntry : IXposedHookLoadPackage {
             return
         }
 
-        val xposedSettingsFile = File("/sdcard/Android/data/" + BuildConfig.APPLICATION_ID + "/files/appenv.xposed.json")
-        if (xposedSettingsFile.exists() && xposedSettingsFile.canRead()) {
+        val xSharedPreferences = XSharedPreferences(BuildConfig.APPLICATION_ID, "appenv.xposed")
+        if (!xSharedPreferences.makeWorldReadable()) {
+            Log.d(TAG, String.format("[%20s]%s", "makeWorldReadable = false", loadPackageParam.packageName))
+            return
+        }
 
-            /* 其他包 */
-            val xposedSettingsJson = JSONObject(FileUtils.readFileToString(xposedSettingsFile, "UTF-8"))
-            if (xposedSettingsJson.has(loadPackageParam.packageName)) {
-                val xposedPackageJson = xposedSettingsJson.getJSONObject(loadPackageParam.packageName)
-                val buildValueHashMap = HashMap<String, Any>()
-                if (xposedPackageJson.has("android.os.Build.ro.product.manufacturer")) {
-                    val jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.manufacturer")
-                    XposedHelpers.setStaticObjectField(Build::class.java, "MANUFACTURER", jsonValue)
-                    XposedHelpers.setStaticObjectField(Build::class.java, "PRODUCT"     , jsonValue)
-                    XposedHelpers.setStaticObjectField(Build::class.java, "BRAND"       , jsonValue)
-                    buildValueHashMap.put("ro.product.manufacturer", jsonValue)
-                    buildValueHashMap.put("ro.product.brand"       , jsonValue)
-                    buildValueHashMap.put("ro.product.name"        , jsonValue)
+        /* 读取配置文件位置 */
+        val xposedSettingsConfigFilePath = xSharedPreferences.getString("configFile", null)
+        if (xposedSettingsConfigFilePath == null) {
+            Log.d(TAG, String.format("[%20s]%s", "xposedSettingsConfigFile == null", loadPackageParam.packageName))
+            return
+        }
+
+        /* 读取配置文件内容 */
+        var xposedSettingsJsonContent = ""
+        if (xposedSettingsConfigFilePath == xSharedPreferences.file.absolutePath) {
+            xposedSettingsJsonContent = xSharedPreferences.getString("xposedConfig", "{}")
+        } else {
+            val xposedSettingsConfigFile = File(xposedSettingsConfigFilePath)
+            if (!xposedSettingsConfigFile.exists()) {
+                Log.d(TAG, String.format("[%20s]%s", "xposedSettingsConfigFile.exists == false", loadPackageParam.packageName))
+                return
+            }
+
+            if (!xposedSettingsConfigFile.canRead()) {
+                Log.d(TAG, String.format("[%20s]%s", "xposedSettingsConfigFile.canRead == false", loadPackageParam.packageName))
+                return
+            }
+
+            xposedSettingsJsonContent = FileUtils.readFileToString(xposedSettingsConfigFile, "UTF-8")
+        }
+
+        /* 如果配置内容为空 */
+        if (xposedSettingsJsonContent.isEmpty()) {
+            Log.d(TAG, String.format("[%20s]%s", "xposedSettingsJsonContent.isEmpty", loadPackageParam.packageName))
+            return
+        }
+
+        /* 其他包 */
+        val xposedSettingsJson = JSONObject(xposedSettingsJsonContent)
+        if (xposedSettingsJson.has(loadPackageParam.packageName)) {
+            val xposedPackageJson = xposedSettingsJson.getJSONObject(loadPackageParam.packageName)
+            val buildValueHashMap = HashMap<String, Any>()
+            if (xposedPackageJson.has("android.os.Build.ro.product.manufacturer")) {
+                val jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.manufacturer")
+                XposedHelpers.setStaticObjectField(Build::class.java, "MANUFACTURER", jsonValue)
+                XposedHelpers.setStaticObjectField(Build::class.java, "PRODUCT", jsonValue)
+                XposedHelpers.setStaticObjectField(Build::class.java, "BRAND", jsonValue)
+                buildValueHashMap.put("ro.product.manufacturer", jsonValue)
+                buildValueHashMap.put("ro.product.brand", jsonValue)
+                buildValueHashMap.put("ro.product.name", jsonValue)
+            }
+            if (xposedPackageJson.has("android.os.Build.ro.product.model")) {
+                val jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.model")
+                XposedHelpers.setStaticObjectField(Build::class.java, "MODEL", jsonValue)
+                XposedHelpers.setStaticObjectField(Build::class.java, "DEVICE", jsonValue)
+                buildValueHashMap.put("ro.product.device", jsonValue)
+                buildValueHashMap.put("ro.product.model", jsonValue)
+            }
+            if (xposedPackageJson.has("android.os.Build.ro.serialno")) {
+                XposedHelpers.setStaticObjectField(Build::class.java, "SERIAL", xposedPackageJson.getString("android.os.Build.ro.serialno"))
+                buildValueHashMap.put("ro.serialno", xposedPackageJson.getString("android.os.Build.ro.serialno"))
+            }
+            if (xposedPackageJson.has("android.os.Build.VERSION.RELEASE")) {
+                XposedHelpers.setStaticObjectField(Build.VERSION::class.java, "RELEASE", xposedPackageJson.getString("android.os.Build.VERSION.RELEASE"))
+            }
+            XposedBridge.hookAllMethods(XposedHelpers.findClass("android.os.SystemProperties", loadPackageParam.classLoader), "get", object : XC_MethodHook() {
+                override fun afterHookedMethod(methodHookParam: MethodHookParam) {
+                    if (buildValueHashMap.containsKey(methodHookParam.args[0].toString())) {
+                        methodHookParam.result = buildValueHashMap[methodHookParam.args[0].toString()]
+                    }
                 }
-                if (xposedPackageJson.has("android.os.Build.ro.product.model")) {
-                    val jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.model")
-                    XposedHelpers.setStaticObjectField(Build::class.java, "MODEL" , jsonValue)
-                    XposedHelpers.setStaticObjectField(Build::class.java, "DEVICE", jsonValue)
-                    buildValueHashMap.put("ro.product.device", jsonValue)
-                    buildValueHashMap.put("ro.product.model" , jsonValue)
-                }
-                if (xposedPackageJson.has("android.os.Build.ro.serialno")) {
-                    XposedHelpers.setStaticObjectField(Build::class.java, "SERIAL", xposedPackageJson.getString("android.os.Build.ro.serialno"))
-                    buildValueHashMap.put("ro.serialno", xposedPackageJson.getString("android.os.Build.ro.serialno"))
-                }
-                if (xposedPackageJson.has("android.os.Build.VERSION.RELEASE")) {
-                    XposedHelpers.setStaticObjectField(Build.VERSION::class.java, "RELEASE", xposedPackageJson.getString("android.os.Build.VERSION.RELEASE"))
-                }
-                XposedBridge.hookAllMethods(XposedHelpers.findClass("android.os.SystemProperties", loadPackageParam.classLoader), "get", object : XC_MethodHook() {
+            })
+
+            if (xposedPackageJson.has("android.os.SystemProperties.android_id")) {
+                XposedBridge.hookAllMethods(android.provider.Settings.System::class.java, "getString", object : XC_MethodHook() {
                     override fun afterHookedMethod(methodHookParam: MethodHookParam) {
-                        if (buildValueHashMap.containsKey(methodHookParam.args[0].toString())) {
-                            methodHookParam.result = buildValueHashMap[methodHookParam.args[0].toString()]
+                        if (methodHookParam.args.size > 1 && methodHookParam.args[1].toString() == "android_id") {
+                            methodHookParam.result = xposedPackageJson.getString("android.os.SystemProperties.android_id")
                         }
                     }
                 })
-
-                if (xposedPackageJson.has("android.os.SystemProperties.android_id")) {
-                    XposedBridge.hookAllMethods(android.provider.Settings.System::class.java, "getString", object : XC_MethodHook() {
-                        override fun afterHookedMethod(methodHookParam: MethodHookParam) {
-                            if (methodHookParam.args.size > 1 && methodHookParam.args[1].toString() == "android_id") {
-                                methodHookParam.result = xposedPackageJson.getString("android.os.SystemProperties.android_id")
-                            }
-                        }
-                    })
-                }
-
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getLine1Number")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getLine1Number", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getLine1Number")))
-                }
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getDeviceId")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getDeviceId", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getDeviceId")))
-                }
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getSubscriberId")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSubscriberId", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSubscriberId")))
-                }
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimOperator")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimOperator", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimOperator")))
-                }
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimCountryIso")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimCountryIso", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimCountryIso")))
-                }
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimOperatorName")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimOperatorName", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimOperatorName")))
-                }
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimSerialNumber")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimSerialNumber", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimSerialNumber")))
-                }
-                if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimState")) {
-                    XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimState", MethodHookValue(xposedPackageJson.getInt("android.telephony.TelephonyManager.getSimState")))
-                }
-
-                if (xposedPackageJson.has("android.net.wifi.WifiInfo.getSSID")) {
-                    XposedBridge.hookAllMethods(WifiInfo::class.java, "getSSID", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getSSID")))
-                }
-                if (xposedPackageJson.has("android.net.wifi.WifiInfo.getBSSID")) {
-                    XposedBridge.hookAllMethods(WifiInfo::class.java, "getBSSID", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getBSSID")))
-                }
-                if (xposedPackageJson.has("android.net.wifi.WifiInfo.getMacAddress")) {
-                    XposedBridge.hookAllMethods(WifiInfo::class.java, "getMacAddress", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getMacAddress")))
-                }
-
-                if (xposedPackageJson.has("android.content.res.language") || xposedPackageJson.has("android.content.res.display.dpi")) {
-                    XposedBridge.hookAllMethods(Resources::class.java, "updateConfiguration", UpdateConfiguration(loadPackageParam, xposedPackageJson))
-                }
             }
-        }else{
-            Log.d(TAG, String.format("[%20s]%s", "no config file", loadPackageParam.packageName))
+
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getLine1Number")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getLine1Number", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getLine1Number")))
+            }
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getDeviceId")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getDeviceId", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getDeviceId")))
+            }
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getSubscriberId")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSubscriberId", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSubscriberId")))
+            }
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimOperator")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimOperator", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimOperator")))
+            }
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimCountryIso")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimCountryIso", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimCountryIso")))
+            }
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimOperatorName")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimOperatorName", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimOperatorName")))
+            }
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimSerialNumber")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimSerialNumber", MethodHookValue(xposedPackageJson.getString("android.telephony.TelephonyManager.getSimSerialNumber")))
+            }
+            if (xposedPackageJson.has("android.telephony.TelephonyManager.getSimState")) {
+                XposedBridge.hookAllMethods(TelephonyManager::class.java, "getSimState", MethodHookValue(xposedPackageJson.getInt("android.telephony.TelephonyManager.getSimState")))
+            }
+
+            if (xposedPackageJson.has("android.net.wifi.WifiInfo.getSSID")) {
+                XposedBridge.hookAllMethods(WifiInfo::class.java, "getSSID", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getSSID")))
+            }
+            if (xposedPackageJson.has("android.net.wifi.WifiInfo.getBSSID")) {
+                XposedBridge.hookAllMethods(WifiInfo::class.java, "getBSSID", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getBSSID")))
+            }
+            if (xposedPackageJson.has("android.net.wifi.WifiInfo.getMacAddress")) {
+                XposedBridge.hookAllMethods(WifiInfo::class.java, "getMacAddress", MethodHookValue(xposedPackageJson.getString("android.net.wifi.WifiInfo.getMacAddress")))
+            }
+
+            if (xposedPackageJson.has("android.content.res.language") || xposedPackageJson.has("android.content.res.display.dpi")) {
+                XposedBridge.hookAllMethods(Resources::class.java, "updateConfiguration", UpdateConfiguration(loadPackageParam, xposedPackageJson))
+            }
         }
     }
 
