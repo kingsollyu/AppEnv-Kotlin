@@ -133,4 +133,6 @@
     <string name="detail_sim_country_iso">SIM国家代码</string>
     <string name="detail_language">语言</string>
     <string name="detail_display_dip">DPI</string>
+    <string name="settings_use_sd_config">使用SD卡配置</string>
+    <string name="settings_use_sd_config_content">Use SD Card Config?</string>
 </resources>
