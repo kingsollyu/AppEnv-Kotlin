@@ -71,4 +71,18 @@ class Settings {
     var isShowDesktopIcon: Boolean
         get() = jsonObject.getBoolean("isShowDesktopIcon") ?: true
         set(value) = jsonObject.put("isShowDesktopIcon", value).let { save() }
+
+    /**
+     * 是否直接使用root权限
+     */
+    var isUseRoot: Boolean
+        get() = jsonObject.getBoolean("isUseRoot") ?: false
+        set(value) = jsonObject.put("isUseRoot", value).let { save() }
+
+    /**
+     * 是否使用SD卡配置
+     */
+    var isUseAppDataConfig: Boolean
+        get() = jsonObject.getBoolean("isUseAppDataConfig") ?: false
+        set(value) = jsonObject.put("isUseAppDataConfig", value).let { save() }
 }

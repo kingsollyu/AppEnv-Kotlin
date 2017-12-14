@@ -49,17 +49,43 @@ class Random {
     }
 
     /**
-     *
+     * Sim卡类型
      */
-    enum class SIM_TYPE(val label: String, val simCode: String, val simIccid: String) {
-        CMCC("中国移动", "46000", "898600"),
-        CUCC("中国联通", "46001", "898601"),
-        CTCC("中国电信", "46003", "898603");
+    enum class SIM_TYPE(val label: String, val simCode: String, val simIccid: String, val simCountryIso: String) {
+        CMCC("中国移动", "46000", "898600", SIM_COUNTRY_ISO.CN.code),
+        CUCC("中国联通", "46001", "898601", SIM_COUNTRY_ISO.CN.code),
+        CTCC("中国电信", "46003", "898603", SIM_COUNTRY_ISO.CN.code);
 
         companion object {
             fun get(label: String): SIM_TYPE = SIM_TYPE.values().first { it.label == label }
         }
     }
+
+    /**
+     * sim卡国家
+     */
+    enum class SIM_COUNTRY_ISO(val label: String, val code: String) {
+        CN("中国", "cn"),
+        EN("美国", "en");
+
+        companion object {
+            fun get(label: String): SIM_COUNTRY_ISO = SIM_COUNTRY_ISO.values().first { it.label == label }
+        }
+    }
+
+    /**
+     * 国家语言
+     */
+    enum class LANGUAGES(val label: String, val code: String) {
+        CN("中国", "zh_CN"),
+        EN("美国", "en_US");
+
+        companion object {
+            fun get(label: String): LANGUAGES = LANGUAGES.values().first { it.label == label }
+        }
+    }
+
+
 
     private val simType = SIM_TYPE.values()[RandomUtils.nextInt(0, SIM_TYPE.values().size)]
     private val androidVersion = ANDROID_VERSION.values()[RandomUtils.nextInt(0, ANDROID_VERSION.values().size)]
@@ -121,6 +147,10 @@ class Random {
         return simType.simCode
     }
 
+    fun simCountryIso(simType: SIM_TYPE):String {
+        return simType.simCountryIso
+    }
+
     fun simOperatorName(simType: SIM_TYPE): String {
         return simType.label
     }
@@ -160,6 +190,7 @@ class Random {
         randomJsonObject.put("android.telephony.TelephonyManager.getDeviceId", this.simGetDeviceId())
         randomJsonObject.put("android.telephony.TelephonyManager.getSubscriberId", this.simSubscriberId(simType))
         randomJsonObject.put("android.telephony.TelephonyManager.getSimOperator", this.simOperator(simType))
+        randomJsonObject.put("android.telephony.TelephonyManager.getSimCountryIso", this.simCountryIso(simType))
         randomJsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", this.simOperatorName(simType))
         randomJsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", this.simSerialNumber(simType))
         randomJsonObject.put("android.telephony.TelephonyManager.getSimState", this.simSimState(simType))

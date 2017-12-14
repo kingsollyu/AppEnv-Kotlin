@@ -54,6 +54,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    private var searchLastText      = ""
     private val recyclerViewAdapter = RecyclerViewAdapter()
     private val linearLayoutManager by lazy { LinearLayoutManager(activity) }
 
@@ -87,6 +88,9 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
     override fun onInitDone() {
         super.onInitDone()
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
+        if (!Application.Instance.isXposedWork()) {
+            Snackbar.make(fab, R.string.main_xposed_fail, Snackbar.LENGTH_INDEFINITE).show();
+        }
     }
 
     /**
@@ -209,7 +213,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
                 recyclerViewAdapter.installAppList.clear()
                 recyclerViewAdapter.installAppList.addAll(configAppInfoList)
                 recyclerViewAdapter.installAppList.addAll(unConfigAppInfoList)
-                recyclerViewAdapter.filter.filter(null)
+                recyclerViewAdapter.filter.filter(searchLastText)
             }
         }
     }
@@ -290,6 +294,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         override fun getFilter(): Filter {
             return object : Filter() {
                 override fun performFiltering(constraint: CharSequence?): FilterResults {
+                    searchLastText = constraint?.toString() ?: ""
                     val filterResults = FilterResults()
                     val displayAppListTmp = LinkedList<ApplicationInfo>()
 

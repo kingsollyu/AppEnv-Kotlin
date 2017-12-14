@@ -13,6 +13,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
@@ -21,9 +22,9 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.alibaba.fastjson.JSON
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
-import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Settings
+import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.events.EventSample
 import com.squareup.okhttp.Callback
 import com.squareup.okhttp.OkHttpClient
@@ -34,6 +35,7 @@ import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
 import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
+import eu.chainfire.libsuperuser.Shell
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.apache.commons.io.FileUtils
@@ -67,6 +69,8 @@ class ActivitySettings : ActivityBase() {
         super.onInitData()
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
         oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
         oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
     }
@@ -119,8 +123,82 @@ class ActivitySettings : ActivityBase() {
         if (oiwShowDesktopIcon.isChecked) {
             packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
         }else{
-            packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-            Toast.makeText(activity, R.string.settings_show_desktop_icon_tip, Toast.LENGTH_LONG).show()
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_show_desktop_icon)
+                    .content(R.string.settings_show_desktop_icon_tip)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        Settings.Instance.isShowDesktopIcon = false
+                        packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+                        oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isShowDesktopIcon = true
+                        packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+                        oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+                    }
+                    .show()
+        }
+    }
+
+    @Event(R.id.oiwUseRoot)
+    private fun onBtnClickUseRoot(view: View) {
+        if (oiwUseRoot.isChecked) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_use_root)
+                    .content(R.string.settings_use_root_content)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        if (Shell.SU.available()) {
+                            Settings.Instance.isUseRoot = true
+                        } else {
+                            Settings.Instance.isUseRoot = false
+                            Toast.makeText(activity, R.string.settings_use_root_available_fail, Toast.LENGTH_LONG).show()
+                        }
+                        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isUseRoot = false
+                        oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+                    }
+                    .show()
+        }else{
+            Settings.Instance.isUseRoot = false
+        }
+    }
+
+    @Event(R.id.oiwAppDataConfig)
+    private fun onBtnClickUseSdConfig(view: View) {
+        if (oiwAppDataConfig.isChecked) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_use_app_data_config)
+                    .content(R.string.settings_use_app_data_config_content)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            MaterialDialog.Builder(activity).title(R.string.tip).content("7.0+系统不支持使用「内置存储」").positiveText(android.R.string.ok).show()
+                            Settings.Instance.isUseAppDataConfig = false
+                        }else{
+                            Settings.Instance.isUseAppDataConfig = true
+                        }
+                        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
+                        SettingsXposed.Save()
+                        SettingsXposed.Reload()
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isUseAppDataConfig = false
+                        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
+                        SettingsXposed.Save()
+                        SettingsXposed.Reload()
+                    }
+                    .show()
+        }else{
+            Settings.Instance.isUseAppDataConfig = false
+            SettingsXposed.Save()
+            SettingsXposed.Reload()
         }
     }
 
@@ -129,7 +207,6 @@ class ActivitySettings : ActivityBase() {
         val notices = Notices()
         notices.addNotice(Notice("NotProguard"         , "https://github.com/kingsollyu/NotProguard"       , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("OptionItem"          , "https://github.com/kingsollyu/OptionItem"        , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("LibSuperUser"        , "https://github.com/kingsollyu/LibSuperUser"      , "Copyright 2017 Sollyu"                                                      , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("Apache Commons IO"   , "https://github.com/apache/commons-io"            , "Apache License"                                                             , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("BottomSheetBuilder"  , "https://github.com/rubensousa/BottomSheetBuilder", "Copyright 2016 Rúben Sousa"                                                 , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("xUtils3"             , "https://github.com/wyouflf/xUtils3"              , "Copyright 2014-2015 wyouflf"                                                , ApacheSoftwareLicense20()))
@@ -138,7 +215,7 @@ class ActivitySettings : ActivityBase() {
         notices.addNotice(Notice("FloatingActionButton", "https://github.com/Clans/FloatingActionButton"   , "Copyright 2015 Dmytro Tarianyk"                                             , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("EventBus"            , "https://github.com/greenrobot/EventBus"          , "Copyright (C) 2012-2017 Markus Junginger greenrobot (http://greenrobot.org)", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("LicensesDialog"      , "https://github.com/PSDev/LicensesDialog"         , "Copyright 2013-2017 Philip Schiffer"                                        , ApacheSoftwareLicense20()))
-        notices.addNotice(Notice("snake-yaml"          , "https://github.com/bmoliveira/snake-yaml"        , ""                                                                           , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("libsuperuser"        , "https://github.com/Chainfire/libsuperuser"       , "Written by and copyright ©: Jorrit \"Chainfire\" Jongma Author of SuperSU"  , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("material-dialogs"    , "https://github.com/afollestad/material-dialogs"  , "Copyright (c) 2014-2016 Aidan Michael Follestad"                            , MITLicense())             )
 
         LicensesDialog.Builder(activity).setNotices(notices).build().showAppCompat()
@@ -172,6 +249,8 @@ class ActivitySettings : ActivityBase() {
             }
         })
     }
+
+
 
     @Event(R.id.oivThinks)
     private fun onBtnClickThinks(view: View) {

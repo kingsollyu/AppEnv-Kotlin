@@ -14,6 +14,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.sollyu.android.appenv.commons.Settings
+import com.sollyu.android.appenv.commons.SettingsXposed
 import com.umeng.analytics.MobclickAgent
 
 /**
@@ -63,5 +65,7 @@ abstract class ActivityBase : AppCompatActivity() {
         super.onPause()
         MobclickAgent.onPageEnd(getMobclickAgentTag())
         MobclickAgent.onPause(activity)
+
+        SettingsXposed.Instance.resetPermissions()
     }
 }

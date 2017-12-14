@@ -12,6 +12,8 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import org.apache.commons.io.FileUtils
 import java.io.File
+import com.elvishew.xlog.XLog
+
 
 /**
  * 作者：sollyu
@@ -20,10 +22,35 @@ import java.io.File
  */
 class SettingsXposed {
     companion object {
-        val Instance = SettingsXposed()
+        var Instance = SettingsXposed()
+
+        @Synchronized
+        fun Reload() {
+            Instance = SettingsXposed()
+        }
+
+        @Synchronized
+        fun Save() {
+            if (Settings.Instance.isUseAppDataConfig) {
+                FileUtils.write(Instance.fileAppDataConfig, JSON.toJSONString(Instance.jsonObject, true), "UTF-8")
+                try { FileUtils.forceDelete(Instance.fileExtendConfig) } catch (e: Exception) { }
+            } else {
+                FileUtils.write(Instance.fileExtendConfig, JSON.toJSONString(Instance.jsonObject, true), "UTF-8")
+                try { FileUtils.forceDelete(Instance.fileAppDataConfig) } catch (e: Exception) { }
+            }
+        }
     }
 
-    val file: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json") }
+    private val fileAppDataConfig = File(Application.Instance.filesDir, "appenv.xposed.json")
+    private val fileExtendConfig  = File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json")
+
+    val file: File by lazy {
+        if (Settings.Instance.isUseAppDataConfig)
+            fileAppDataConfig
+        else
+            fileExtendConfig
+    }
+
     var jsonObject = JSONObject()
 
     init {
@@ -48,6 +75,15 @@ class SettingsXposed {
     @Synchronized
     fun save() {
         FileUtils.write(file, JSON.toJSONString(jsonObject, true), "UTF-8")
+    }
+
+    fun resetPermissions() {
+        if (Settings.Instance.isUseAppDataConfig) {
+            XLog.d("${file.absolutePath} resetPermissions")
+            file.setReadable(true, false)
+            file.setWritable(true, false)
+            file.setExecutable(true,false)
+        }
     }
 
     /**
