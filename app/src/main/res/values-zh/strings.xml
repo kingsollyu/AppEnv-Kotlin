@@ -123,11 +123,16 @@
     <string name="title_activity_about">关于</string>
     <string name="main_nav_header_desc">如需定制，可以联系作者</string>
     <string name="settings_show_desktop_icon">显示桌面图标</string>
-    <string name="settings_show_desktop_icon_tip">您可以从XPOSED的模块设置中打开应用</string>
+    <string name="settings_show_desktop_icon_tip">开启后本软件的桌面图标将会消失，但是您可以从XPOSED的模块中打开本应用</string>
     <string name="settings_thinks">特别鸣谢</string>
-    <string name="main_xposed_fail">⚠Xposed状态错误⚠\n任何配置都将无效</string>
+    <string name="main_xposed_fail">\u26a0\ufe0fXposed状态错误\u26a0\ufe0f\n任何配置都将无效</string>
     <string name="settings_use_root">使用Root权限</string>
     <string name="settings_use_root_content" >直接使用root命令可以更快的强制停止、清除数据功能，但是因众多手机root方式不同，导致root不完整，如果root不完整那么您使用此功能可能会出现错误\n\n您确定要使用root命令吗？</string>
     <string name="detail_clear_success">清除数据成功</string>
     <string name="settings_use_root_available_fail">请求Root权限失败</string>
+    <string name="detail_sim_country_iso">SIM国家代码</string>
+    <string name="detail_language">语言</string>
+    <string name="detail_display_dip">DPI</string>
+    <string name="settings_use_app_data_config">使用内置存储</string>
+    <string name="settings_use_app_data_config_content">【内置存储特性】\n支持「没有SD卡权限」应用拦截\n不支持「7.0+」以上系统\n\n【外置存储特性】\n不支持「没有SD卡权限」应用拦截\n方便直接修改配置文件\n兼容所有系统\n\n您确定使用内置存储吗？</string>
 </resources>

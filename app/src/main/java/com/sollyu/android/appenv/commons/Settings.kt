@@ -78,4 +78,11 @@ class Settings {
     var isUseRoot: Boolean
         get() = jsonObject.getBoolean("isUseRoot") ?: false
         set(value) = jsonObject.put("isUseRoot", value).let { save() }
+
+    /**
+     * 是否使用SD卡配置
+     */
+    var isUseAppDataConfig: Boolean
+        get() = jsonObject.getBoolean("isUseAppDataConfig") ?: false
+        set(value) = jsonObject.put("isUseAppDataConfig", value).let { save() }
 }

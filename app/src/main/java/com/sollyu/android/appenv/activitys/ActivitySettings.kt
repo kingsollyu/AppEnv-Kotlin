@@ -13,6 +13,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
@@ -21,7 +22,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.alibaba.fastjson.JSON
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
-import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.Phones
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.events.EventSample
@@ -69,6 +69,7 @@ class ActivitySettings : ActivityBase() {
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
         oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
         oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
+        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
         oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
     }
@@ -121,8 +122,22 @@ class ActivitySettings : ActivityBase() {
         if (oiwShowDesktopIcon.isChecked) {
             packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
         }else{
-            packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
-            Toast.makeText(activity, R.string.settings_show_desktop_icon_tip, Toast.LENGTH_LONG).show()
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_show_desktop_icon)
+                    .content(R.string.settings_show_desktop_icon_tip)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        Settings.Instance.isShowDesktopIcon = false
+                        packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+                        oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isShowDesktopIcon = true
+                        packageManager.setComponentEnabledSetting(ComponentName(activity, "com.sollyu.android.appenv.activitys.ActivitySplashAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+                        oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+                    }
+                    .show()
         }
     }
 
@@ -150,6 +165,33 @@ class ActivitySettings : ActivityBase() {
                     .show()
         }else{
             Settings.Instance.isUseRoot = false
+        }
+    }
+
+    @Event(R.id.oiwAppDataConfig)
+    private fun onBtnClickUseSdConfig(view: View) {
+        if (oiwAppDataConfig.isChecked) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_use_app_data_config)
+                    .content(R.string.settings_use_app_data_config_content)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ ->
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            MaterialDialog.Builder(activity).title(R.string.tip).content("7.0+系统不支持使用「内置存储」").positiveText(android.R.string.ok).show()
+                            Settings.Instance.isUseAppDataConfig = false
+                        }else{
+                            Settings.Instance.isUseAppDataConfig = true
+                        }
+                        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
+                    }
+                    .onNegative { _, _ ->
+                        Settings.Instance.isUseAppDataConfig = false
+                        oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
+                    }
+                    .show()
+        }else{
+            Settings.Instance.isUseAppDataConfig = false
         }
     }
 
@@ -200,6 +242,8 @@ class ActivitySettings : ActivityBase() {
             }
         })
     }
+
+
 
     @Event(R.id.oivThinks)
     private fun onBtnClickThinks(view: View) {

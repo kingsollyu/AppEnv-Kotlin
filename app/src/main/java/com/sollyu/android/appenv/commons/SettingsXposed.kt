@@ -12,6 +12,8 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import org.apache.commons.io.FileUtils
 import java.io.File
+import com.elvishew.xlog.XLog
+
 
 /**
  * 作者：sollyu
@@ -23,7 +25,13 @@ class SettingsXposed {
         val Instance = SettingsXposed()
     }
 
-    val file: File by lazy { File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json") }
+    val file: File by lazy {
+        if (Settings.Instance.isUseAppDataConfig)
+            File(Application.Instance.filesDir, "appenv.xposed.json")
+        else
+            File(Application.Instance.getExternalFilesDir(null), "appenv.xposed.json")
+    }
+
     var jsonObject = JSONObject()
 
     init {
@@ -48,6 +56,15 @@ class SettingsXposed {
     @Synchronized
     fun save() {
         FileUtils.write(file, JSON.toJSONString(jsonObject, true), "UTF-8")
+    }
+
+    fun resetPermissions() {
+        if (Settings.Instance.isUseAppDataConfig) {
+            XLog.d("${file.absolutePath} resetPermissions")
+            file.setReadable(true, false)
+            file.setWritable(true, false)
+            file.setExecutable(true,false)
+        }
     }
 
     /**

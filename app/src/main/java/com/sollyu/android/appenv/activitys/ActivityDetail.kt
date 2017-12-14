@@ -9,6 +9,7 @@
 package com.sollyu.android.appenv.activitys
 
 import android.app.Activity
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.net.Uri
@@ -98,25 +99,37 @@ class ActivityDetail : ActivityBase() {
 
         when (appInfo.packageName) {
             "com.tencent.mobileqq" -> {
-                Snackbar.make(fab, "\uD83D\uDCF1手机QQ无法设置成iPhone在线，请谅解！", Snackbar.LENGTH_INDEFINITE).show();
-            }
-            "com.sankuai.meituan" -> {
-                Snackbar.make(fab, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
-            }
-            "me.ele" -> {
-                Snackbar.make(fab, "🈲请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
-            }
-            "com.tencent.mm" -> {
-                Snackbar.make(fab, "⚠️使用本软件用来微信养号，更容易被封！", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "\uD83D\uDCF1手机QQ无法设置成iPhone在线，请谅解！", Snackbar.LENGTH_INDEFINITE).setAction("就要") {
+                    oieBuildManufacturer.rightEditText = "iРhone"
+                    oieBuildModel       .rightEditText = "X"
+                    Snackbar.make(fab, "亲，您这样只是自欺欺人罢了", Snackbar.LENGTH_LONG).show()
+                }.show();
             }
             "com.qzone" -> {
-                Snackbar.make(fab, "⚠如果您将机型乱写，QQ空间会把您的机型变成小写", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⚠️如果您将机型乱写⚠️\nQQ空间会把您的机型变成小写", Snackbar.LENGTH_INDEFINITE).setAction("iPhone?") {
+                    Snackbar.make(fab, "亲，您这样只是自欺欺人罢了", Snackbar.LENGTH_LONG).show()
+                    oieBuildManufacturer.rightEditText = "iРhone"
+                    oieBuildModel       .rightEditText = "X"
+                    Snackbar.make(fab, "亲，您这样只是自欺欺人罢了", Snackbar.LENGTH_LONG).show()
+                }.show()
             }
             "com.sina.weibo" -> {
-                Snackbar.make(fab, "⚠微博显示的继续有点少，有时候修改无效可能是微博没有收录这个机型", Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(fab, "⚠️微博显示的继续有点少⚠️\n有时候修改无效可能是微博没有收录这个机型", Snackbar.LENGTH_INDEFINITE).show()
+            }
+            "com.sankuai.meituan" -> {
+                Snackbar.make(fab, "\uD83C\uDE32请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
+            }
+            "me.ele" -> {
+                Snackbar.make(fab, "\uD83C\uDE32请不要使用本软件恶意刷单!", Snackbar.LENGTH_INDEFINITE).show()
+            }
+            "com.coolapk.market" -> {
+                Snackbar.make(fab, "\uD83D\uDE0F酷安基友，雷好啊～～", Snackbar.LENGTH_LONG).show()
+            }
+            "com.tencent.mm" -> {
+                Snackbar.make(fab, "⛔警告⛔\n使用本软件用来微信养号，更容易被封！", Snackbar.LENGTH_INDEFINITE).show()
             }
             "com.tencent.tmgp.sgame" -> {
-                Snackbar.make(fab, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，希众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
+                Snackbar.make(fab, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，望众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
                     oieBuildManufacturer.rightEditText = "Xiaomi"
                     oieBuildModel.rightEditText = "MIX"
                 }.show()
@@ -180,6 +193,8 @@ class ActivityDetail : ActivityBase() {
             oieSimSubscriberId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSubscriberId")
         if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperator") == true)
             oieSimOperator.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperator")
+        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimCountryIso") == true)
+            oieSimCountryIso.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimCountryIso")
         if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperatorName") == true)
             oieSimOperatorName.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperatorName")
         if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimSerialNumber") == true)
@@ -194,6 +209,12 @@ class ActivityDetail : ActivityBase() {
             oieWifiBssid.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getBSSID")
         if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getMacAddress") == true)
             oieWifiMacAddress.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getMacAddress")
+
+        //
+        if (jsonObject?.containsKey("android.content.res.language") == true)
+            oieLanguage.rightEditText = jsonObject.getString("android.content.res.language")
+        if (jsonObject?.containsKey("android.content.res.display.dpi") == true)
+            oieDisplayDpi.rightEditText = jsonObject.getString("android.content.res.display.dpi")
 
     }
 
@@ -210,6 +231,7 @@ class ActivityDetail : ActivityBase() {
         jsonObject.put("android.telephony.TelephonyManager.getDeviceId"       , oieSimGetDeviceId.rightEditText.toString() , true)
         jsonObject.put("android.telephony.TelephonyManager.getSubscriberId"   , oieSimSubscriberId.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimOperator"    , oieSimOperator.rightEditText.toString()    , true)
+        jsonObject.put("android.telephony.TelephonyManager.getSimCountryIso"  , oieSimCountryIso.rightEditText.toString()  , true)
         jsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", oieSimOperatorName.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", oieSimSerialNumber.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimState"       , oieSimStatus.rightEditText.toString()      , true)
@@ -218,6 +240,8 @@ class ActivityDetail : ActivityBase() {
         jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()     , true)
         jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString(), true)
 
+        jsonObject.put("android.content.res.language"   , oieLanguage.rightEditText.toString()  , true)
+        jsonObject.put("android.content.res.display.dpi", oieDisplayDpi.rightEditText.toString(), true)
         XLog.json(jsonObject.toJSONString())
 
         return jsonObject
@@ -345,6 +369,19 @@ class ActivityDetail : ActivityBase() {
                 .show()
     }
 
+    @Event(R.id.oieSimCountryIso)
+    private fun onItemClickSimCountryIso(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        Random.SIM_COUNTRY_ISO.values().forEach { popupMenu.menu.add(it.label) }
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieSimCountryIso.rightEditText = Random.SIM_COUNTRY_ISO.get(it.title.toString()).code }
+                .createDialog()
+                .show()
+    }
+
     @Event(R.id.oieSimOperator, R.id.oieSimOperatorName, R.id.oieSimSubscriberId, R.id.oieSimSerialNumber)
     private fun onItemClickSimOperator(view: View) {
         val popupMenu = PopupMenu(activity, view)
@@ -357,6 +394,7 @@ class ActivityDetail : ActivityBase() {
                     oieSimSerialNumber.rightEditText = random.simSerialNumber(Random.SIM_TYPE.get(item.title.toString()))
                     oieSimSubscriberId.rightEditText = random.simSubscriberId(Random.SIM_TYPE.get(item.title.toString()))
                     oieSimOperator    .rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCode
+                    oieSimCountryIso  .rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCountryIso
                     oieSimOperatorName.rightEditText = Random.SIM_TYPE.get(item.title.toString()).label
                     oieSimStatus      .rightEditText = TelephonyManager.SIM_STATE_READY.toString()
                 }
@@ -403,6 +441,27 @@ class ActivityDetail : ActivityBase() {
                 .show()
     }
 
+    @Event(R.id.oieLanguage)
+    private fun onItemClickLanguage(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        Random.LANGUAGES.values().forEach { popupMenu.menu.add(it.label) }
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { oieLanguage.rightEditText = Random.LANGUAGES.get(it.title.toString()).code }
+                .createDialog()
+                .show()
+    }
+
+    @Event(R.id.oieDisplayDpi)
+    private fun onItemClickDisplayDpi(@Suppress("UNUSED_PARAMETER") view: View) {
+        Snackbar.make(fab, "考虑手机屏幕尺寸不同，DPI不提供随机功能，请手动输入数字", Snackbar.LENGTH_LONG).show();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Event(R.id.menu_random_all)
     private fun onItemClickRandomAll(view: View) {
         this.jsonObjectToUi(Random.New().randomAll())

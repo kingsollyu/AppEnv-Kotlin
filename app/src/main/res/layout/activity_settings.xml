@@ -62,6 +62,12 @@
                 android:layout_marginTop="20dp"
                 app:leftText="@string/settings_use_root" />
 
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemSwitch
+                android:id="@+id/oiwAppDataConfig"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_use_app_data_config" />
 
             <!--Author-->
             <com.sollyu.android.option.item.OptionItemView
