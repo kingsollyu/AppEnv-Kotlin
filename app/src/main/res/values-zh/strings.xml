@@ -77,9 +77,7 @@
     <string name="settings_issues">问题?建议？</string>
     <string name="detail_run_app">请从桌面启动程序</string>
     <string name="detail_run_app_back">桌面</string>
-    <string name="about_text">
-        <Data>
-            <![CDATA[
+    <string name="about_text">"\n        <Data>\n            <![CDATA[
                     "<h2>应用变量</h2>"
                     "作者: king.sollyu<br>"
                     "联系: QQ: 191067617<br>"
@@ -109,7 +107,7 @@
                     "<br>"
 
                     "<h2>本版更新</h2>"
-                    "+ 使用Kotlin语言复写<br>"
+                    "+ 增加启动时检测权限<br>"
                     "~ 增加版本号 (ง •̀_•́)ง <br>"
                     "<br>"
 
@@ -117,9 +115,7 @@
                     "<br>"
                     "<br>"
                     "<br>"
-            ]]>
-        </Data>
-    </string>
+            ]]>\n        </Data>\n    "</string>
     <string name="title_activity_about">关于</string>
     <string name="main_nav_header_desc">如需定制，可以联系作者</string>
     <string name="settings_show_desktop_icon">显示桌面图标</string>
@@ -135,4 +131,5 @@
     <string name="detail_display_dip">DPI</string>
     <string name="settings_use_app_data_config">使用内置存储</string>
     <string name="settings_use_app_data_config_content">【内置存储特性】\n支持「没有SD卡权限」应用拦截\n不支持「7.0+」以上系统\n\n【外置存储特性】\n不支持「没有SD卡权限」应用拦截\n方便直接修改配置文件\n兼容所有系统\n\n您确定使用内置存储吗？</string>
+    <string name="splash_permission_write_storage_denied_content">应用变量需要内存卡读取权限才能正常使用\n\n问：为什么要权限？\n答：因为在Android7.0+之后，Android系统为了手机系统的安全，删除了一个名字叫做【MODE_WORLD_READABLE】的权限，此权限是允许其他程序访问使用这个权限设置的文件，这也是应用变量提供被拦截程序的一个配置入口。因为系统删除了这个权限，外加上本人菜鸡，无奈只能使用SD来存放此配置文件，从而达到让别的程序来读取。\n\n问：如果我不给会怎么样？\n答：如果您的系统在Android7.0之前，那么您可以在设置中设置成使用内置存储，这样您就可以正常使用本软件了。那如果您的系统是Android7.0+，因为不能保存配置文件在内存卡里，所以我感觉您应该不能正常使用本软件。\n\n问：但是我真的很讨厌这个权限\n答：在这里我仅作为作者来告诉您，本软件【永久】不会增加任何性质的广告，也不会在您的手机内存卡里生成各种乱七八糟的文件。但是因为本软件使用来一个叫做【友盟】的统计，它好像会在您的SD卡下生成一个叫做【umeng】的文件夹。\n\n问：……\n答：…………\n</string>
 </resources>

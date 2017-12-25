@@ -8,12 +8,20 @@
 
 package com.sollyu.android.appenv.activitys
 
+import android.Manifest
+import android.app.ProgressDialog.show
+import android.content.pm.PackageManager
 import android.os.Handler
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
+import com.elvishew.xlog.XLog
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Application
 import com.umeng.analytics.MobclickAgent
+import ru.alexbykov.nopermission.PermissionHelper
 
 
 /**
@@ -22,6 +30,8 @@ import com.umeng.analytics.MobclickAgent
  * 说明：闪屏界面
  */
 class ActivitySplash : ActivityBase(), Runnable {
+
+    val permissionHelper by lazy { PermissionHelper(activity) }
 
     override fun run() {
 
@@ -44,7 +54,26 @@ class ActivitySplash : ActivityBase(), Runnable {
     override fun onInitDone() {
         super.onInitDone()
 
-        Handler().postAtTime(this, 1000)
+        permissionHelper.check(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        permissionHelper.onSuccess{
+            Handler().postAtTime(this, 1000)
+        }
+        permissionHelper.onDenied {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.tip)
+                    .content(R.string.splash_permission_write_storage_denied_content)
+                    .positiveText(android.R.string.ok).onPositive { _, _ -> Handler().postAtTime(this, 1000) }
+                    .show()
+        }
+        permissionHelper.onNeverAskAgain {
+            Toast.makeText(activity, R.string.splash_permission_write_storage_denied_content, Toast.LENGTH_LONG).show()
+        }
+        permissionHelper.run()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun getMobclickAgentTag(): String {
