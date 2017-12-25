@@ -22,8 +22,8 @@ android {
         applicationId "com.sollyu.xposed.hook.model"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 584
-        versionName "3.2.3." + getGitVersion()
+        versionCode 585
+        versionName "3.2.4." + getGitVersion()
     }
     buildTypes {
         release {
