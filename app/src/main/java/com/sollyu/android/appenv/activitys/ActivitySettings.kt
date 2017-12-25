@@ -216,6 +216,7 @@ class ActivitySettings : ActivityBase() {
         notices.addNotice(Notice("EventBus"            , "https://github.com/greenrobot/EventBus"          , "Copyright (C) 2012-2017 Markus Junginger greenrobot (http://greenrobot.org)", ApacheSoftwareLicense20()))
         notices.addNotice(Notice("LicensesDialog"      , "https://github.com/PSDev/LicensesDialog"         , "Copyright 2013-2017 Philip Schiffer"                                        , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("libsuperuser"        , "https://github.com/Chainfire/libsuperuser"       , "Written by and copyright ©: Jorrit \"Chainfire\" Jongma Author of SuperSU"  , ApacheSoftwareLicense20()))
+        notices.addNotice(Notice("NoPermission"        , "https://github.com/NoNews/NoPermission"          , "Copyright 2017 Mike Antipiev and Alex Bykov"                                , ApacheSoftwareLicense20()))
         notices.addNotice(Notice("material-dialogs"    , "https://github.com/afollestad/material-dialogs"  , "Copyright (c) 2014-2016 Aidan Michael Follestad"                            , MITLicense())             )
 
         LicensesDialog.Builder(activity).setNotices(notices).build().showAppCompat()
@@ -255,8 +256,8 @@ class ActivitySettings : ActivityBase() {
     @Event(R.id.oivThinks)
     private fun onBtnClickThinks(view: View) {
         MaterialDialog.Builder(activity)
-                .title(R.string.settings_thinks).
-                items(arrayListOf("jfa2008@gmail.com"))
+                .title(R.string.settings_thinks)
+                .items(arrayListOf("jfa2008@gmail.com"))
                 .positiveText(android.R.string.ok)
                 .show()
     }

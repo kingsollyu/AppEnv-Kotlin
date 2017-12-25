@@ -23,7 +23,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 584
-        versionName "3.2.3" + getGitVersion()
+        versionName "3.2.3." + getGitVersion()
     }
     buildTypes {
         release {
@@ -86,6 +86,8 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
     // https://github.com/rubensousa/BottomSheetBuilder
     implementation 'com.github.rubensousa:bottomsheetbuilder:1.6.0'
+    // https://github.com/NoNews/NoPermission
+    implementation 'ru.alexbykov:nopermission:1.1.2'
 }
 
 repositories {
