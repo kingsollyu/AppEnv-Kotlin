@@ -113,7 +113,7 @@
     <string name="settings_thinks">Thinks</string>
     <string name="main_xposed_fail">Xposed status error.</string>
     <string name="settings_use_root">Use Root</string>
-    <string name="settings_use_root_content" >no english. :(</string>
+    <string name="settings_use_root_content">no english. :(</string>
     <string name="detail_clear_success">Wipe data success</string>
     <string name="settings_use_root_available_fail">Request Root Fail</string>
     <string name="detail_sim_country_iso">Sim Country Iso</string>

@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-    compileOnly    fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/umeng-analytics-7.4.0.jar')
     implementation files('libs/umeng-common-1.4.0.jar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -88,6 +88,8 @@ dependencies {
     implementation 'com.github.rubensousa:bottomsheetbuilder:1.6.0'
     // https://github.com/NoNews/NoPermission
     implementation 'ru.alexbykov:nopermission:1.1.2'
+    // https://github.com/Justson/AgentWeb
+    implementation 'com.just.agentweb:agentweb:3.0.0-rc'
 }
 
 repositories {
