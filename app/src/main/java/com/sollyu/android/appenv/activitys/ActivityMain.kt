@@ -32,6 +32,7 @@ import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Application
 import com.sollyu.android.appenv.commons.Settings
 import com.sollyu.android.appenv.commons.SettingsXposed
+import com.sollyu.android.appenv.define.AppEnvConstants
 import com.sollyu.android.appenv.events.EventSample
 import com.sollyu.android.option.item.OptionItemView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -151,7 +152,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://mobilecodec.alipay.com/client_download.htm?qrcode=apynckrfcfi5atfy45")))
             }
             R.id.nav_cloud -> {
-                ActivityWeb.launch(activity, "应用变量 后台", "http://appenv.sollyu.com")
+                ActivityWeb.launch(activity, "应用变量 后台", AppEnvConstants.URL_APPENV_SERVER)
                 //Snackbar.make(fab, "后台维护中……", Snackbar.LENGTH_LONG).show()
             }
             R.id.nav_about -> {
