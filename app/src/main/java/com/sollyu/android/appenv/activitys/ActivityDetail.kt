@@ -550,7 +550,8 @@ class ActivityDetail : ActivityBase() {
                     dialog.dismiss()
 
                     val uiConfigJsonObject = uiToJsonObject();
-                    uiConfigJsonObject.put("config.name", input.toString())
+                    uiConfigJsonObject.put("config.name"      , input.toString())
+                    uiConfigJsonObject.put("app.package.label", appInfo.loadLabel(activity.packageManager))
 
                     val cookie = AgentWebConfig.getCookiesByUrl(AppEnvConstants.URL_APPENV_SERVER)
 
@@ -559,13 +560,7 @@ class ActivityDetail : ActivityBase() {
                     OkHttpClient().newCall(Request.Builder().url(AppEnvConstants.URL_APPENV_UPLOAD_PACKAGE).header("Cookie", cookie).post(formBody).build()).enqueue(object : Callback {
                         override fun onFailure(request: Request, e: IOException) {
                             materialDialog.dismiss()
-                            activity.runOnUiThread {
-                                MaterialDialog.Builder(activity)
-                                        .title(R.string.tip)
-                                        .content("上传出现错误：\n" + Log.getStackTraceString(e))
-                                        .positiveText(android.R.string.ok)
-                                        .show()
-                            }
+                            activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n" + Log.getStackTraceString(e)).positiveText(android.R.string.ok).show() }
                         }
 
                         override fun onResponse(response: Response) {
@@ -575,26 +570,12 @@ class ActivityDetail : ActivityBase() {
                                 XLog.d(serverResult)
                                 val jsonObject = JSON.parseObject(serverResult)
                                 if (jsonObject.getInteger("ret") == 200) {
-                                    activity.runOnUiThread {
-                                        Snackbar.make(fab, "上传成功", Snackbar.LENGTH_LONG).show()
-                                    }
+                                    activity.runOnUiThread { Snackbar.make(fab, "上传成功", Snackbar.LENGTH_LONG).show() }
                                 } else {
-                                    activity.runOnUiThread {
-                                        MaterialDialog.Builder(activity)
-                                                .title(R.string.tip)
-                                                .content("上传出现错误：\n" + jsonObject.getString("msg"))
-                                                .positiveText(android.R.string.ok)
-                                                .show()
-                                    }
+                                    activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n" + jsonObject.getString("msg")).positiveText(android.R.string.ok).show() }
                                 }
                             } catch (throwable: Throwable) {
-                                activity.runOnUiThread {
-                                    MaterialDialog.Builder(activity)
-                                            .title(R.string.tip)
-                                            .content("上传出现错误：\n请确定您已经正确的登陆")
-                                            .positiveText(android.R.string.ok)
-                                            .show()
-                                }
+                                activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n请确定您已经正确的登陆").positiveText(android.R.string.ok).show() }
                             }
                         }
                     })

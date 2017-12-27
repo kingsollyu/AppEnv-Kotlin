@@ -14,6 +14,7 @@ package com.sollyu.android.appenv.define;
  * 说明：常量定义类
  */
 public class AppEnvConstants {
-    public static final String URL_APPENV_SERVER         = "http://appenv.sollyu.com/admin";
-    public static final String URL_APPENV_UPLOAD_PACKAGE = URL_APPENV_SERVER + "/api/upload/package";
+    public static final String URL_APPENV_SERVER           = "http://appenv.sollyu.com/admin";
+    public static final String URL_APPENV_UPLOAD_PACKAGE   = URL_APPENV_SERVER + "/api/upload/package";
+    public static final String URL_APPENV_DOWNLOAD_PACKAGE = URL_APPENV_SERVER + "/api/download/package";
 }
