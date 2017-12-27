@@ -123,4 +123,5 @@
     <string name="settings_use_app_data_config_content">Use app data Config?</string>
     <string name="splash_permission_write_storage_denied_content">AppEnv need write external storeage permission. :(</string>
     <string name="scan_qr">Scan QR</string>
+    <string name="upload_config">Upload Config</string>
 </resources>
