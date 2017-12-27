@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".commons.Application"
@@ -22,34 +23,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity-alias
-            android:name=".activitys.ActivitySplashAlias"
-            android:label="@string/app_name"
-            android:targetActivity=".activitys.ActivitySplash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
         <activity
             android:name=".activitys.ActivitySplash"
             android:label="@string/app_name"
             android:theme="@style/SpeedyBrandTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activitys.ActivityMain"/>
-        <activity
-            android:name=".activitys.ActivitySettings"/>
+
+        <activity-alias
+            android:name=".activitys.ActivitySplashAlias"
+            android:label="@string/app_name"
+            android:targetActivity=".activitys.ActivitySplash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity android:name=".activitys.ActivityMain" />
+        <activity android:name=".activitys.ActivitySettings" />
         <activity
             android:name=".activitys.ActivityDetail"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
-        <activity
-            android:name=".activitys.ActivityAbout"/>
+        <activity android:name=".activitys.ActivityAbout" />
+        <activity android:name=".activitys.ActivityWeb"/>
 
         <meta-data
             android:name="xposedmodule"
@@ -60,6 +63,8 @@
         <meta-data
             android:name="xposedminversion"
             android:value="2+" />
+
+
     </application>
 
 </manifest>
