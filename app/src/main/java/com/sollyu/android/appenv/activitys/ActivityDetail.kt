@@ -8,6 +8,7 @@
 
 package com.sollyu.android.appenv.activitys
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog.show
 import android.content.Intent
@@ -39,6 +40,8 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_activity_detail.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.xutils.view.annotation.Event
 import org.xutils.x
 import java.io.IOException
@@ -80,6 +83,7 @@ class ActivityDetail : ActivityBase() {
         setContentView(R.layout.activity_detail)
 
         x.view().inject(activity)
+        EventBus.getDefault().register(this)
 
         setSupportActionBar(toolbar)
         supportActionBar?.title = appInfo.loadLabel(packageManager)
@@ -145,6 +149,11 @@ class ActivityDetail : ActivityBase() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
     override fun getMobclickAgentTag(): String {
         return "Detail"
     }
@@ -159,12 +168,31 @@ class ActivityDetail : ActivityBase() {
         when (item.itemId) {
             R.id.menuDeleteConfig -> { this.onItemClickDeleteConfig()  }
             R.id.menuUploadConfig -> { this.onItemClickUploadConfig()  }
+            R.id.menuScanQRCode   -> { this.onItemClickScanQRCode()    }
             R.id.menuSolutionSave -> { this.onItemClickSolutionSave()  }
             R.id.menuSolutionLoad -> { this.onItemClickSolutionLoad()  }
             R.id.menuSolutionDele -> { this.onItemClickSolutionDelete()}
             R.id.menuRemoteRandom -> { this.onItemClickRemoteRandom()  }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * 收到消息事件
+     */
+    @Suppress("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = false)
+    fun onEventBus(eventSample: EventSample) {
+        when (eventSample.eventTYPE) {
+            EventSample.TYPE.DETAIL_JSON_2_UI -> {
+                XLog.d(eventSample.value)
+                if (eventSample.value is JSONObject) {
+                    jsonObjectToUi(eventSample.value as JSONObject)
+                }
+            }
+            else -> {
+            }
+        }
     }
 
     /**
@@ -544,6 +572,12 @@ class ActivityDetail : ActivityBase() {
     }
 
     private fun onItemClickUploadConfig() {
+        val cookie = AgentWebConfig.getCookiesByUrl(AppEnvConstants.URL_APPENV_SERVER)
+        if (cookie.isNullOrEmpty()) {
+            MaterialDialog.Builder(activity).title(R.string.tip).content("没有检测到您登陆").positiveText(android.R.string.ok).show()
+            return
+        }
+
         MaterialDialog.Builder(activity)
                 .title(R.string.tip)
                 .input("请输入保存方案的名称", "", false) { dialog, input ->
@@ -553,9 +587,7 @@ class ActivityDetail : ActivityBase() {
                     uiConfigJsonObject.put("config.name"      , input.toString())
                     uiConfigJsonObject.put("app.package.label", appInfo.loadLabel(activity.packageManager))
 
-                    val cookie = AgentWebConfig.getCookiesByUrl(AppEnvConstants.URL_APPENV_SERVER)
-
-                    val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content(R.string.settings_update_progress).progress(true, 0).cancelable(false).show()
+                    val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content("正在上传……").progress(true, 0).cancelable(false).show()
                     val formBody = FormEncodingBuilder().add(Base64.encodeToString(appInfo.packageName.toByteArray(), Base64.NO_WRAP), uiConfigJsonObject.toJSONString()).build()
                     OkHttpClient().newCall(Request.Builder().url(AppEnvConstants.URL_APPENV_UPLOAD_PACKAGE).header("Cookie", cookie).post(formBody).build()).enqueue(object : Callback {
                         override fun onFailure(request: Request, e: IOException) {
@@ -581,6 +613,13 @@ class ActivityDetail : ActivityBase() {
                     })
                 }
                 .show()
+    }
+
+    /**
+     *
+     */
+    private fun onItemClickScanQRCode() {
+        ActivityScanQR.launch(activity, ActivityScanQR.FROM_DETAIL)
     }
 
     /**

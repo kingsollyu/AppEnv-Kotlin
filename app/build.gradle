@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId "com.sollyu.xposed.hook.model"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 585
         versionName "3.2.4." + getGitVersion()
@@ -90,6 +90,8 @@ dependencies {
     implementation 'ru.alexbykov:nopermission:1.1.2'
     // https://github.com/Justson/AgentWeb
     implementation 'com.just.agentweb:agentweb:3.0.0-rc'
+    // https://github.com/dlazaro66/QRCodeReaderView
+    implementation 'com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.3'
 }
 
 repositories {
