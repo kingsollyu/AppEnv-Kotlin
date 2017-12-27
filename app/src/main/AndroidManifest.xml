@@ -13,7 +13,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:name=".commons.Application"
@@ -52,7 +56,7 @@
             android:name=".activitys.ActivityDetail"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity android:name=".activitys.ActivityAbout" />
-        <activity android:name=".activitys.ActivityWeb"/>
+        <activity android:name=".activitys.ActivityWeb" />
 
         <meta-data
             android:name="xposedmodule"
@@ -64,7 +68,7 @@
             android:name="xposedminversion"
             android:value="2+" />
 
-
+        <activity android:name=".activitys.ActivityScanQR"></activity>
     </application>
 
 </manifest>

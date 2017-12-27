@@ -10,14 +10,29 @@ package com.sollyu.android.appenv.activitys
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.MenuItem
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.LinearLayout
+import com.afollestad.materialdialogs.MaterialDialog
+import com.alibaba.fastjson.JSON
+import com.elvishew.xlog.XLog
 import com.just.agentweb.AgentWeb
+import com.just.agentweb.AgentWebConfig
 import com.just.agentweb.ChromeClientCallbackManager
 import com.sollyu.android.appenv.R
+import com.sollyu.android.appenv.commons.SettingsXposed
+import com.sollyu.android.appenv.define.AppEnvConstants
+import com.sollyu.android.appenv.events.EventSample
+import com.squareup.okhttp.Callback
+import com.squareup.okhttp.OkHttpClient
+import com.squareup.okhttp.Request
+import com.squareup.okhttp.Response
 import kotlinx.android.synthetic.main.activity_web.*
 import kotlinx.android.synthetic.main.include_toolbar.*
+import org.greenrobot.eventbus.EventBus
+import java.io.IOException
 
 class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCallback {
     companion object {
@@ -53,12 +68,11 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
         supportActionBar?.title = intent.getStringExtra("webTitle")
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
     }
 
     override fun onInitDone() {
         super.onInitDone()
-        agentWeb.agentWebSettings
+        agentWeb.jsInterfaceHolder.addJavaObject("android", JsInterfaceHolder())
     }
 
     override fun onReceivedTitle(view: WebView, title: String) {
@@ -89,4 +103,47 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
         super.onDestroy()
         agentWeb.webLifeCycle.onDestroy()
     }
+
+    inner class JsInterfaceHolder{
+
+        @Suppress("unused")
+        @JavascriptInterface
+        fun downloadConfig(configId: String, packageName: String, configName: String, packageLabel: String) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.tip)
+                    .content("确定下载：$configName 到 $packageLabel ?")
+                    .positiveText("确定")
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { dialog, which ->
+                        val cookie = AgentWebConfig.getCookiesByUrl(AppEnvConstants.URL_APPENV_SERVER)
+                        OkHttpClient().newCall(Request.Builder().url(AppEnvConstants.URL_APPENV_DOWNLOAD_PACKAGE + "?config_id=" + configId).header("Cookie", cookie).build()).enqueue(object : Callback {
+                            override fun onFailure(request: Request, e: IOException) {
+                                dialog.dismiss()
+                                XLog.e(e.toString(), e)
+                                activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("下载出现错误：\n" + Log.getStackTraceString(e)).positiveText(android.R.string.ok).show() }
+                            }
+
+                            override fun onResponse(response: Response) {
+                                dialog.dismiss()
+                                val serverResult = response.body().string()
+                                XLog.d(serverResult)
+                                try {
+                                    val resultJsonObject = JSON.parseObject(serverResult)
+                                    if (resultJsonObject.getInteger("ret") == 200) {
+                                        SettingsXposed.Instance.set(packageName, resultJsonObject.getJSONObject("data"))
+                                        EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
+                                        activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("下载并应用成功").positiveText(android.R.string.ok).show() }
+                                    } else {
+                                        activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n" + resultJsonObject.getString("msg")).positiveText(android.R.string.ok).show() }
+                                    }
+                                } catch (e: Exception) {
+                                    activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("下载出现错误：\n请确定您已经正确的登陆").positiveText(android.R.string.ok).show() }
+                                }
+                            }
+                        })
+                    }
+                    .show()
+        }
+    }
+
 }
