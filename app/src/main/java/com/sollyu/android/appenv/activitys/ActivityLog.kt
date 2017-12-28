@@ -13,7 +13,6 @@ import android.content.Intent
 import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
-import com.elvishew.xlog.XLog
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Application
 import kotlinx.android.synthetic.main.activity_log.*

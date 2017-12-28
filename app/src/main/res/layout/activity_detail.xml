@@ -35,6 +35,16 @@
         app:srcCompat="@android:drawable/ic_dialog_email">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_scan_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_scan"
+            app:fab_colorNormal="#663366"
+            app:fab_label="@string/scan_qr"
+            app:fab_size="mini" />
+
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_random_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
