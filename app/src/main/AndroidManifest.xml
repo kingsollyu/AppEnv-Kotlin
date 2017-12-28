@@ -56,7 +56,8 @@
         <activity android:name=".activitys.ActivityAbout" />
         <activity android:name=".activitys.ActivityWeb" />
         <activity android:name=".activitys.ActivityScanQR" />
-        <activity android:name=".activitys.ActivityLog"/>
+        <activity android:name=".activitys.ActivityLog" />
+        <activity android:name=".activitys.ActivityRegister"/>
         <activity
             android:name=".activitys.ActivityDetail"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />

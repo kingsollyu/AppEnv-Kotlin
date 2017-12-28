@@ -107,6 +107,12 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
 
         @Suppress("unused")
         @JavascriptInterface
+        fun register() {
+            ActivityRegister.launch(activity)
+        }
+
+        @Suppress("unused")
+        @JavascriptInterface
         fun downloadConfig(configId: String, packageName: String, configName: String, packageLabel: String) {
             MaterialDialog.Builder(activity)
                     .title(R.string.tip)

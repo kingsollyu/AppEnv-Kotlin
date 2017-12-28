@@ -153,6 +153,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
             }
             R.id.nav_cloud -> {
                 ActivityWeb.launch(activity, "应用变量 后台", AppEnvConstants.URL_APPENV_SERVER)
+                // ActivityRegister.launch(activity)
                 //Snackbar.make(fab, "后台维护中……", Snackbar.LENGTH_LONG).show()
             }
             R.id.nav_about -> {

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sollyu.android.appenv.activitys.ActivityRegister">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="账号"
+                        android:textColor="@color/black0"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etUserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="您注册时的帐号(长度需大于6)"
+                        android:inputType="textUri"
+                        android:text=""
+                        android:textColorHint="@color/gray3"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="密码"
+                        android:textColor="@color/black0"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etPwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="填写密码(长度需大于6)"
+                        android:inputType="textPassword"
+                        android:text=""
+                        android:textColorHint="@color/gray3"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+                   <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="密码"
+                        android:textColor="@color/black0"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etPwdConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="填写确认密码(长度需大于6)"
+                        android:inputType="textPassword"
+                        android:text=""
+                        android:textColorHint="@color/gray3"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+                <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+                   <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="邮箱"
+                        android:textColor="@color/black0"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etEMail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="填写邮箱(用于密码找回)"
+                        android:inputType="textEmailAddress"
+                        android:text=""
+                        android:textColorHint="@color/gray3"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="注册"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
