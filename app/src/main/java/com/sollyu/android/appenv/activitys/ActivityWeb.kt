@@ -38,7 +38,6 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
     companion object {
         fun launch(activity: Activity, webTitle: String, webUrl: String) {
             val intent = Intent(activity, ActivityWeb::class.java)
-
             intent.putExtra("webTitle", webTitle)
             intent.putExtra("webUrl", webUrl)
             activity.startActivity(intent)

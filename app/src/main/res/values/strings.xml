@@ -124,4 +124,7 @@
     <string name="splash_permission_write_storage_denied_content">AppEnv need write external storeage permission. :(</string>
     <string name="scan_qr">Scan QR</string>
     <string name="upload_config">Upload Config</string>
+    <string name="settings_log">Logs</string>
+    <string name="log_delete">Delete</string>
+    <string name="log_reload">Reload</string>
 </resources>

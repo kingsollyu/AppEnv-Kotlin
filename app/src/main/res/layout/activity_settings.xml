@@ -116,6 +116,13 @@
                 android:layout_marginTop="20dp"
                 app:leftText="@string/settings_thinks" />
 
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+            <com.sollyu.android.option.item.OptionItemView
+                android:id="@+id/oivLog"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_log" />
+
             <!--Licence-->
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivLicence"

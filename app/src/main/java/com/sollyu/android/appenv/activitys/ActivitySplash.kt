@@ -31,18 +31,20 @@ import ru.alexbykov.nopermission.PermissionHelper
  */
 class ActivitySplash : ActivityBase(), Runnable {
 
-    val permissionHelper by lazy { PermissionHelper(activity) }
+    private val permissionHelper by lazy { PermissionHelper(activity) }
 
     override fun run() {
 
         /* Xposed 没有成功的状态 */
         if (!Application.Instance.isXposedWork()) {
+            XLog.e("Xposed Is Not Work")
             MaterialDialog
                     .Builder(activity)
                     .title(R.string.splash_xposed_not_work_title)
                     .content(R.string.splash_xposed_not_work_content)
                     .positiveText(android.R.string.ok)
-                    .onPositive { _, _ -> ActivityMain.launch(activity) }
+                    .onAny { _, _ -> ActivityMain.launch(activity) }
+                    .canceledOnTouchOutside(false)
                     .show()
             return
         }

@@ -134,4 +134,7 @@
     <string name="splash_permission_write_storage_denied_content">应用变量需要内存卡读取权限才能正常使用\n\n问：为什么要权限？\n答：因为在Android7.0+之后，Android系统为了手机系统的安全，删除了一个名字叫做【MODE_WORLD_READABLE】的权限，此权限是允许其他程序访问使用这个权限设置的文件，这也是应用变量提供被拦截程序的一个配置入口。因为系统删除了这个权限，外加上本人菜鸡，无奈只能使用SD来存放此配置文件，从而达到让别的程序来读取。\n\n问：如果我不给会怎么样？\n答：如果您的系统在Android7.0之前，那么您可以在设置中设置成使用内置存储，这样您就可以正常使用本软件了。那如果您的系统是Android7.0+，因为不能保存配置文件在内存卡里，所以我感觉您应该不能正常使用本软件。\n\n问：但是我真的很讨厌这个权限\n答：在这里我仅作为作者来告诉您，本软件【永久】不会增加任何性质的广告，也不会在您的手机内存卡里生成各种乱七八糟的文件。但是因为本软件使用来一个叫做【友盟】的统计，它好像会在您的SD卡下生成一个叫做【umeng】的文件夹。\n\n问：……\n答：…………\n</string>
     <string name="scan_qr">扫一扫</string>
     <string name="upload_config">上传配置</string>
+    <string name="settings_log">运行日志</string>
+    <string name="log_delete">删除</string>
+    <string name="log_reload">刷新</string>
 </resources>

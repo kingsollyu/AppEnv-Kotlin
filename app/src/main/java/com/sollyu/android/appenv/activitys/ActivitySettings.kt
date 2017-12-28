@@ -296,4 +296,9 @@ class ActivitySettings : ActivityBase() {
             }
         })
     }
+
+    @Event(R.id.oivLog)
+    private fun onBtnClickLog(view: View) {
+        ActivityLog.launch(activity)
+    }
 }
