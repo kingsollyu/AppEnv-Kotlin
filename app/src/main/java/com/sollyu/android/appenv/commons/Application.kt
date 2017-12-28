@@ -48,7 +48,7 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
         super.onCreate()
 
         // 初始化日志
-        val logConfiguration = LogConfiguration.Builder().tag("Xposed").b().logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.WARN).build()
+        val logConfiguration = LogConfiguration.Builder().tag("Xposed").logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.WARN).build()
         val logAndroid = AndroidPrinter()
         val logFile = FilePrinter.Builder(Instance.externalCacheDir.absolutePath).backupStrategy(NeverBackupStrategy()).fileNameGenerator(DateFileNameGenerator()).build()
         XLog.init(logConfiguration, logAndroid, logFile)
@@ -68,6 +68,9 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
             FileUtils.writeStringToFile(Phones.Instance.phoneFile, IOUtils.toString(Instance.assets.open("app.env.phone.json"), "UTF-8"), "UTF-8")
         }
         Phones.Reload()
+
+        // 汇报机型
+        PhoneReport.Instance.start()
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {

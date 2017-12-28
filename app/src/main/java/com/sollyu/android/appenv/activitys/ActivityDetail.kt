@@ -511,7 +511,7 @@ class ActivityDetail : ActivityBase() {
             if (launchIntent != null) {
                 startActivity(launchIntent)//null pointer check in case package name was not found
             } else {
-
+                Snackbar.make(fab, "此程序没有界面，无法启动", Snackbar.LENGTH_LONG).show()
             }
         } else {
             Snackbar.make(view, R.string.detail_run_app, Snackbar.LENGTH_LONG)

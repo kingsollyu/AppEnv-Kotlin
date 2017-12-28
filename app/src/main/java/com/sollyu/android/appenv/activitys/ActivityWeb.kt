@@ -126,7 +126,6 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
                             override fun onResponse(response: Response) {
                                 dialog.dismiss()
                                 val serverResult = response.body().string()
-                                XLog.d(serverResult)
                                 try {
                                     val resultJsonObject = JSON.parseObject(serverResult)
                                     if (resultJsonObject.getInteger("ret") == 200) {
