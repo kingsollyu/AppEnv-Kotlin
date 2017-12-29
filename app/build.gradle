@@ -22,8 +22,8 @@ android {
         applicationId "com.sollyu.xposed.hook.model"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 585
-        versionName "3.2.4." + getGitVersion()
+        versionCode 586
+        versionName "3.2.5." + getGitVersion()
     }
     buildTypes {
         release {
@@ -41,6 +41,13 @@ android {
         coolapk {
             dimension "default"
         }
+        oschina {
+            dimension "default"
+        }
+        ys168 {
+            dimension "default"
+        }
+
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
