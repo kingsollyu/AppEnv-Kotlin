@@ -8,6 +8,7 @@
 
 package com.sollyu.android.appenv.activitys
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog.show
 import android.content.Intent
@@ -15,25 +16,35 @@ import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.telephony.TelephonyManager
+import android.util.Base64
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import com.afollestad.materialdialogs.MaterialDialog
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.elvishew.xlog.XLog
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
+import com.just.agentweb.AgentWeb
+import com.just.agentweb.AgentWebConfig
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.*
 import com.sollyu.android.appenv.commons.Random
+import com.sollyu.android.appenv.define.AppEnvConstants
 import com.sollyu.android.appenv.events.EventSample
+import com.squareup.okhttp.*
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_activity_detail.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.xutils.view.annotation.Event
 import org.xutils.x
+import java.io.IOException
 import java.util.*
 
 
@@ -72,6 +83,7 @@ class ActivityDetail : ActivityBase() {
         setContentView(R.layout.activity_detail)
 
         x.view().inject(activity)
+        EventBus.getDefault().register(this)
 
         setSupportActionBar(toolbar)
         supportActionBar?.title = appInfo.loadLabel(packageManager)
@@ -137,6 +149,11 @@ class ActivityDetail : ActivityBase() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
     override fun getMobclickAgentTag(): String {
         return "Detail"
     }
@@ -150,12 +167,31 @@ class ActivityDetail : ActivityBase() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuDeleteConfig -> { this.onItemClickDeleteConfig()  }
+            R.id.menuUploadConfig -> { this.onItemClickUploadConfig()  }
             R.id.menuSolutionSave -> { this.onItemClickSolutionSave()  }
             R.id.menuSolutionLoad -> { this.onItemClickSolutionLoad()  }
             R.id.menuSolutionDele -> { this.onItemClickSolutionDelete()}
             R.id.menuRemoteRandom -> { this.onItemClickRemoteRandom()  }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * 收到消息事件
+     */
+    @Suppress("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = false)
+    fun onEventBus(eventSample: EventSample) {
+        when (eventSample.eventTYPE) {
+            EventSample.TYPE.DETAIL_JSON_2_UI -> {
+                XLog.d(eventSample.value)
+                if (eventSample.value is JSONObject) {
+                    jsonObjectToUi(eventSample.value as JSONObject)
+                }
+            }
+            else -> {
+            }
+        }
     }
 
     /**
@@ -474,7 +510,7 @@ class ActivityDetail : ActivityBase() {
             if (launchIntent != null) {
                 startActivity(launchIntent)//null pointer check in case package name was not found
             } else {
-
+                Snackbar.make(fab, "此程序没有界面，无法启动", Snackbar.LENGTH_LONG).show()
             }
         } else {
             Snackbar.make(view, R.string.detail_run_app, Snackbar.LENGTH_LONG)
@@ -534,13 +570,65 @@ class ActivityDetail : ActivityBase() {
         activity.finish()
     }
 
+    private fun onItemClickUploadConfig() {
+        val cookie = AgentWebConfig.getCookiesByUrl(AppEnvConstants.URL_APPENV_SERVER)
+        if (cookie.isNullOrEmpty()) {
+            MaterialDialog.Builder(activity).title(R.string.tip).content("没有检测到您登陆").positiveText(android.R.string.ok).show()
+            return
+        }
+
+        MaterialDialog.Builder(activity)
+                .title(R.string.tip)
+                .input("请输入保存方案的名称", "", false) { dialog, input ->
+                    dialog.dismiss()
+
+                    val uiConfigJsonObject = uiToJsonObject();
+                    uiConfigJsonObject.put("config.name"      , input.toString())
+                    uiConfigJsonObject.put("app.package.label", appInfo.loadLabel(activity.packageManager))
+
+                    val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content("正在上传……").progress(true, 0).cancelable(false).show()
+                    val formBody = FormEncodingBuilder().add(Base64.encodeToString(appInfo.packageName.toByteArray(), Base64.NO_WRAP), uiConfigJsonObject.toJSONString()).build()
+                    OkHttpClient().newCall(Request.Builder().url(AppEnvConstants.URL_APPENV_UPLOAD_PACKAGE).header("Cookie", cookie).post(formBody).build()).enqueue(object : Callback {
+                        override fun onFailure(request: Request, e: IOException) {
+                            materialDialog.dismiss()
+                            activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n" + Log.getStackTraceString(e)).positiveText(android.R.string.ok).show() }
+                        }
+
+                        override fun onResponse(response: Response) {
+                            materialDialog.dismiss()
+                            try {
+                                val serverResult = response.body().string()
+                                XLog.d(serverResult)
+                                val jsonObject = JSON.parseObject(serverResult)
+                                if (jsonObject.getInteger("ret") == 200) {
+                                    activity.runOnUiThread { Snackbar.make(fab, "上传成功", Snackbar.LENGTH_LONG).show() }
+                                } else {
+                                    activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n" + jsonObject.getString("msg")).positiveText(android.R.string.ok).show() }
+                                }
+                            } catch (throwable: Throwable) {
+                                activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n请确定您已经正确的登陆").positiveText(android.R.string.ok).show() }
+                            }
+                        }
+                    })
+                }
+                .show()
+    }
+
+    /**
+     *
+     */
+    @Event(R.id.menu_scan_qr_code)
+    private fun onItemClickScanQRCode(view: View) {
+        ActivityScanQR.launch(activity, ActivityScanQR.FROM_DETAIL)
+    }
+
     /**
      *
      */
     private fun onItemClickSolutionSave() {
         MaterialDialog.Builder(activity)
                 .title(R.string.detail_solution_save_title)
-                .input(R.string.detail_solution_save_hint, R.string.empty, false) { dialog, input ->
+                .input(R.string.detail_solution_save_hint, R.string.empty, false) { _, input ->
                     Solution.Instance.set(input.toString(), uiToJsonObject())
                     Snackbar.make(fab, activity.getString(R.string.detail_solution_save_success, input), Snackbar.LENGTH_LONG).show()
                 }

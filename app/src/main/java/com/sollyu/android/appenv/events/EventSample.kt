@@ -13,8 +13,21 @@ package com.sollyu.android.appenv.events
  * 时间：2017/10/30
  * 说明：
  */
-class EventSample(val eventTYPE: TYPE) {
+class EventSample {
     enum class TYPE {
-        MAIN_REFRESH, MAIN_LIST_CLEAR, MAIN_THEME_NIGHT
+        MAIN_REFRESH, MAIN_LIST_CLEAR, MAIN_THEME_NIGHT,
+        DETAIL_JSON_2_UI,
     }
+
+    constructor(eventTYPE: TYPE) {
+        this.eventTYPE = eventTYPE
+    }
+
+    constructor(eventTYPE: TYPE, value: Any) {
+        this.eventTYPE = eventTYPE
+        this.value = value
+    }
+
+    val eventTYPE: TYPE
+    var value: Any? = null
 }

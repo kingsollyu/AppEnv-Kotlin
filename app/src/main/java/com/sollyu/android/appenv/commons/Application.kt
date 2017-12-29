@@ -13,19 +13,18 @@ import android.support.v7.app.AppCompatDelegate
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
-import com.elvishew.xlog.XLog.logLevel
+import com.elvishew.xlog.flattener.Flattener
 import com.elvishew.xlog.printer.AndroidPrinter
 import com.elvishew.xlog.printer.file.FilePrinter
 import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
-import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.not.proguard.NotProguard
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
-import org.apache.commons.text.CharacterPredicates
-import org.apache.commons.text.RandomStringGenerator
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * 作者：sollyu
@@ -48,12 +47,11 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
         super.onCreate()
 
         // 初始化日志
-        val logConfiguration = LogConfiguration.Builder().tag("Xposed").b().logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.WARN).build()
+        val logConfiguration = LogConfiguration.Builder().tag("AppEnv").logLevel(if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.WARN).build()
         val logAndroid = AndroidPrinter()
-        val logFile = FilePrinter.Builder(Instance.externalCacheDir.absolutePath).backupStrategy(NeverBackupStrategy()).fileNameGenerator(DateFileNameGenerator()).build()
-        XLog.init(logConfiguration, logAndroid, logFile)
-        XLog.d("[APP START]")
+        val logFile = FilePrinter.Builder(Instance.externalCacheDir.absolutePath).backupStrategy(NeverBackupStrategy()).logFlattener(MyLogFlattener()).build()
 
+        XLog.init(logConfiguration, logAndroid, logFile)
         // 添加崩溃捕获
         Thread.setDefaultUncaughtExceptionHandler(this)
 
@@ -68,6 +66,9 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
             FileUtils.writeStringToFile(Phones.Instance.phoneFile, IOUtils.toString(Instance.assets.open("app.env.phone.json"), "UTF-8"), "UTF-8")
         }
         Phones.Reload()
+
+        // 汇报机型
+        PhoneReport.Instance.start()
     }
 
     override fun uncaughtException(t: Thread?, throwable: Throwable?) {
@@ -79,4 +80,9 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
         return false
     }
 
+    inner class MyLogFlattener : Flattener {
+        override fun flatten(logLevel: Int, tag: String, message: String): CharSequence {
+             return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(System.currentTimeMillis())) + " [" + LogLevel.getShortLevelName(logLevel) + "] " + message
+        }
+    }
 }

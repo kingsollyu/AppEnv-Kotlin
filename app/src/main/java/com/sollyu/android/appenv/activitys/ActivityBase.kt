@@ -32,7 +32,7 @@ abstract class ActivityBase : AppCompatActivity() {
         onInitView()
         onInitData()
         onInitListener()
-        Handler().post { onInitDone() }
+        activity.runOnUiThread { onInitDone() }
     }
 
     open fun onInitView() {}

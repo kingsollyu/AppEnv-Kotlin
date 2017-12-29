@@ -20,10 +20,10 @@ android {
 
     defaultConfig {
         applicationId "com.sollyu.xposed.hook.model"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
-        versionCode 585
-        versionName "3.2.4." + getGitVersion()
+        versionCode 586
+        versionName "3.2.5." + getGitVersion()
     }
     buildTypes {
         release {
@@ -41,6 +41,13 @@ android {
         coolapk {
             dimension "default"
         }
+        oschina {
+            dimension "default"
+        }
+        ys168 {
+            dimension "default"
+        }
+
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -50,7 +57,7 @@ android {
 }
 
 dependencies {
-    compileOnly    fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/umeng-analytics-7.4.0.jar')
     implementation files('libs/umeng-common-1.4.0.jar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -88,6 +95,10 @@ dependencies {
     implementation 'com.github.rubensousa:bottomsheetbuilder:1.6.0'
     // https://github.com/NoNews/NoPermission
     implementation 'ru.alexbykov:nopermission:1.1.2'
+    // https://github.com/Justson/AgentWeb
+    implementation 'com.just.agentweb:agentweb:3.0.0-rc'
+    // https://github.com/dlazaro66/QRCodeReaderView
+    implementation 'com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.3'
 }
 
 repositories {

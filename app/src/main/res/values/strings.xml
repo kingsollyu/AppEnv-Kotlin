@@ -113,7 +113,7 @@
     <string name="settings_thinks">Thinks</string>
     <string name="main_xposed_fail">Xposed status error.</string>
     <string name="settings_use_root">Use Root</string>
-    <string name="settings_use_root_content" >no english. :(</string>
+    <string name="settings_use_root_content">no english. :(</string>
     <string name="detail_clear_success">Wipe data success</string>
     <string name="settings_use_root_available_fail">Request Root Fail</string>
     <string name="detail_sim_country_iso">Sim Country Iso</string>
@@ -122,4 +122,11 @@
     <string name="settings_use_app_data_config">Use app data Config</string>
     <string name="settings_use_app_data_config_content">Use app data Config?</string>
     <string name="splash_permission_write_storage_denied_content">AppEnv need write external storeage permission. :(</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="upload_config">Upload Config</string>
+    <string name="settings_log">Logs</string>
+    <string name="log_delete">Delete</string>
+    <string name="log_reload">Reload</string>
+    <string name="register_title">Register</string>
+    <string name="register_processing">Registering…</string>
 </resources>
