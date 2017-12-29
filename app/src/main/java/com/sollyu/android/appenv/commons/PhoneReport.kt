@@ -14,6 +14,7 @@ import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.preference.PreferenceManager
+import android.provider.Settings
 import android.telephony.TelephonyManager
 import com.alibaba.fastjson.JSON
 import com.elvishew.xlog.XLog
@@ -33,7 +34,7 @@ class PhoneReport {
         var Instance = PhoneReport()
     }
 
-    @SuppressLint("WifiManagerLeak")
+    @SuppressLint("WifiManagerLeak", "HardwareIds")
     fun start() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Application.Instance)
         if (sharedPreferences.getBoolean("report_phone", false)) {
@@ -57,6 +58,7 @@ class PhoneReport {
         postBody.add("android.os.Build.ro.product.fingerprint" , Build.FINGERPRINT)
         postBody.add("android.os.Build.ro.serialno"            , Build.SERIAL)
         postBody.add("android.os.Build.VERSION.RELEASE"        , Build.VERSION.RELEASE)
+        postBody.add("android.os.SystemProperties.android_id"  , Settings.Secure.getString(Application.Instance.contentResolver, Settings.Secure.ANDROID_ID))
 
         arrayListOf("getLine1Number", "getDeviceId", "getSubscriberId", "getSimOperator", "getSimCountryIso", "getSimOperatorName", "getSimSerialNumber", "getSimState").forEach {
             try {

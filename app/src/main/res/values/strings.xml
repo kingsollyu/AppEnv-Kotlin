@@ -127,4 +127,6 @@
     <string name="settings_log">Logs</string>
     <string name="log_delete">Delete</string>
     <string name="log_reload">Reload</string>
+    <string name="register_title">Register</string>
+    <string name="register_processing">Registering…</string>
 </resources>

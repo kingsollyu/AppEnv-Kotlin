@@ -13,21 +13,16 @@ import android.support.v7.app.AppCompatDelegate
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
-import com.elvishew.xlog.XLog.logLevel
-import com.elvishew.xlog.flattener.DefaultFlattener
 import com.elvishew.xlog.flattener.Flattener
 import com.elvishew.xlog.printer.AndroidPrinter
 import com.elvishew.xlog.printer.file.FilePrinter
 import com.elvishew.xlog.printer.file.backup.NeverBackupStrategy
-import com.elvishew.xlog.printer.file.naming.DateFileNameGenerator
 import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.not.proguard.NotProguard
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
-import org.apache.commons.text.CharacterPredicates
-import org.apache.commons.text.RandomStringGenerator
 import java.text.SimpleDateFormat
 import java.util.*
 

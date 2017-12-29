@@ -13,7 +13,6 @@
     <group>
         <item android:title="@string/delete_config" android:id="@+id/menuDeleteConfig"  />
         <item android:title="@string/upload_config" android:id="@+id/menuUploadConfig"  />
-        <item android:title="@string/scan_qr"       android:id="@+id/menuScanQRCode"    />
         <item android:title="@string/remote_random" android:id="@+id/menuRemoteRandom"  />
     </group>
     <item android:title="@string/solution" android:icon="@drawable/ic_menu">

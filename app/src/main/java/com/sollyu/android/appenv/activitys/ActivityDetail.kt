@@ -168,7 +168,6 @@ class ActivityDetail : ActivityBase() {
         when (item.itemId) {
             R.id.menuDeleteConfig -> { this.onItemClickDeleteConfig()  }
             R.id.menuUploadConfig -> { this.onItemClickUploadConfig()  }
-            R.id.menuScanQRCode   -> { this.onItemClickScanQRCode()    }
             R.id.menuSolutionSave -> { this.onItemClickSolutionSave()  }
             R.id.menuSolutionLoad -> { this.onItemClickSolutionLoad()  }
             R.id.menuSolutionDele -> { this.onItemClickSolutionDelete()}
@@ -618,7 +617,8 @@ class ActivityDetail : ActivityBase() {
     /**
      *
      */
-    private fun onItemClickScanQRCode() {
+    @Event(R.id.menu_scan_qr_code)
+    private fun onItemClickScanQRCode(view: View) {
         ActivityScanQR.launch(activity, ActivityScanQR.FROM_DETAIL)
     }
 
