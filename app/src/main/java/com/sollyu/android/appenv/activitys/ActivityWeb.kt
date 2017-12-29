@@ -138,7 +138,7 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
                                         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
                                         activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("下载并应用成功").positiveText(android.R.string.ok).show() }
                                     } else {
-                                        activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("上传出现错误：\n" + resultJsonObject.getString("msg")).positiveText(android.R.string.ok).show() }
+                                        activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("下载出现错误：\n" + resultJsonObject.getString("msg")).positiveText(android.R.string.ok).show() }
                                     }
                                 } catch (e: Exception) {
                                     activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("下载出现错误：\n请确定您已经正确的登陆").positiveText(android.R.string.ok).show() }
