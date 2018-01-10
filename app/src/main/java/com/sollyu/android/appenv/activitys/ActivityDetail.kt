@@ -143,7 +143,7 @@ class ActivityDetail : ActivityBase() {
             "com.tencent.tmgp.sgame" -> {
                 Snackbar.make(fab, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，望众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
                     oieBuildManufacturer.rightEditText = "OPPO"
-                    oieBuildModel.rightEditText = "MIX"
+                    oieBuildModel.rightEditText = "OPPO r11 plus"
                 }.show()
             }
         }
