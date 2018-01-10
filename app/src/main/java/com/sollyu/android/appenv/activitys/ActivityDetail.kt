@@ -142,7 +142,7 @@ class ActivityDetail : ActivityBase() {
             }
             "com.tencent.tmgp.sgame" -> {
                 Snackbar.make(fab, "⚠️使用本软件可以打开王者荣耀高帧率模式\n但是也有很小的几率封号，望众知。", Snackbar.LENGTH_INDEFINITE).setAction("开启") {
-                    oieBuildManufacturer.rightEditText = "Xiaomi"
+                    oieBuildManufacturer.rightEditText = "OPPO"
                     oieBuildModel.rightEditText = "MIX"
                 }.show()
             }
@@ -658,7 +658,36 @@ class ActivityDetail : ActivityBase() {
     }
 
     private fun onItemClickRemoteRandom() {
-        Snackbar.make(fab, "后台维护中……", Snackbar.LENGTH_LONG).show()
+        val cookie = AgentWebConfig.getCookiesByUrl(AppEnvConstants.URL_APPENV_SERVER)
+        if (cookie.isNullOrEmpty()) {
+            MaterialDialog.Builder(activity).title(R.string.tip).content("没有检测到您登陆").positiveText(android.R.string.ok).show()
+            return
+        }
+
+        val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content("正在获取数据……").progress(true, 0).cancelable(false).show()
+        OkHttpClient().newCall(Request.Builder().url(AppEnvConstants.URL_APPENV_RANDOM_PACKAGE).header("Cookie", cookie).build()).enqueue(object : Callback {
+            override fun onFailure(request: Request, e: IOException) {
+                materialDialog.dismiss()
+                activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("远程随机出现错误：\n" + Log.getStackTraceString(e)).positiveText(android.R.string.ok).show() }
+            }
+
+            override fun onResponse(response: Response) {
+                materialDialog.dismiss()
+                try {
+                    val serverResult = response.body().string()
+                    XLog.d(serverResult)
+                    val jsonObject = JSON.parseObject(serverResult)
+                    if (jsonObject.getInteger("ret") == 200) {
+                        activity.runOnUiThread { jsonObjectToUi(jsonObject.getJSONObject("data")) }
+                        activity.runOnUiThread { Snackbar.make(fab, "远程随机成功(扣除2次使用点数)", Snackbar.LENGTH_LONG).show() }
+                    } else {
+                        activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("远程随机出现错误：\n" + jsonObject.getString("msg")).positiveText(android.R.string.ok).show() }
+                    }
+                } catch (throwable: Throwable) {
+                    activity.runOnUiThread { MaterialDialog.Builder(activity).title(R.string.tip).content("远程随机出现错误：\n请确定您已经正确的登陆").positiveText(android.R.string.ok).show() }
+                }
+            }
+        })
     }
 
     private fun JSONObject.put(key: String, value: String, boolean: Boolean) {
