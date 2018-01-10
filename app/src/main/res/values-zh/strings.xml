@@ -82,7 +82,7 @@
                     "作者: king.sollyu<br>"
                     "联系: QQ: 191067617<br>"
                     "说明: 动态修改软件信息<br>"
-                    "依赖: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a><br>"
+                    "依赖: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a>再或<a href="https://github.com/android-hacker/VAExposed">VAExposed</a><br>"
                     "更新: 历史版本<a href="https://github.com/kingsollyu/AppEnv-Kotlin/releases">点击这里</a><br>"
                     "视频: 软件教程<a href="http://www.bilibili.com/video/av6928436/">点击这里</a><br>"
                     "微信: 公众号: 应用变量<br>"
@@ -107,9 +107,12 @@
                     "<br>"
 
                     "<h2>本版更新</h2>"
+                    "+ 增加OPPO的部分机型<br>"
                     "+ 远程随机(扣除2次可使用点数)<br>"
                     "+ 增加部分当下流行的机型<br>"
                     "~ 修改王者荣耀高帧率机型为OPPO r11 plus<br>"
+                    "~ 修复了过于引人注目的BUG<br>"
+                    "~ 顺便一提：应用变量支持VAExposed了<br>"
                     "<br>"
 
                     "<br>"
