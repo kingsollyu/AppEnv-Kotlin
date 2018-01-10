@@ -72,7 +72,7 @@ class ActivitySettings : ActivityBase() {
         oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
         oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
-        oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
+        oivUpdatePhoneList.setRightText(Phones.Instance.versionName)
     }
 
     override fun getMobclickAgentTag(): String {
@@ -285,7 +285,7 @@ class ActivitySettings : ActivityBase() {
                                 .onPositive { _, _ ->
                                     FileUtils.writeStringToFile(Phones.Instance.phoneFile, JSON.toJSONString(contentJson, true), "UTF-8")
                                     Phones.Reload()
-                                    oivUpdatePhoneList.setRightText(Phones.Instance.versionCode.toString())
+                                    oivUpdatePhoneList.setRightText(Phones.Instance.versionName)
                                     Snackbar.make(oivLicence, R.string.settings_update_phone_success, Snackbar.LENGTH_LONG).show()
                                 }
                                 .show()
