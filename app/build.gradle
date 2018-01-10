@@ -47,7 +47,9 @@ android {
         ys168 {
             dimension "default"
         }
-
+        play {
+            dimension "default"
+        }
     }
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->

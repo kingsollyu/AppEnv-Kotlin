@@ -18,6 +18,7 @@ public class AppEnvConstants {
     public static final String URL_APPENV_SERVER           = URL_APPENV_HOST   + "/admin";
     public static final String URL_APPENV_UPLOAD_PACKAGE   = URL_APPENV_SERVER + "/api/upload/package";
     public static final String URL_APPENV_DOWNLOAD_PACKAGE = URL_APPENV_SERVER + "/api/download/package";
+    public static final String URL_APPENV_RANDOM_PACKAGE   = URL_APPENV_SERVER + "/api/random/package";
     public static final String URL_APPENV_SHARE_START      = URL_APPENV_HOST   + "/share";
     public static final String URL_APPENV_REPORT_PHONE     = URL_APPENV_HOST   + "/api/phone/report";
     public static final String URL_APPENV_REGISTER         = URL_APPENV_HOST   + "/api/register";
