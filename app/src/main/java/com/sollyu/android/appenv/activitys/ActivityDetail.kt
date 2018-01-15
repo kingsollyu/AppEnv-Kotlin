@@ -239,6 +239,8 @@ class ActivityDetail : ActivityBase() {
             oieSimStatus.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimState")
 
         //
+        if (jsonObject?.containsKey("android.net.NetworkInfo.getType") == true)
+            oiePhoneNetworkType.rightEditText = jsonObject.getString("android.net.NetworkInfo.getType")
         if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getSSID") == true)
             oieWifiName.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getSSID")
         if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getBSSID") == true)
@@ -272,9 +274,10 @@ class ActivityDetail : ActivityBase() {
         jsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", oieSimSerialNumber.rightEditText.toString(), true)
         jsonObject.put("android.telephony.TelephonyManager.getSimState"       , oieSimStatus.rightEditText.toString()      , true)
 
-        jsonObject.put("android.net.wifi.WifiInfo.getSSID"      , oieWifiName.rightEditText.toString()      , true)
-        jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()     , true)
-        jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString(), true)
+        jsonObject.put("android.net.NetworkInfo.getType"        , oiePhoneNetworkType.rightEditText.toString() , true)
+        jsonObject.put("android.net.wifi.WifiInfo.getSSID"      , oieWifiName.rightEditText.toString()         , true)
+        jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()        , true)
+        jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString()   , true)
 
         jsonObject.put("android.content.res.language"   , oieLanguage.rightEditText.toString()  , true)
         jsonObject.put("android.content.res.display.dpi", oieDisplayDpi.rightEditText.toString(), true)
@@ -437,6 +440,22 @@ class ActivityDetail : ActivityBase() {
                 .createDialog()
                 .show()
     }
+
+    @Event(R.id.oiePhoneNetworkType)
+    private fun onItemClickPhoneNetworkType(view: View) {
+        val popupMenu = PopupMenu(activity, view)
+        Random.NETWORK_TYPE.values().forEach { popupMenu.menu.add(it.label) }
+        BottomSheetBuilder(activity, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .expandOnStart(true)
+                .setMenu(popupMenu.menu)
+                .setItemClickListener { item ->
+                    oiePhoneNetworkType.rightEditText = Random.NETWORK_TYPE.get(item.title.toString()).code
+                }
+                .createDialog()
+                .show()
+    }
+
 
     @Event(R.id.oieWifiName)
     private fun onItemClickWifiName(view: View) {

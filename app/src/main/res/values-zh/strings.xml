@@ -22,7 +22,7 @@
     <string name="cloud">云端</string>
     <string name="settings">设置</string>
     <string name="refresh">刷新</string>
-    <string name="splash_xposed_not_work_content">Xposed貌似没有工作\n您所做的一切都将无效</string>
+    <string name="splash_xposed_not_work_content">Xposed貌似没有工作，您所做的一切都将无效。\n如果您是在更新了一个版本之后出现了这个提示。\n请您前往「XPOSED」-「模块」-「应用变量」-「重新勾选」-「然后重启」即可。</string>
     <string name="splash_xposed_not_work_title">退出</string>
     <string name="tip">提示</string>
     <string name="action_settings">设置</string>
@@ -143,4 +143,8 @@
     <string name="log_reload">刷新</string>
     <string name="register_title">注册</string>
     <string name="register_processing">注册中……</string>
+    <string name="settings_use_data_local_tmp">使用/data/local/tmp</string>
+    <string name="settings_use_data_local_tmp_title">提示</string>
+    <string name="settings_use_data_local_tmp_content">使用/data/local/tmp存储有一个好处，那就是兼容所有的系统以及兼容所有的软件，但是他也有另外的一个缺陷，那将是需要使用root权限才可以正常执行命令。如果您的系统已经拥有root权限，那么您完全可以开启这个功能。</string>
+    <string name="detail_phone_network_type">网络类型</string>
 </resources>

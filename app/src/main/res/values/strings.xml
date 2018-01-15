@@ -129,4 +129,8 @@
     <string name="log_reload">Reload</string>
     <string name="register_title">Register</string>
     <string name="register_processing">Registering…</string>
+    <string name="settings_use_data_local_tmp">Use /data/local/tmp</string>
+    <string name="settings_use_data_local_tmp_title">TIP</string>
+    <string name="settings_use_data_local_tmp_content">Use /data/local/tmp</string>
+    <string name="detail_phone_network_type">Network Type</string>
 </resources>
