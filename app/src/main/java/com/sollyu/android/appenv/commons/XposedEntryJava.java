@@ -46,6 +46,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
         ArrayList<String> ignoreApplicationList = new ArrayList<>();
         ignoreApplicationList.add("android");
         ignoreApplicationList.add("de.robv.android.xposed.installer");
+        Log.d(TAG, "handleLoadPackage: " + loadPackageParam.packageName);
         if (ignoreApplicationList.contains(loadPackageParam.packageName)) {
             return;
         }
@@ -72,6 +73,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
         }while (false);
 
         if (xposedSettingsFile == null) {
+            Log.e(TAG, "handleLoadPackage: xposedSettingsFile is null");
             return;
         }
 
@@ -101,6 +103,8 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
         if (xposedSettingsJson.has(loadPackageParam.packageName)) {
             final JSONObject              xposedPackageJson = xposedSettingsJson.getJSONObject(loadPackageParam.packageName);
             final HashMap<String, Object> buildValueHashMap = new HashMap<String, Object>();
+
+            Log.d(TAG, "handleLoadPackage: " + xposedPackageJson.toString());
 
             if (xposedPackageJson.has("android.os.Build.ro.product.manufacturer")) {
                 String jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.manufacturer");
