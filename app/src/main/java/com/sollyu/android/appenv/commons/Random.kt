@@ -77,8 +77,10 @@ class Random {
      * 国家语言
      */
     enum class LANGUAGES(val label: String, val code: String) {
-        CN("中国", "zh_CN"),
-        EN("美国", "en_US");
+        CN("中国_简体", "zh_CN"),
+        TW("中国_繁体", "zh_TW"),
+        EN("美国", "en_US"),
+        JP("日本", "ja_JP");
 
         companion object {
             fun get(label: String): LANGUAGES = LANGUAGES.values().first { it.label == label }

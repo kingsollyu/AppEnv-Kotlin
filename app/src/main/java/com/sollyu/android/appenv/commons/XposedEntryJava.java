@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.net.wifi.WifiInfo;
 import android.os.Build;
 import android.os.Environment;
+import android.os.LocaleList;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -192,7 +194,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
             }
 
             if (xposedPackageJson.has("android.content.res.language") || xposedPackageJson.has("android.content.res.display.dpi")) {
-                XposedBridge.hookAllMethods(Resources.class, "updateConfiguration", new UpdateConfiguration(loadPackageParam, xposedPackageJson));
+                XposedBridge.hookAllMethods(Resources.class, "updateConfiguration"       , new UpdateConfiguration(loadPackageParam, xposedPackageJson));
             }
 
         }
@@ -217,7 +219,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
         private final XC_LoadPackage.LoadPackageParam loadPackageParam;
         private final JSONObject                      xposedPackageJson;
 
-        public UpdateConfiguration(XC_LoadPackage.LoadPackageParam loadPackageParam, JSONObject xposedPackageJson)  {
+        private UpdateConfiguration(XC_LoadPackage.LoadPackageParam loadPackageParam, JSONObject xposedPackageJson)  {
             this.loadPackageParam = loadPackageParam;
             this.xposedPackageJson = xposedPackageJson;
         }
@@ -225,12 +227,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
         @Override
         protected void beforeHookedMethod(MethodHookParam methodHookParam) throws Throwable {
             super.beforeHookedMethod(methodHookParam);
-            Configuration configuration = null;
-            if (methodHookParam.args[0] != null) {
-                configuration = new Configuration((Configuration) methodHookParam.args[0]);
-            }
-            if (configuration == null)
-                return;
+            Configuration configuration = (Configuration) methodHookParam.args[0];
 
             // 拦截语言
             if (xposedPackageJson.has("android.content.res.language")) {
@@ -243,8 +240,14 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
                     Locale locale = new Locale(language, region, variant);
                     Locale.setDefault(locale);
                     configuration.locale = locale;
-                    if (Build.VERSION.SDK_INT >= 17) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         configuration.setLayoutDirection(locale);
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        configuration.setLocale(locale);
+                        configuration.setLocales(new LocaleList(locale));
                     }
                 }
             }
@@ -253,14 +256,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
             if (xposedPackageJson.has("android.content.res.display.dpi")) {
                 int dpi = xposedPackageJson.getInt("android.content.res.display.dpi");
                 if (dpi > 0) {
-                    DisplayMetrics displayMetrics = null;
-                    if (methodHookParam.args[1] != null) {
-                        displayMetrics = new DisplayMetrics();
-                        displayMetrics.setTo((DisplayMetrics) methodHookParam.args[1]);
-                        methodHookParam.args[1] = displayMetrics;
-                    }else{
-                        displayMetrics = ((Resources)(methodHookParam.thisObject)).getDisplayMetrics();
-                    }
+                    DisplayMetrics displayMetrics = (DisplayMetrics) methodHookParam.args[1];
                     if (displayMetrics != null) {
                         displayMetrics.density = dpi / 160f;
                         displayMetrics.densityDpi = dpi;

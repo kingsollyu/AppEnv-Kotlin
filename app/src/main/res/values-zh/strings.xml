@@ -22,7 +22,7 @@
     <string name="cloud">云端</string>
     <string name="settings">设置</string>
     <string name="refresh">刷新</string>
-    <string name="splash_xposed_not_work_content">Xposed貌似没有工作\n您所做的一切都将无效</string>
+    <string name="splash_xposed_not_work_content">Xposed貌似没有工作，您所做的一切都将无效。\n如果您是在更新了一个版本之后出现了这个提示。\n请您前往「XPOSED」-「模块」-「应用变量」-「重新勾选」-「然后重启」即可。</string>
     <string name="splash_xposed_not_work_title">退出</string>
     <string name="tip">提示</string>
     <string name="action_settings">设置</string>
