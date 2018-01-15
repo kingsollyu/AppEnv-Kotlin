@@ -42,6 +42,7 @@ import org.apache.commons.io.FileUtils
 import org.greenrobot.eventbus.EventBus
 import org.xutils.view.annotation.Event
 import org.xutils.x
+import java.io.File
 import java.io.IOException
 
 @Suppress("unused")
@@ -67,10 +68,18 @@ class ActivitySettings : ActivityBase() {
 
     override fun onInitData() {
         super.onInitData()
+        val dataLocalTmpConfigFile = File("/data/local/tmp/appenv.xposed.json")
+        if (dataLocalTmpConfigFile.exists() && dataLocalTmpConfigFile.canRead() && dataLocalTmpConfigFile.canWrite())
+            Settings.Instance.isUseDataLocalTmpConfig = true
+
         oiwShowSystemApp.setCheckedImmediatelyNoEvent(Settings.Instance.isShowSystemApp)
         oiwShowDesktopIcon.setCheckedImmediatelyNoEvent(Settings.Instance.isShowDesktopIcon)
+
         oiwUseRoot.setCheckedImmediatelyNoEvent(Settings.Instance.isUseRoot)
         oiwAppDataConfig.setCheckedImmediatelyNoEvent(Settings.Instance.isUseAppDataConfig)
+        oiwAppDataConfig.switch.isEnabled = !Settings.Instance.isUseDataLocalTmpConfig
+        oiwUseDataLocalTmp.setCheckedImmediatelyNoEvent(Settings.Instance.isUseDataLocalTmpConfig)
+
         oivUpdateSoftVersion.setRightText(BuildConfig.VERSION_NAME)
         oivUpdatePhoneList.setRightText(Phones.Instance.versionName)
     }
@@ -200,6 +209,49 @@ class ActivitySettings : ActivityBase() {
             SettingsXposed.Save()
             SettingsXposed.Reload()
         }
+    }
+
+    @Event(R.id.oiwUseDataLocalTmp)
+    private fun onBtnClickUseDataLocalTmp(view: View) {
+        if (oiwUseDataLocalTmp.isChecked) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.settings_use_data_local_tmp_title)
+                    .content(R.string.settings_use_data_local_tmp_content)
+                    .positiveText(android.R.string.ok)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { dialog, which ->
+                        if (Shell.SU.available()) {
+                            try {
+                                Settings.Instance.isUseDataLocalTmpConfig = true
+                                SettingsXposed.Save()
+                                SettingsXposed.Reload()
+                            } catch (e: Exception) {
+                                Settings.Instance.isUseDataLocalTmpConfig = false
+                            }
+                        }else {
+                            Settings.Instance.isUseDataLocalTmpConfig = false
+                        }
+                        oiwAppDataConfig.switch.isEnabled = !Settings.Instance.isUseDataLocalTmpConfig
+                        oiwUseDataLocalTmp.setCheckedImmediatelyNoEvent(Settings.Instance.isUseDataLocalTmpConfig)
+                        SettingsXposed.Save()
+                        SettingsXposed.Reload()
+                    }
+                    .onNegative { dialog, which ->
+                        Settings.Instance.isUseDataLocalTmpConfig = false
+                        oiwAppDataConfig.switch.isEnabled = !Settings.Instance.isUseDataLocalTmpConfig
+                        oiwUseDataLocalTmp.setCheckedImmediatelyNoEvent(Settings.Instance.isUseDataLocalTmpConfig)
+                        SettingsXposed.Save()
+                        SettingsXposed.Reload()
+                    }
+                    .show()
+        }else{
+            Settings.Instance.isUseDataLocalTmpConfig = false
+            oiwAppDataConfig.switch.isEnabled = !Settings.Instance.isUseDataLocalTmpConfig
+            oiwUseDataLocalTmp.setCheckedImmediatelyNoEvent(Settings.Instance.isUseDataLocalTmpConfig)
+            SettingsXposed.Save()
+            SettingsXposed.Reload()
+        }
+
     }
 
     @Event(R.id.oivLicence)

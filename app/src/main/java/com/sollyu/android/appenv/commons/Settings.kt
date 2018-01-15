@@ -85,4 +85,12 @@ class Settings {
     var isUseAppDataConfig: Boolean
         get() = jsonObject.getBoolean("isUseAppDataConfig") ?: false
         set(value) = jsonObject.put("isUseAppDataConfig", value).let { save() }
+
+    /**
+     * 使用/data/local/tmp存储配置
+     */
+    var isUseDataLocalTmpConfig: Boolean
+        get() = jsonObject.getBoolean("isUseDataLocalTmpConfig") ?: false
+        set(value) = jsonObject.put("isUseDataLocalTmpConfig", value).let { save() }
+
 }

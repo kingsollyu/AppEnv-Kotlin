@@ -59,6 +59,11 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
         // 加载文件
         File xposedSettingsFile = null;
         do {
+            // 检查/data/local/tmp/appenv.xposed.json
+            xposedSettingsFile = new File("/data/local/tmp/appenv.xposed.json");
+            if (xposedSettingsFile.exists() && xposedSettingsFile.canRead())
+                break;
+
             // 检查内置存储
             xposedSettingsFile = new File(Environment.getDataDirectory(), "data/" + BuildConfig.APPLICATION_ID + "/files/appenv.xposed.json");
             if (xposedSettingsFile.exists() && xposedSettingsFile.canRead())

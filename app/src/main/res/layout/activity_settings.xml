@@ -69,6 +69,13 @@
                 style="@style/OptionItem"
                 app:leftText="@string/settings_use_app_data_config" />
 
+            <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+            <com.sollyu.android.option.item.OptionItemSwitch
+                android:id="@+id/oiwUseDataLocalTmp"
+                style="@style/OptionItem"
+                app:leftText="@string/settings_use_data_local_tmp" />
+
+
             <!--Author-->
             <com.sollyu.android.option.item.OptionItemView
                 android:id="@+id/oivAuthor"
