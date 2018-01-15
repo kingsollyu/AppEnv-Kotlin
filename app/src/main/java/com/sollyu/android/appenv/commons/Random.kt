@@ -87,10 +87,24 @@ class Random {
         }
     }
 
+    /**
+     * 网络状态
+     */
+    enum class NETWORK_TYPE(val label: String, val code: String) {
+        _2G("2G", TelephonyManager.NETWORK_TYPE_GPRS.toString()),
+        _3G("3G", TelephonyManager.NETWORK_TYPE_UMTS.toString()),
+        _4G("4G", TelephonyManager.NETWORK_TYPE_LTE.toString()),
+        WIFI("WIFI", "wifi");
+
+        companion object {
+            fun get(label: String): NETWORK_TYPE = NETWORK_TYPE.values().first { it.label == label }
+        }
+    }
 
 
     private val simType = SIM_TYPE.values()[RandomUtils.nextInt(0, SIM_TYPE.values().size)]
     private val androidVersion = ANDROID_VERSION.values()[RandomUtils.nextInt(0, ANDROID_VERSION.values().size)]
+    private val networkType = NETWORK_TYPE.values()[RandomUtils.nextInt(0, NETWORK_TYPE.values().size)]
 
     init {
 
@@ -165,6 +179,10 @@ class Random {
         return simType.simIccid + RandomStringGenerator.Builder().withinRange('0'.toInt(), '9'.toInt()).build().generate(14)
     }
 
+    fun networkType(): String {
+        return networkType.code
+    }
+
     fun wifiName(): String {
         val strings = arrayOf("TP-", "FAST_", "Tenda_", "TP-LINK_", "MERCURY_")
         return strings[RandomUtils.nextInt(0, strings.size-1)] + RandomStringGenerator.Builder().withinRange('0'.toInt(), 'Z'.toInt()).filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build().generate(RandomUtils.nextInt(6, 8))
@@ -197,6 +215,7 @@ class Random {
         randomJsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", this.simSerialNumber(simType))
         randomJsonObject.put("android.telephony.TelephonyManager.getSimState", this.simSimState(simType))
 
+        randomJsonObject.put("android.net.NetworkInfo.getType", this.networkType())
         randomJsonObject.put("android.net.wifi.WifiInfo.getSSID", this.wifiName())
         randomJsonObject.put("android.net.wifi.WifiInfo.getBSSID", this.wifiMacAddress())
         randomJsonObject.put("android.net.wifi.WifiInfo.getMacAddress", this.wifiMacAddress())

@@ -117,9 +117,16 @@
 
         <!--Wi-Fi系列-->
         <com.sollyu.android.option.item.OptionItemEdit
-            android:id="@+id/oieWifiName"
+            android:id="@+id/oiePhoneNetworkType"
             style="@style/OptionItem"
             android:layout_marginTop="20dp"
+            app:leftText="@string/detail_phone_network_type" />
+
+        <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
+
+        <com.sollyu.android.option.item.OptionItemEdit
+            android:id="@+id/oieWifiName"
+            style="@style/OptionItem"
             app:leftText="@string/detail_wifi_name" />
 
         <com.sollyu.android.option.item.OptionItemLine style="@style/OptionItem.Line" />
