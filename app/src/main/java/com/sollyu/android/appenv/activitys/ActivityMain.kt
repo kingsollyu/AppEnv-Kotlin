@@ -136,7 +136,16 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
                 return true
             }
         })
+
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_hook_user -> ActivityDetail.launch(activity, "hook.model.user")
+            R.id.menu_hook_all ->  ActivityDetail.launch(activity, "hook.model.all")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -57,6 +57,13 @@ class ActivityDetail : ActivityBase() {
             intent.putExtra("packageName", applicationInfo?.packageName)
             activity.startActivity(intent)
         }
+
+        fun launch(activity: Activity, packageName: String) {
+            val intent = Intent(activity, ActivityDetail::class.java)
+
+            intent.putExtra("packageName", packageName)
+            activity.startActivity(intent)
+        }
     }
 
     /**
@@ -72,8 +79,19 @@ class ActivityDetail : ActivityBase() {
     /**
      * 上个界面传送过来的应用信息
      */
-    val appInfo: ApplicationInfo by lazy {
+    private val appInfo: ApplicationInfo by lazy {
         val packageName = activity.intent.getStringExtra("packageName")
+        when (packageName) {
+            "hook.model.user", "hook.model.all" -> {
+                menu_run_app.isEnabled = false
+                menu_clear_app.isEnabled = false
+                menu_force_stop.isEnabled = false
+
+                val applicationInfo = ApplicationInfo()
+                applicationInfo.packageName = packageName
+                return@lazy applicationInfo
+            }
+        }
         return@lazy activity.packageManager.getApplicationInfo(packageName, 0)
     }
 
@@ -85,9 +103,18 @@ class ActivityDetail : ActivityBase() {
         EventBus.getDefault().register(this)
 
         setSupportActionBar(toolbar)
-        supportActionBar?.title = appInfo.loadLabel(packageManager)
+        supportActionBar?.title = appInfo.loadLabel()
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun ApplicationInfo.loadLabel(): CharSequence {
+        when (packageName) {
+            "hook.model.user" -> return "拦截所有用户程序"
+            "hook.model.all" -> return "拦截所有程序"
+            else -> loadLabel(packageManager)
+        }
+        return loadLabel(packageManager)
     }
 
     override fun onInitData() {
@@ -587,7 +614,7 @@ class ActivityDetail : ActivityBase() {
 
                     val uiConfigJsonObject = uiToJsonObject();
                     uiConfigJsonObject.put("config.name", input.toString())
-                    uiConfigJsonObject.put("app.package.label", appInfo.loadLabel(activity.packageManager))
+                    uiConfigJsonObject.put("app.package.label", appInfo.loadLabel())
 
                     val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content("正在上传……").progress(true, 0).cancelable(false).show()
                     val formBody = FormEncodingBuilder().add(Base64.encodeToString(appInfo.packageName.toByteArray(), Base64.NO_WRAP), uiConfigJsonObject.toJSONString()).build()

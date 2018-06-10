@@ -133,4 +133,6 @@
     <string name="settings_use_data_local_tmp_title">TIP</string>
     <string name="settings_use_data_local_tmp_content">Use /data/local/tmp</string>
     <string name="detail_phone_network_type">Network Type</string>
+    <string name="hook_all_user">Hook All User</string>
+    <string name="hook_all_app">hook all app</string>
 </resources>

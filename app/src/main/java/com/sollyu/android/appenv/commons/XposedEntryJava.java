@@ -14,7 +14,6 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.os.Build;
 import android.os.Environment;
-import android.os.LocaleList;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -28,7 +27,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Set;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -78,7 +76,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
                 break;
 
             xposedSettingsFile = null;
-        }while (false);
+        } while (false);
 
         if (xposedSettingsFile == null) {
             Log.e(TAG, "handleLoadPackage: xposedSettingsFile is null");
@@ -109,26 +107,24 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
 
         /* 拦截制定包名 */
         if (xposedSettingsJson.has(loadPackageParam.packageName)) {
-            final JSONObject              xposedPackageJson = xposedSettingsJson.getJSONObject(loadPackageParam.packageName);
-            final HashMap<String, Object> buildValueHashMap = new HashMap<String, Object>();
-
-            Log.d(TAG, "handleLoadPackage: " + xposedPackageJson.toString());
+            final JSONObject xposedPackageJson = xposedSettingsJson.getJSONObject(loadPackageParam.packageName);
+            final HashMap<String, Object> buildValueHashMap = new HashMap<>();
 
             if (xposedPackageJson.has("android.os.Build.ro.product.manufacturer")) {
                 String jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.manufacturer");
                 XposedHelpers.setStaticObjectField(Build.class, "MANUFACTURER", jsonValue);
-                XposedHelpers.setStaticObjectField(Build.class, "PRODUCT"     , jsonValue);
-                XposedHelpers.setStaticObjectField(Build.class, "BRAND"       , jsonValue);
+                XposedHelpers.setStaticObjectField(Build.class, "PRODUCT", jsonValue);
+                XposedHelpers.setStaticObjectField(Build.class, "BRAND", jsonValue);
                 buildValueHashMap.put("ro.product.manufacturer", jsonValue);
-                buildValueHashMap.put("ro.product.brand"       , jsonValue);
-                buildValueHashMap.put("ro.product.name"        , jsonValue);
+                buildValueHashMap.put("ro.product.brand", jsonValue);
+                buildValueHashMap.put("ro.product.name", jsonValue);
             }
             if (xposedPackageJson.has("android.os.Build.ro.product.model")) {
                 String jsonValue = xposedPackageJson.getString("android.os.Build.ro.product.model");
-                XposedHelpers.setStaticObjectField(Build.class, "MODEL" , jsonValue);
+                XposedHelpers.setStaticObjectField(Build.class, "MODEL", jsonValue);
                 XposedHelpers.setStaticObjectField(Build.class, "DEVICE", jsonValue);
                 buildValueHashMap.put("ro.product.device", jsonValue);
-                buildValueHashMap.put("ro.product.model" , jsonValue);
+                buildValueHashMap.put("ro.product.model", jsonValue);
             }
             if (xposedPackageJson.has("android.os.Build.ro.serialno")) {
                 XposedHelpers.setStaticObjectField(Build.class, "SERIAL", xposedPackageJson.getString("android.os.Build.ro.serialno"));
@@ -235,9 +231,9 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
     private class UpdateConfiguration extends XC_MethodHook {
 
         private final XC_LoadPackage.LoadPackageParam loadPackageParam;
-        private final JSONObject                      xposedPackageJson;
+        private final JSONObject xposedPackageJson;
 
-        private UpdateConfiguration(XC_LoadPackage.LoadPackageParam loadPackageParam, JSONObject xposedPackageJson)  {
+        private UpdateConfiguration(XC_LoadPackage.LoadPackageParam loadPackageParam, JSONObject xposedPackageJson) {
             this.loadPackageParam = loadPackageParam;
             this.xposedPackageJson = xposedPackageJson;
         }
@@ -253,8 +249,8 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
                 String[] localeParts = xposedPackageJson.getString("android.content.res.language").split("_");
                 if (localeParts.length > 1) {
                     String language = localeParts[0];
-                    String region   = localeParts.length >= 2 ? localeParts[1] : "";
-                    String variant  = localeParts.length >= 3 ? localeParts[2] : "";
+                    String region = localeParts[1];
+                    String variant = localeParts.length >= 3 ? localeParts[2] : "";
 
                     Locale locale = new Locale(language, region, variant);
                     Locale.setDefault(locale);
@@ -262,7 +258,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         configuration.setLayoutDirection(locale);
                         configuration.setLocale(locale);
-                    }else {
+                    } else {
                         configuration.locale = locale;
                     }
                 }
@@ -276,7 +272,7 @@ public class XposedEntryJava implements IXposedHookLoadPackage {
                     if (displayMetrics != null) {
                         displayMetrics.density = dpi / 160f;
                         displayMetrics.densityDpi = dpi;
-                        if(Build.VERSION.SDK_INT >= 17) {
+                        if (Build.VERSION.SDK_INT >= 17) {
                             XposedHelpers.setIntField(configuration, "densityDpi", dpi);
                         }
                     }
