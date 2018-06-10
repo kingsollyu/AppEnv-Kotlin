@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<resources>
+    <string name="app_name">AppEnv</string>
+    <string name="xposed_desc">This phone\'s model, display, software and other details can be disguised using Xposed.</string>
+
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="tip">Tip</string>
+    <string name="splash_xposed_not_work_title">Finish</string>
+    <string name="splash_xposed_not_work_content">Xposed doesn\'t seem to work. Without Xposed everything you do is invalid. \  This prompt appears if you have updated a version. \  Please go to \"XPOSED > module > AppEnv > re-check > restart your device.</string>
+    <string name="refresh">Refresh</string>
+    <string name="settings">Settings</string>
+    <string name="cloud">Cloud</string>
+    <string name="other">Other</string>
+    <string name="donate">Donate</string>
+    <string name="score">Score</string>
+    <string name="about">About</string>
+    <string name="search">Search</string>
+    <string name="detail_finish_snackbar">Save Success</string>
+    <string name="finish">Finish</string>
+    <string name="error">Error</string>
+    <string name="online_url_soft">https://rawgit.com/kingsollyu/AppEnv-Kotlin/develop/online/app.env.soft.json</string>
+    <string name="online_url_phone">https://rawgit.com/kingsollyu/AppEnv-Kotlin/develop/online/app.env.phone.json</string>
+    <string name="settings_no_update">You are using latest version!</string>
+    <string name="settings_has_update">Last Version Name: %1$s\n
+ Last Version Message: \n
+ %2$s</string>
+    <string name="settings_has_update_positive">Open URL</string>
+    <string name="settings_update_progress">Check update…</string>
+    <string name="settings_blog">Blog</string>
+    <string name="settings_author">Author</string>
+    <string name="settings_email">E-mail</string>
+    <string name="settings_github">Github</string>
+    <string name="settings_update_soft">Update Soft Version</string>
+    <string name="settings_update_phone">Update Phone List</string>
+    <string name="settings_show_system_app">Show System App</string>
+    <string name="random_all">Random All</string>
+    <string name="run_app">Run App</string>
+    <string name="wipe_data">Wipe Data</string>
+    <string name="force_stop_app">Stop App</string>
+    <string name="save_config">Save Config</string>
+    <string name="random">Random</string>
+    <string name="delete_config">Delete Config</string>
+    <string name="remote_random">Remote Random</string>
+    <string name="solution">Solution</string>
+    <string name="save_solution">Save Solution</string>
+    <string name="load_solution">Load Solution</string>
+    <string name="delete_solution">Delete Solution</string>
+    <string name="detail_solution_save_success">Solution $1%s Save Success</string>
+    <string name="detail_solution_save_title">Save Solution</string>
+    <string name="detail_solution_save_hint">Input Solution Name</string>
+    <string name="empty" />
+    <string name="detail_solution_load_title">Load Solution</string>
+    <string name="detail_solution_delete_title">Delete Solution</string>
+    <string name="detail_solution_delete_success">Delete Solution Success: %1$s</string>
+    <string name="settings_update_phone_success">Phone database update success.</string>
+    <string name="detail_build_manufacturer">Build Manufacturer</string>
+    <string name="detail_build_model">Build Model</string>
+    <string name="detail_build_serial">Build Serial</string>
+    <string name="detail_build_version_name">Build Version Name</string>
+    <string name="detail_sim_phone_number">Phone Number</string>
+    <string name="detail_sim_device_id">IMEI</string>
+    <string name="detail_sim_subscriber_id">Sim Subscriber ID</string>
+    <string name="detail_sim_operator">Sim Operator</string>
+    <string name="detail_sim_operator_name">Sim Operator Name</string>
+    <string name="detail_sim_serial_number">Sim Serial Number</string>
+    <string name="detail_sim__status">Sim Status</string>
+    <string name="detail_wifi_name">WiFi Name</string>
+    <string name="detail_wifi_bssid">WiFi BSSID</string>
+    <string name="detail_wifi_mac_address">WiFi MAC Address</string>
+    <string name="settings_issues">Issues</string>
+    <string name="detail_run_app">Please start the app from desktop</string>
+    <string name="detail_run_app_back">Home</string>
+    <string name="title_activity_about">About</string>
+    <string name="about_text">&lt;Data &gt;                                  \"&lt;h2&gt;AppEnv&lt;/h2&gt;\"                     \"Author: king.sollyu&lt;br&gt;\"                     \"Contact: QQ: 191067617 (C.S.T)&lt;br&gt;\"                     \"Description: Dynamically modify the software information&lt;br&gt;\"                     \"Depend: &lt;a href=\"http://repo.xposed.info/module/de.robv.android.xposed.installer\"&gt;XPOSED&lt;/a&gt; OR &lt;a href=\"http://en.miui.com/thread-78894-1-1.html\"&gt;WSM tools&lt;/a&gt;&lt;br&gt;\"                     \"Update: Historic version &lt;a href=\"https://github.com/kingsollyu/AppEnv-Kotlin/releases\"&gt;CLICK HERE&lt;/a&gt;&lt;br&gt;&lt;br&gt;\"                      \"Copyright © &lt;a href=\"http://www.sollyu.com\"&gt;Sollyu&lt;/a&gt; 2015-2017 Version %1$s&lt;br&gt;&lt;br&gt;\"                      \"&lt;h2&gt;Files&lt;/h2&gt;\"                     \"App Setting：%2$s&lt;br&gt;\"                     \"Phone Database：%3$s&lt;br&gt;\"                     \"Xposed Setting：%4$s&lt;br&gt;\"                     \"&lt;br&gt;\"                      \"&lt;h2&gt;This update&lt;/h2&gt;\"                     \"+ i\'m english is so bad.&lt;br&gt;\"                     \"+ i\'m sorry, there no english&lt;br&gt;\"                      \"&lt;br&gt;\"                     \"&lt;br&gt;\"                      &lt;/Data&gt;</string>
+    <string name="main_nav_header_desc">If you want more customization, you can contact author.</string>
+    <string name="settings_show_desktop_icon">Show Desktop Icon</string>
+    <string name="settings_show_desktop_icon_tip">You can open app in Xposed model.</string>
+    <string name="settings_thinks">Thinks</string>
+    <string name="main_xposed_fail">Xposed Error!</string>
+    <string name="settings_use_root">Use Root</string>
+    <string name="settings_use_root_content">Directly using the root command can force stop and clear data faster, but because of the different root methods of mobile phones, root is incompatible. If root method doesn\'t work, then you should not try root.\ \\Are you sure you want to use the root command?</string>
+    <string name="detail_clear_success">Wipe Data Success</string>
+    <string name="settings_use_root_available_fail">Request Root Fail</string>
+    <string name="detail_sim_country_iso">Sim Country ISO</string>
+    <string name="detail_language">Language</string>
+    <string name="detail_display_dip">DPI</string>
+    <string name="settings_use_app_data_config">Use app data Config</string>
+    <string name="settings_use_app_data_config_content">Use app data Config?</string>
+    <string name="splash_permission_write_storage_denied_content">Application variables require memory card read permissions to function properly.\ \\Q: Why do you need permission?\ A: Because after Android7.0+, Android system for the security of the mobile phone system, delete a name called [MODE_WORLD_READABLE] permission, this permission is to allow other programs to access the use of this permission settings file, which is the application variable provides intercepted program a configuration entry. Because the system deletes this privilege, in addition to my own cooking, but unfortunately can only use SD to store this configuration file, so as to achieve other programs to read. \  \\Q: What if I don\'t allow the permission?\n
+ \\A: A: If your system is before Android 7.0, you can set it to use built-in storage in the settings so that you can use this software normally. If your system is Android 7.0+, as you cannot save the configuration file in the memory card, you should not be able to use this software normally. \  \\Q: But I really do not want to allow this permission, what to do?\ A: Here, I only as an author to tell you, this software [permanent] will not add any kind of advertising element, it will not generate a variety of messy files in your phone memory card. However, because this software uses a statistic called [AUO], it seems to create a folder named [umeng] under your SD card. \  \\</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="upload_config">Upload Config</string>
+    <string name="settings_log">Logs</string>
+    <string name="log_delete">Delete</string>
+    <string name="log_reload">Reload</string>
+    <string name="register_title">Register</string>
+    <string name="register_processing">Registering...</string>
+    <string name="settings_use_data_local_tmp">Use /data/local/tmp</string>
+    <string name="settings_use_data_local_tmp_title">TIP</string>
+    <string name="settings_use_data_local_tmp_content">Use /data/local/tmp</string>
+    <string name="detail_phone_network_type">Network Type</string>
+</resources>
