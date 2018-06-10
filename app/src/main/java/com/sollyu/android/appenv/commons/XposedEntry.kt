@@ -181,6 +181,7 @@ class XposedEntry : IXposedHookLoadPackage {
     }
 
     inner class UpdateConfiguration(private val loadPackageParam: XC_LoadPackage.LoadPackageParam, private val xposedPackageJson: JSONObject) : XC_MethodHook() {
+        @Suppress("DEPRECATION")
         override fun beforeHookedMethod(methodHookParam: MethodHookParam) {
             var configuration: Configuration? = null
             if (methodHookParam.args[0] != null) {

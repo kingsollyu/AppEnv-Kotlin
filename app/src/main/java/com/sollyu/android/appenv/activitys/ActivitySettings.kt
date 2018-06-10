@@ -6,6 +6,8 @@
  * This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
  */
 
+@file:Suppress("UNUSED_PARAMETER")
+
 package com.sollyu.android.appenv.activitys
 
 import android.app.Activity
@@ -219,7 +221,7 @@ class ActivitySettings : ActivityBase() {
                     .content(R.string.settings_use_data_local_tmp_content)
                     .positiveText(android.R.string.ok)
                     .negativeText(android.R.string.cancel)
-                    .onPositive { dialog, which ->
+                    .onPositive { _, _ ->
                         if (Shell.SU.available()) {
                             try {
                                 Settings.Instance.isUseDataLocalTmpConfig = true
@@ -236,7 +238,7 @@ class ActivitySettings : ActivityBase() {
                         SettingsXposed.Save()
                         SettingsXposed.Reload()
                     }
-                    .onNegative { dialog, which ->
+                    .onNegative { _, _ ->
                         Settings.Instance.isUseDataLocalTmpConfig = false
                         oiwAppDataConfig.switch.isEnabled = !Settings.Instance.isUseDataLocalTmpConfig
                         oiwUseDataLocalTmp.setCheckedImmediatelyNoEvent(Settings.Instance.isUseDataLocalTmpConfig)

@@ -76,7 +76,7 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
     }
 
     @NotProguard
-    open fun isXposedWork(): Boolean {
+    fun isXposedWork(): Boolean {
         return false
     }
 

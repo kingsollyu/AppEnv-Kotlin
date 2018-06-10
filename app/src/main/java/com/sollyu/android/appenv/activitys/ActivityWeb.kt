@@ -119,7 +119,7 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
                     .content("确定下载：$configName 到 $packageLabel ?")
                     .positiveText("确定")
                     .negativeText(android.R.string.cancel)
-                    .onPositive { dialog, which ->
+                    .onPositive { dialog, _ ->
                         val cookie = AgentWebConfig.getCookiesByUrl(AppEnvConstants.URL_APPENV_SERVER)
                         OkHttpClient().newCall(Request.Builder().url(AppEnvConstants.URL_APPENV_DOWNLOAD_PACKAGE + "?config_id=" + configId).header("Cookie", cookie).build()).enqueue(object : Callback {
                             override fun onFailure(request: Request, e: IOException) {
