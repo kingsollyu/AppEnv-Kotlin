@@ -6,11 +6,11 @@
  * This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
  */
 
+@file:Suppress("UNUSED_PARAMETER")
+
 package com.sollyu.android.appenv.activitys
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.net.Uri
@@ -27,9 +27,9 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.elvishew.xlog.XLog
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
-import com.just.agentweb.AgentWeb
 import com.just.agentweb.AgentWebConfig
 import com.sollyu.android.appenv.R
+import com.sollyu.android.appenv.bean.BeanHookInfo
 import com.sollyu.android.appenv.bean.PhoneModel
 import com.sollyu.android.appenv.commons.*
 import com.sollyu.android.appenv.commons.Random
@@ -46,7 +46,6 @@ import org.xutils.view.annotation.Event
 import org.xutils.x
 import java.io.IOException
 import java.util.*
-
 
 @Suppress("unused")
 class ActivityDetail : ActivityBase() {
@@ -101,9 +100,8 @@ class ActivityDetail : ActivityBase() {
         super.onInitDone()
         Phones.Reload()
 
-        val isSystemApp       = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) }
+        val isSystemApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) }
         val isSystemUpdateApp = fun(applicationInfo: ApplicationInfo): Boolean { return ((applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) }
-        val isUserApp         = fun(applicationInfo: ApplicationInfo): Boolean { return (!isSystemApp(applicationInfo) && !isSystemUpdateApp(applicationInfo)) }
 
         if (isSystemApp(appInfo)) {
             Snackbar.make(fab, "⚠️您现在正在修改系统程序⚠️\n这可能会使您的手机无法正常开机。", Snackbar.LENGTH_INDEFINITE).show()
@@ -113,7 +111,7 @@ class ActivityDetail : ActivityBase() {
             "com.tencent.mobileqq" -> {
                 Snackbar.make(fab, "\uD83D\uDCF1手机QQ无法设置成iPhone在线，请谅解！", Snackbar.LENGTH_INDEFINITE).setAction("就要") {
                     oieBuildManufacturer.rightEditText = "iРhone"
-                    oieBuildModel       .rightEditText = "X"
+                    oieBuildModel.rightEditText = "X"
                     Snackbar.make(fab, "亲，您这样只是自欺欺人罢了", Snackbar.LENGTH_LONG).show()
                 }.show();
             }
@@ -121,7 +119,7 @@ class ActivityDetail : ActivityBase() {
                 Snackbar.make(fab, "⚠️如果您将机型乱写⚠️\nQQ空间会把您的机型变成小写", Snackbar.LENGTH_INDEFINITE).setAction("iPhone?") {
                     Snackbar.make(fab, "亲，您这样只是自欺欺人罢了", Snackbar.LENGTH_LONG).show()
                     oieBuildManufacturer.rightEditText = "iРhone"
-                    oieBuildModel       .rightEditText = "X"
+                    oieBuildModel.rightEditText = "X"
                     Snackbar.make(fab, "亲，您这样只是自欺欺人罢了", Snackbar.LENGTH_LONG).show()
                 }.show()
             }
@@ -166,12 +164,24 @@ class ActivityDetail : ActivityBase() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menuDeleteConfig -> { this.onItemClickDeleteConfig()  }
-            R.id.menuUploadConfig -> { this.onItemClickUploadConfig()  }
-            R.id.menuSolutionSave -> { this.onItemClickSolutionSave()  }
-            R.id.menuSolutionLoad -> { this.onItemClickSolutionLoad()  }
-            R.id.menuSolutionDele -> { this.onItemClickSolutionDelete()}
-            R.id.menuRemoteRandom -> { this.onItemClickRemoteRandom()  }
+            R.id.menuDeleteConfig -> {
+                this.onItemClickDeleteConfig()
+            }
+            R.id.menuUploadConfig -> {
+                this.onItemClickUploadConfig()
+            }
+            R.id.menuSolutionSave -> {
+                this.onItemClickSolutionSave()
+            }
+            R.id.menuSolutionLoad -> {
+                this.onItemClickSolutionLoad()
+            }
+            R.id.menuSolutionDele -> {
+                this.onItemClickSolutionDelete()
+            }
+            R.id.menuRemoteRandom -> {
+                this.onItemClickRemoteRandom()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -205,85 +215,59 @@ class ActivityDetail : ActivityBase() {
     }
 
     private fun jsonObjectToUi(jsonObject: JSONObject?) {
+        val beanHookInfo = jsonObject?.toJavaObject(BeanHookInfo::class.java)
 
-        //
-        if (jsonObject?.containsKey("android.os.Build.ro.product.manufacturer") == true)
-            oieBuildManufacturer.rightEditText = jsonObject.getString("android.os.Build.ro.product.manufacturer")
-        if (jsonObject?.containsKey("android.os.Build.ro.product.model") == true)
-            oieBuildModel.rightEditText = jsonObject.getString("android.os.Build.ro.product.model")
-        if (jsonObject?.containsKey("android.os.Build.ro.serialno") == true)
-            oieBuildSerial.rightEditText = jsonObject.getString("android.os.Build.ro.serialno")
-        if (jsonObject?.containsKey("android.os.Build.VERSION.RELEASE") == true)
-            oieBuildVersionName.rightEditText = jsonObject.getString("android.os.Build.VERSION.RELEASE")
+        oieBuildManufacturer.rightEditText = beanHookInfo?.buildManufacturer
+        oieBuildModel.rightEditText = beanHookInfo?.buildModel
+        oieBuildSerial.rightEditText = beanHookInfo?.buildSerial
+        oieBuildVersionName.rightEditText = beanHookInfo?.buildVersionName
+        oieAndroidId.rightEditText = beanHookInfo?.androidId
 
-        //
-        if (jsonObject?.containsKey("android.os.SystemProperties.android_id") == true)
-            oieAndroidId.rightEditText = jsonObject.getString("android.os.SystemProperties.android_id")
+        oieSimLine1Number.rightEditText = beanHookInfo?.simLine1Number
+        oieSimGetDeviceId.rightEditText = beanHookInfo?.simGetDeviceId
+        oieSimSubscriberId.rightEditText = beanHookInfo?.simSubscriberId
+        oieSimOperator.rightEditText = beanHookInfo?.simOperator
+        oieSimCountryIso.rightEditText = beanHookInfo?.simCountryIso
+        oieSimOperatorName.rightEditText = beanHookInfo?.simOperatorName
+        oieSimSerialNumber.rightEditText = beanHookInfo?.simSerialNumber
+        oieSimStatus.rightEditText = beanHookInfo?.simStatus
 
-        //
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getLine1Number") == true)
-            oieSimLine1Number.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getLine1Number")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getDeviceId") == true)
-            oieSimGetDeviceId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getDeviceId")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSubscriberId") == true)
-            oieSimSubscriberId.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSubscriberId")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperator") == true)
-            oieSimOperator.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperator")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimCountryIso") == true)
-            oieSimCountryIso.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimCountryIso")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimOperatorName") == true)
-            oieSimOperatorName.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimOperatorName")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimSerialNumber") == true)
-            oieSimSerialNumber.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimSerialNumber")
-        if (jsonObject?.containsKey("android.telephony.TelephonyManager.getSimState") == true)
-            oieSimStatus.rightEditText = jsonObject.getString("android.telephony.TelephonyManager.getSimState")
+        oiePhoneNetworkType.rightEditText = beanHookInfo?.phoneNetworkType
+        oieWifiName.rightEditText = beanHookInfo?.wifiName
+        oieWifiBssid.rightEditText = beanHookInfo?.wifiBssid
+        oieWifiMacAddress.rightEditText = beanHookInfo?.wifiMacAddress
 
-        //
-        if (jsonObject?.containsKey("android.net.NetworkInfo.getType") == true)
-            oiePhoneNetworkType.rightEditText = jsonObject.getString("android.net.NetworkInfo.getType")
-        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getSSID") == true)
-            oieWifiName.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getSSID")
-        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getBSSID") == true)
-            oieWifiBssid.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getBSSID")
-        if (jsonObject?.containsKey("android.net.wifi.WifiInfo.getMacAddress") == true)
-            oieWifiMacAddress.rightEditText = jsonObject.getString("android.net.wifi.WifiInfo.getMacAddress")
-
-        //
-        if (jsonObject?.containsKey("android.content.res.language") == true)
-            oieLanguage.rightEditText = jsonObject.getString("android.content.res.language")
-        if (jsonObject?.containsKey("android.content.res.display.dpi") == true)
-            oieDisplayDpi.rightEditText = jsonObject.getString("android.content.res.display.dpi")
-
+        oieLanguage.rightEditText = beanHookInfo?.language
+        oieDisplayDpi.rightEditText = beanHookInfo?.displayDpi
     }
 
     private fun uiToJsonObject(): JSONObject {
-        val jsonObject = JSONObject()
-        jsonObject.put("android.os.Build.ro.product.manufacturer", oieBuildManufacturer.rightEditText.toString(), true)
-        jsonObject.put("android.os.Build.ro.product.model"       , oieBuildModel.rightEditText.toString()       , true)
-        jsonObject.put("android.os.Build.ro.serialno"            , oieBuildSerial.rightEditText.toString()      , true)
-        jsonObject.put("android.os.Build.VERSION.RELEASE"        , oieBuildVersionName.rightEditText.toString() , true)
+        val beanHookInfo = BeanHookInfo()
+        beanHookInfo.buildManufacturer = oieBuildManufacturer.rightEditText.toString()
+        beanHookInfo.buildModel = oieBuildModel.rightEditText.toString()
+        beanHookInfo.buildSerial = oieBuildSerial.rightEditText.toString()
+        beanHookInfo.buildVersionName = oieBuildVersionName.rightEditText.toString()
 
-        jsonObject.put("android.os.SystemProperties.android_id", oieAndroidId.rightEditText.toString(), true)
+        beanHookInfo.androidId = oieAndroidId.rightEditText.toString()
 
-        jsonObject.put("android.telephony.TelephonyManager.getLine1Number"    , oieSimLine1Number.rightEditText.toString() , true)
-        jsonObject.put("android.telephony.TelephonyManager.getDeviceId"       , oieSimGetDeviceId.rightEditText.toString() , true)
-        jsonObject.put("android.telephony.TelephonyManager.getSubscriberId"   , oieSimSubscriberId.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimOperator"    , oieSimOperator.rightEditText.toString()    , true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimCountryIso"  , oieSimCountryIso.rightEditText.toString()  , true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimOperatorName", oieSimOperatorName.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimSerialNumber", oieSimSerialNumber.rightEditText.toString(), true)
-        jsonObject.put("android.telephony.TelephonyManager.getSimState"       , oieSimStatus.rightEditText.toString()      , true)
+        beanHookInfo.simLine1Number = oieSimLine1Number.rightEditText.toString()
+        beanHookInfo.simGetDeviceId = oieSimGetDeviceId.rightEditText.toString()
+        beanHookInfo.simSubscriberId = oieSimSubscriberId.rightEditText.toString()
+        beanHookInfo.simOperator = oieSimOperator.rightEditText.toString()
+        beanHookInfo.simCountryIso = oieSimCountryIso.rightEditText.toString()
+        beanHookInfo.simOperatorName = oieSimOperatorName.rightEditText.toString()
+        beanHookInfo.simSerialNumber = oieSimSerialNumber.rightEditText.toString()
+        beanHookInfo.simStatus = oieSimStatus.rightEditText.toString()
 
-        jsonObject.put("android.net.NetworkInfo.getType"        , oiePhoneNetworkType.rightEditText.toString() , true)
-        jsonObject.put("android.net.wifi.WifiInfo.getSSID"      , oieWifiName.rightEditText.toString()         , true)
-        jsonObject.put("android.net.wifi.WifiInfo.getBSSID"     , oieWifiBssid.rightEditText.toString()        , true)
-        jsonObject.put("android.net.wifi.WifiInfo.getMacAddress", oieWifiMacAddress.rightEditText.toString()   , true)
+        beanHookInfo.phoneNetworkType = oiePhoneNetworkType.rightEditText.toString()
+        beanHookInfo.wifiName = oieWifiName.rightEditText.toString()
+        beanHookInfo.wifiBssid = oieWifiBssid.rightEditText.toString()
+        beanHookInfo.wifiMacAddress = oieWifiMacAddress.rightEditText.toString()
 
-        jsonObject.put("android.content.res.language"   , oieLanguage.rightEditText.toString()  , true)
-        jsonObject.put("android.content.res.display.dpi", oieDisplayDpi.rightEditText.toString(), true)
-        XLog.json(jsonObject.toJSONString())
+        beanHookInfo.language = oieLanguage.rightEditText.toString()
+        beanHookInfo.displayDpi = oieDisplayDpi.rightEditText.toString()
 
-        return jsonObject
+        return beanHookInfo.toJSON()
     }
 
     /**
@@ -432,10 +416,10 @@ class ActivityDetail : ActivityBase() {
                 .setItemClickListener { item ->
                     oieSimSerialNumber.rightEditText = random.simSerialNumber(Random.SIM_TYPE.get(item.title.toString()))
                     oieSimSubscriberId.rightEditText = random.simSubscriberId(Random.SIM_TYPE.get(item.title.toString()))
-                    oieSimOperator    .rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCode
-                    oieSimCountryIso  .rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCountryIso
+                    oieSimOperator.rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCode
+                    oieSimCountryIso.rightEditText = Random.SIM_TYPE.get(item.title.toString()).simCountryIso
                     oieSimOperatorName.rightEditText = Random.SIM_TYPE.get(item.title.toString()).label
-                    oieSimStatus      .rightEditText = TelephonyManager.SIM_STATE_READY.toString()
+                    oieSimStatus.rightEditText = TelephonyManager.SIM_STATE_READY.toString()
                 }
                 .createDialog()
                 .show()
@@ -546,7 +530,7 @@ class ActivityDetail : ActivityBase() {
         if (Settings.Instance.isUseRoot) {
             eu.chainfire.libsuperuser.Shell.SU.run("am force-stop " + appInfo.packageName.toLowerCase())
             Snackbar.make(fab, "强制停止执行顺利执行，但具体结果取决于root是否完成", Snackbar.LENGTH_LONG).show()
-        }else{
+        } else {
             val intent = Intent()
             intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
             intent.data = Uri.parse("package:" + appInfo.packageName)
@@ -602,7 +586,7 @@ class ActivityDetail : ActivityBase() {
                     dialog.dismiss()
 
                     val uiConfigJsonObject = uiToJsonObject();
-                    uiConfigJsonObject.put("config.name"      , input.toString())
+                    uiConfigJsonObject.put("config.name", input.toString())
                     uiConfigJsonObject.put("app.package.label", appInfo.loadLabel(activity.packageManager))
 
                     val materialDialog = MaterialDialog.Builder(activity).title(R.string.tip).content("正在上传……").progress(true, 0).cancelable(false).show()
