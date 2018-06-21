@@ -135,4 +135,6 @@
     <string name="detail_phone_network_type">Network Type</string>
     <string name="hook_all_user">Hook All User</string>
     <string name="hook_all_app">hook all app</string>
+    <string name="warring">Warrning</string>
+    <string name="message_hook_all">d</string>
 </resources>
