@@ -40,6 +40,7 @@ class ActivityAbout : ActivityBase() {
 
     }
 
+    @Suppress("DEPRECATION")
     override fun onInitData() {
         super.onInitData()
         textView.movementMethod = LinkMovementMethod.getInstance()

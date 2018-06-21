@@ -136,7 +136,16 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
                 return true
             }
         })
+
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_hook_user -> ActivityDetail.launch(activity, "hook.model.user")
+            R.id.menu_hook_all ->  ActivityDetail.launch(activity, "hook.model.all")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -218,6 +227,8 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
                 recyclerViewAdapter.installAppList.addAll(unConfigAppInfoList)
                 recyclerViewAdapter.filter.filter(searchLastText)
             }
+            else -> {
+            }
         }
     }
 
@@ -257,7 +268,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
         val displayAppList = LinkedList<ApplicationInfo>()
         val installAppList = LinkedList<ApplicationInfo>()
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
             val view = LayoutInflater.from(activity).inflate(R.layout.item_listview, parent, false)
             val typedValue = TypedValue()
             activity.theme.resolveAttribute(R.attr.selectableItemBackground, typedValue, true)
@@ -265,28 +276,29 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
             return RecyclerViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: RecyclerViewHolder?, position: Int) {
+        @Suppress("DEPRECATION")
+        override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
             val applicationInfo = displayAppList[position]
             val appLabel = applicationInfo.loadLabel(packageManager)
             val appPackageName = applicationInfo.packageName
 
-            holder?.appInfo = applicationInfo
+            holder.appInfo = applicationInfo
 
             val configJsonObject = SettingsXposed.Instance.get(applicationInfo.packageName)
             if (configJsonObject != null && configJsonObject.isNotEmpty()) {
-                holder?.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Left)
-                holder?.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Right)
+                holder.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Left)
+                holder.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedEnable_Right)
             }else {
-                holder?.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Left)
-                holder?.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Right)
+                holder.tvTitleName?.leftTextView ?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Left)
+                holder.tvTitleName?.rightTextView?.setTextAppearance(activity, R.style.AppTheme_XposedDisable_Right)
             }
 
             if (appLabel == appPackageName){}
-                holder?.tvTitleName?.setRightText(appPackageName)
+                holder.tvTitleName?.setRightText(appPackageName)
 
             if (appLabel != appPackageName){
-                holder?.tvTitleName?.setLeftText(appLabel)
-                holder?.tvTitleName?.setRightText(appPackageName)
+                holder.tvTitleName?.setLeftText(appLabel)
+                holder.tvTitleName?.setRightText(appPackageName)
             }
         }
 

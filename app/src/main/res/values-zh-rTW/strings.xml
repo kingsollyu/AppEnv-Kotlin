@@ -77,7 +77,9 @@
     <string name="settings_issues">問題?建議？</string>
     <string name="detail_run_app">請從桌面啟動程式</string>
     <string name="detail_run_app_back">桌面</string>
-    <string name="about_text">"\n        <Data>\n            <![CDATA[
+    <string name="about_text">
+        <Data>
+            <![CDATA[
                     "<h2>程式變數</h2>"
                     "作者: king.sollyu<br>"
                     "聯繫: QQ: 191067617<br>"
@@ -119,7 +121,9 @@
                     "<br>"
                     "<br>"
                     "<br>"
-            ]]>\n        </Data>\n    "</string>
+            ]]>
+        </Data>
+    </string>
     <string name="title_activity_about">關於</string>
     <string name="main_nav_header_desc">如需訂製，可以聯繫作者</string>
     <string name="settings_show_desktop_icon">顯示桌面圖示</string>
@@ -147,4 +151,8 @@
     <string name="settings_use_data_local_tmp_title">提示</string>
     <string name="settings_use_data_local_tmp_content">使用/data/local/tmp儲存有一個好處，那就是相容所有的系統以及相容所有的軟體，但是他也有另外的一個缺陷，那將是需要使用root權限才可以正常執行指令。如果您的系統已經擁有root權限，那麼您完全可以開啟這個功能。</string>
     <string name="detail_phone_network_type">網路類型</string>
+    <string name="hook_all_user">攔截用戶程式</string>
+    <string name="hook_all_app">攔截所有應用</string>
+    <string name="warring">警告</string>
+    <string name="message_hook_all">此項配寘會攔截手機中所有的應用，包含系統應用。除非您知道您在修改什麼東西，否者請關閉此介面。</string>
 </resources>

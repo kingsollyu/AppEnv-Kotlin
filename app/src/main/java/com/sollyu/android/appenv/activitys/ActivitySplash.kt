@@ -9,18 +9,12 @@
 package com.sollyu.android.appenv.activitys
 
 import android.Manifest
-import android.app.ProgressDialog.show
-import android.content.pm.PackageManager
 import android.os.Handler
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.elvishew.xlog.XLog
-import com.sollyu.android.appenv.BuildConfig
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.Application
-import com.umeng.analytics.MobclickAgent
 import ru.alexbykov.nopermission.PermissionHelper
 
 
@@ -57,7 +51,7 @@ class ActivitySplash : ActivityBase(), Runnable {
         super.onInitDone()
 
         permissionHelper.check(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        permissionHelper.onSuccess{
+        permissionHelper.onSuccess {
             Handler().postAtTime(this, 1000)
         }
         permissionHelper.onDenied {

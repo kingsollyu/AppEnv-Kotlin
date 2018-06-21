@@ -18,4 +18,11 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 
+    <item android:id="@+id/menu_hook_user"
+        android:title="@string/hook_all_user"
+        />
+
+    <item android:id="@+id/menu_hook_all"
+        android:title="@string/hook_all_app"
+        />
 </menu>
