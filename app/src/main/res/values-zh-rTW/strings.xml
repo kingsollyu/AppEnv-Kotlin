@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2017 Sollyu <https://www.sollyu.com/>
+  ~
+  ~ Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+  ~
+  ~ This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+  -->
+
+<resources>
+    <string name="app_name">程式變數</string>
+    <string name="online_url_soft">https://gitee.com/sollyu/AppEnv-Kotlin/raw/develop/online/app.env.soft.json</string>
+    <string name="online_url_phone">https://gitee.com/sollyu/AppEnv-Kotlin/raw/develop/online/app.env.phone.json</string>
+    <string name="error">錯誤</string>
+    <string name="finish">完成</string>
+    <string name="detail_finish_snackbar">儲存成功</string>
+    <string name="search">搜尋</string>
+    <string name="about">關於</string>
+    <string name="score">評分</string>
+    <string name="donate">捐贈</string>
+    <string name="other">其他</string>
+    <string name="cloud">雲端</string>
+    <string name="settings">設定</string>
+    <string name="refresh">更新</string>
+    <string name="splash_xposed_not_work_content">Xposed好像沒有工作，您所做的一切都將無效。\n如果您是在更新了一個版本之後出現了這個提示。\n請您前往「XPOSED」-「模組」-「程式變數」-「重新勾選」-「然後重啟」即可。</string>
+    <string name="splash_xposed_not_work_title">退出</string>
+    <string name="tip">提示</string>
+    <string name="action_settings">設定</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="xposed_desc">這個可以偽裝手機軟體顯示的手機型號</string>
+    <string name="settings_no_update">目前是最新版本</string>
+    <string name="settings_has_update">最新版本：%1$s\n更新內容：\n%2$s</string>
+    <string name="settings_has_update_positive">下載</string>
+    <string name="settings_update_progress">檢查更新……</string>
+    <string name="settings_blog">部落格</string>
+    <string name="settings_author">作者</string>
+    <string name="settings_email">信箱</string>
+    <string name="settings_github">原始碼</string>
+    <string name="settings_update_soft">更新軟體版本</string>
+    <string name="settings_update_phone">更新機型版本</string>
+    <string name="settings_show_system_app">顯示系統程式</string>
+    <string name="random_all">全部隨機</string>
+    <string name="run_app">執行程式</string>
+    <string name="wipe_data">清除資料</string>
+    <string name="force_stop_app">強制停止</string>
+    <string name="save_config">儲存設定</string>
+    <string name="random">隨機</string>
+    <string name="delete_config">刪除設定</string>
+    <string name="remote_random">遠程隨機</string>
+    <string name="solution">方案</string>
+    <string name="save_solution">儲存方案</string>
+    <string name="load_solution">載入方案</string>
+    <string name="delete_solution">刪除方案</string>
+    <string name="detail_solution_save_success">方案 %1$s 儲存成功</string>
+    <string name="detail_solution_save_title">儲存方案</string>
+    <string name="detail_solution_save_hint">輸入方案的名稱</string>
+    <string name="empty" />
+    <string name="detail_solution_load_title">載入方案</string>
+    <string name="detail_solution_delete_title">刪除方案</string>
+    <string name="detail_solution_delete_success">刪除方案成功: %1$s</string>
+    <string name="settings_update_phone_success">更新機型資料庫成功</string>
+    <string name="detail_build_manufacturer">手機廠商</string>
+    <string name="detail_build_serial">手機序號</string>
+    <string name="detail_build_version_name">手機版本</string>
+    <string name="detail_sim_phone_number">手機號碼</string>
+    <string name="detail_sim_device_id">IMEI</string>
+    <string name="detail_sim_subscriber_id">IMSI</string>
+    <string name="detail_sim_operator">SIM程式碼</string>
+    <string name="detail_sim_operator_name">SIM名稱</string>
+    <string name="detail_sim_serial_number">SIM序號</string>
+    <string name="detail_sim__status">SIM狀態</string>
+    <string name="detail_build_model">手機型號</string>
+    <string name="detail_wifi_name">無線網名稱</string>
+    <string name="detail_wifi_bssid">無線網BSSID</string>
+    <string name="detail_wifi_mac_address">無線網Mac地址</string>
+    <string name="settings_issues">問題?建議？</string>
+    <string name="detail_run_app">請從桌面啟動程式</string>
+    <string name="detail_run_app_back">桌面</string>
+    <string name="about_text">
+        <Data>
+            <![CDATA[
+                    "<h2>程式變數</h2>"
+                    "作者: king.sollyu<br>"
+                    "聯繫: QQ: 191067617<br>"
+                    "說明: 動態修改軟體訊息<br>"
+                    "依賴: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">xposed</a> 或者 <a href="http://en.miui.com/thread-78894-1-1.html">wsm tools</a>再或<a href="https://github.com/android-hacker/VAExposed">VAExposed</a><br>"
+                    "更新: 歷史版本<a href="https://github.com/kingsollyu/AppEnv-Kotlin/releases">點擊這裡</a><br>"
+                    "影片: 軟體教學<a href="http://www.bilibili.com/video/av6928436/">點擊這裡</a><br>"
+                    "微信: 公眾號: 程式變數<br>"
+                    "備註: 本人承接類似軟體訂製開發(非誠勿擾)<br><br>"
+
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2017 Version %1$s<br><br>"
+
+                    "<h2>版本維護</h2>"
+                    "如果您是定做使用者請嘗試聯繫作者<br>"
+                    "如果非定做使用者請前往交流群: <a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">73426544</a><br>"
+                    "因本人時間不是太充裕<br>"
+                    "非定做使用者請在<a href="http://shang.qq.com/wpa/qunwpa?idkey=f7a9290f4c57e49f8f72034ceebf7ef2e09f06fc8410a241d808a585fa664ca3">QQ群</a>或<a href="https://github.com/kingsollyu/AppEnv-Kotlin/issues">論壇</a>討論, 添加作者<u>一律拒絕</u><br><br>"
+
+                    "<h2>特別說明</h2>"
+                    "請不要使用本軟體做任何違法事情， 包括刷單之類操作，如您使用本軟體出現任何違法法律，一切後果由您自行承擔和作者無關。<br>"
+                    "<br>"
+
+                    "<h2>檔案說明</h2>"
+                    "軟體設定：%2$s<br>"
+                    "機型資料：%3$s<br>"
+                    "框架資料：%4$s<br>"
+                    "<br>"
+
+                    "<h2>本版更新</h2>"
+                    "+ 增加OPPO的部分機型<br>"
+                    "+ 遠程隨機(扣除2次可使用點數)<br>"
+                    "+ 增加部分當下流行的機型<br>"
+                    "~ 修改王者榮耀高幀率機型為OPPO r11 plus<br>"
+                    "~ 修復了過於引人注目的BUG<br>"
+                    "~ 順便一提：程式變數支援VAExposed了<br>"
+                    "<br>"
+
+                    "<br>"
+                    "<br>"
+                    "<br>"
+                    "<br>"
+            ]]>
+        </Data>
+    </string>
+    <string name="title_activity_about">關於</string>
+    <string name="main_nav_header_desc">如需訂製，可以聯繫作者</string>
+    <string name="settings_show_desktop_icon">顯示桌面圖示</string>
+    <string name="settings_show_desktop_icon_tip">開啟後本軟體的桌面圖示將會消失，但是您可以從XPOSED的模組中打開本程式</string>
+    <string name="settings_thinks">特別鳴謝</string>
+    <string name="main_xposed_fail">\u26a0\ufe0fXposed狀態錯誤\u26a0\ufe0f\n任何設定都將無效</string>
+    <string name="settings_use_root">使用Root權限</string>
+    <string name="settings_use_root_content" >直接使用root指令可以更快的強制停止、清除資料功能，但是因眾多手機root方式不同，導致root不完整，如果root不完整那麼您使用此功能可能會出現錯誤\n\n您確定要使用root指令嗎？</string>
+    <string name="detail_clear_success">清除資料成功</string>
+    <string name="settings_use_root_available_fail">請求Root權限失敗</string>
+    <string name="detail_sim_country_iso">SIM國家程式碼</string>
+    <string name="detail_language">語言</string>
+    <string name="detail_display_dip">DPI</string>
+    <string name="settings_use_app_data_config">使用內建儲存</string>
+    <string name="settings_use_app_data_config_content">【內建儲存特性】\n支援「沒有SD卡權限」程式攔截\n不支援「7.0+」以上系統\n\n【外部儲存特性】\n不支援「沒有SD卡權限」程式攔截\n方便直接修改設定檔案\n相容所有系統\n\n您確定使用內建儲存嗎？</string>
+    <string name="splash_permission_write_storage_denied_content">程式變數需要記憶卡讀取權限才能正常使用\n\n問：為什麼要權限？\n答：因為在Android7.0+之後，Android系統為了手機系統的安全，刪除了一個名字叫做【MODE_WORLD_READABLE】的權限，此權限是允許其他程式訪問使用這個權限設置的檔案，這也是程式變數提供被攔截程式的一個設定入口。因為系統刪除了這個權限，外加上本人菜雞，無奈只能使用SD來存放此設定檔案，從而達到讓別的程式來讀取。\n\n問：如果我不給會怎麼樣？\n答：如果您的系統在Android7.0之前，那麼您可以在設定中設定成使用內建儲存，這樣您就可以正常使用本軟體了。那如果您的系統是Android7.0+，因為不能儲存設定檔案在記憶卡裡，所以我感覺您應該不能正常使用本軟體。\n\n問：但是我真的很討厭這個權限\n答：在這裡我僅作為作者來告訴您，本軟體【永久】不會增加任何性質的廣告，也不會在您的手機記憶卡裡生成各種亂七八糟的檔案。但是因為本軟體使用來一個叫做【友盟】的統計，它好像會在您的SD卡下生成一個叫做【umeng】的資料夾。\n\n問：……\n答：…………\n</string>
+    <string name="scan_qr">掃一掃</string>
+    <string name="upload_config">上傳設定</string>
+    <string name="settings_log">執行日誌</string>
+    <string name="log_delete">刪除</string>
+    <string name="log_reload">刷新</string>
+    <string name="register_title">註冊</string>
+    <string name="register_processing">註冊中……</string>
+    <string name="settings_use_data_local_tmp">使用/data/local/tmp</string>
+    <string name="settings_use_data_local_tmp_title">提示</string>
+    <string name="settings_use_data_local_tmp_content">使用/data/local/tmp儲存有一個好處，那就是相容所有的系統以及相容所有的軟體，但是他也有另外的一個缺陷，那將是需要使用root權限才可以正常執行指令。如果您的系統已經擁有root權限，那麼您完全可以開啟這個功能。</string>
+    <string name="detail_phone_network_type">網路類型</string>
+    <string name="hook_all_user">攔截用戶程式</string>
+    <string name="hook_all_app">攔截所有應用</string>
+    <string name="warring">警告</string>
+    <string name="message_hook_all">此項配寘會攔截手機中所有的應用，包含系統應用。除非您知道您在修改什麼東西，否者請關閉此介面。</string>
+</resources>
