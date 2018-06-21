@@ -10,6 +10,7 @@ package com.sollyu.android.appenv.commons
 
 import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatDelegate
+import android.util.Log
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
@@ -76,7 +77,10 @@ class Application : android.app.Application(), Thread.UncaughtExceptionHandler {
     }
 
     @NotProguard
-    fun isXposedWork(): Boolean {
+    open fun isXposedWork(): Boolean {
+        // In some frameworks, short methods (less than two Dalvik instructions)
+        // can not be hooked stably. This log just makes the method longer to hook.
+        Log.v("fake", "$javaClass.isModuleLoaded() invoked.")
         return false
     }
 

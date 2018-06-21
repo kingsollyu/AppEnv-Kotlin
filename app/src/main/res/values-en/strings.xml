@@ -82,7 +82,33 @@
     <string name="detail_run_app">Please start the app from desktop</string>
     <string name="detail_run_app_back">Home</string>
     <string name="title_activity_about">About</string>
-    <string name="about_text">&lt;Data &gt;                                  \"&lt;h2&gt;AppEnv&lt;/h2&gt;\"                     \"Author: king.sollyu&lt;br&gt;\"                     \"Contact: QQ: 191067617 (C.S.T)&lt;br&gt;\"                     \"Description: Dynamically modify the software information&lt;br&gt;\"                     \"Depend: &lt;a href=\"http://repo.xposed.info/module/de.robv.android.xposed.installer\"&gt;XPOSED&lt;/a&gt; OR &lt;a href=\"http://en.miui.com/thread-78894-1-1.html\"&gt;WSM tools&lt;/a&gt;&lt;br&gt;\"                     \"Update: Historic version &lt;a href=\"https://github.com/kingsollyu/AppEnv-Kotlin/releases\"&gt;CLICK HERE&lt;/a&gt;&lt;br&gt;&lt;br&gt;\"                      \"Copyright © &lt;a href=\"http://www.sollyu.com\"&gt;Sollyu&lt;/a&gt; 2015-2017 Version %1$s&lt;br&gt;&lt;br&gt;\"                      \"&lt;h2&gt;Files&lt;/h2&gt;\"                     \"App Setting：%2$s&lt;br&gt;\"                     \"Phone Database：%3$s&lt;br&gt;\"                     \"Xposed Setting：%4$s&lt;br&gt;\"                     \"&lt;br&gt;\"                      \"&lt;h2&gt;This update&lt;/h2&gt;\"                     \"+ i\'m english is so bad.&lt;br&gt;\"                     \"+ i\'m sorry, there no english&lt;br&gt;\"                      \"&lt;br&gt;\"                     \"&lt;br&gt;\"                      &lt;/Data&gt;</string>
+    <string name="about_text">
+        <Data>
+            <![CDATA[
+                    "<h2>AppEnv</h2>"
+                    "Author: king.sollyu<br>"
+                    "Contact: QQ: 191067617 (C.S.T)<br>"
+                    "Description: Dynamically modify the software information<br>"
+                    "Depend: <a href="http://repo.xposed.info/module/de.robv.android.xposed.installer">XPOSED</a> OR <a href="http://en.miui.com/thread-78894-1-1.html">WSM tools</a><br>"
+                    "Update: Historic version <a href="https://github.com/kingsollyu/AppEnv-Kotlin/releases">CLICK HERE</a><br><br>"
+
+                    "Copyright © <a href="http://www.sollyu.com">Sollyu</a> 2015-2017 Version %1$s<br><br>"
+
+                    "<h2>Files</h2>"
+                    "App Setting：%2$s<br>"
+                    "Phone Database：%3$s<br>"
+                    "Xposed Setting：%4$s<br>"
+                    "<br>"
+
+                    "<h2>This update</h2>"
+                    "+ i'm english is so bad.<br>"
+                    "+ i'm sorry, there no english<br>"
+
+                    "<br>"
+                    "<br>"
+            ]]>
+        </Data>
+    </string>
     <string name="main_nav_header_desc">If you want more customization, you can contact author.</string>
     <string name="settings_show_desktop_icon">Show Desktop Icon</string>
     <string name="settings_show_desktop_icon_tip">You can open app in Xposed model.</string>
@@ -105,9 +131,13 @@
     <string name="log_delete">Delete</string>
     <string name="log_reload">Reload</string>
     <string name="register_title">Register</string>
-    <string name="register_processing">Registering...</string>
+    <string name="register_processing">Registering…</string>
     <string name="settings_use_data_local_tmp">Use /data/local/tmp</string>
     <string name="settings_use_data_local_tmp_title">TIP</string>
     <string name="settings_use_data_local_tmp_content">Use /data/local/tmp</string>
     <string name="detail_phone_network_type">Network Type</string>
+    <string name="hook_all_user">Hook User App</string>
+    <string name="hook_all_app">Hook All App</string>
+    <string name="warring">Warrning</string>
+    <string name="message_hook_all">This is will hook ALL app, include system app.</string>
 </resources>
