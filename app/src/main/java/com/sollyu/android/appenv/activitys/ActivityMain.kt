@@ -243,7 +243,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
     /**
      * List Item
      */
-    inner class RecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         @ViewInject(R.id.titleName)
         var tvTitleName: OptionItemView? = null
@@ -252,7 +252,7 @@ class ActivityMain : ActivityBase(), NavigationView.OnNavigationItemSelectedList
 
         init {
             x.view().inject(this, itemView)
-            itemView?.setOnClickListener(this)
+            itemView.setOnClickListener(this)
         }
 
         /**
