@@ -13,14 +13,12 @@ import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
 import android.webkit.JavascriptInterface
-import android.webkit.WebView
 import android.widget.LinearLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.alibaba.fastjson.JSON
 import com.elvishew.xlog.XLog
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.AgentWebConfig
-import com.just.agentweb.ChromeClientCallbackManager
 import com.sollyu.android.appenv.R
 import com.sollyu.android.appenv.commons.SettingsXposed
 import com.sollyu.android.appenv.define.AppEnvConstants
@@ -34,7 +32,7 @@ import kotlinx.android.synthetic.main.include_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import java.io.IOException
 
-class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCallback {
+class ActivityWeb : ActivityBase(){
     companion object {
         fun launch(activity: Activity, webTitle: String, webUrl: String) {
             val intent = Intent(activity, ActivityWeb::class.java)
@@ -48,8 +46,6 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
         AgentWeb.with(activity)
                 .setAgentWebParent(linearLayout, LinearLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
-                .defaultProgressBarColor()
-                .setReceivedTitleCallback(this)
                 .createAgentWeb()
                 .ready()
                 .go(intent.getStringExtra("webUrl"))
@@ -72,10 +68,6 @@ class ActivityWeb : ActivityBase(), ChromeClientCallbackManager.ReceivedTitleCal
     override fun onInitDone() {
         super.onInitDone()
         agentWeb.jsInterfaceHolder.addJavaObject("android", JsInterfaceHolder())
-    }
-
-    override fun onReceivedTitle(view: WebView, title: String) {
-        supportActionBar?.title = title
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

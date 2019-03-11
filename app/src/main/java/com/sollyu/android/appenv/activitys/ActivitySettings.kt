@@ -312,7 +312,7 @@ class ActivitySettings : ActivityBase() {
     private fun onBtnClickThinks(view: View) {
         MaterialDialog.Builder(activity)
                 .title(R.string.settings_thinks)
-                .items(arrayListOf("jfa2008@gmail.com"))
+                .items(arrayListOf("jfa2008@gmail.com", "AdroitAdorKhan(Github)", "tiann(Github)", "david082321(Github)"))
                 .positiveText(android.R.string.ok)
                 .show()
     }
