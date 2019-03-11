@@ -11,10 +11,12 @@
 package com.sollyu.android.appenv.activitys
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.telephony.TelephonyManager
 import android.util.Base64
 import android.util.Log
@@ -171,6 +173,22 @@ class ActivityDetail : ActivityBase() {
                     oieBuildModel.rightEditText = "OPPO r11 plus"
                 }.show()
             }
+            "hook.model.user" -> {
+                Snackbar.make(fab, "非系统应用都会拦截", Snackbar.LENGTH_INDEFINITE).show()
+            }
+            "hook.model.all" -> {
+                AlertDialog.Builder(activity)
+                        .setTitle(R.string.warring)
+                        .setMessage(R.string.message_hook_all)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                            dialog.dismiss()
+                            activity.finish()
+                        }
+                        .setCancelable(false)
+                        .create()
+                        .show()
+            }
         }
     }
 
@@ -238,7 +256,7 @@ class ActivityDetail : ActivityBase() {
     private fun onBtnClickFinish(view: View) {
         SettingsXposed.Instance.set(appInfo.packageName, uiToJsonObject())
         EventBus.getDefault().postSticky(EventSample(EventSample.TYPE.MAIN_REFRESH))
-        Snackbar.make(view, R.string.detail_finish_snackbar, Snackbar.LENGTH_LONG).setAction(R.string.finish) { activity.finish() }.show()
+        Snackbar.make(view, R.string.detail_finish_snackbar, Snackbar.LENGTH_LONG).setAction(R.string.force_stop_app) { onItemClickShowApp(view) }.show()
     }
 
     private fun jsonObjectToUi(jsonObject: JSONObject?) {
